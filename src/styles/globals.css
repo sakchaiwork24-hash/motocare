@@ -1,0 +1,36 @@
+@import './fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: theme('colors.page');
+  color: theme('colors.ink.100');
+}
+
+* {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Consistent keyboard-focus indicator across every interactive element in the app —
+   one global rule instead of auditing ~30+ buttons/inputs/links built across 8 phases. */
+*:focus-visible {
+  outline: 2px solid theme('colors.accent2.DEFAULT');
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-mcPulse,
+  .animate-mcHalo,
+  .animate-mcScan,
+  .animate-mcBlink {
+    animation: none !important;
+  }
+}

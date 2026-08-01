@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.claude/settings.local.json
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json

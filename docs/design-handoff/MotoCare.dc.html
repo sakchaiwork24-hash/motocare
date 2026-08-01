@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#05070C;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+a{color:#06B6D4;text-decoration:none}
+a:hover{color:#22D3EE}
+input,button,select,textarea{font-family:inherit}
+button{-webkit-appearance:none}
+div::-webkit-scrollbar{width:0;height:0}div{scrollbar-width:none}
+@keyframes mcUp{from{transform:translateY(22px)}to{transform:translateY(0)}}
+@keyframes mcFade{from{opacity:0}to{opacity:1}}
+@keyframes mcIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mcPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.14)}}
+@keyframes mcHalo{0%{transform:scale(.7);opacity:.55}100%{transform:scale(2.1);opacity:0}}
+@keyframes mcScan{0%{top:8%}100%{top:86%}}
+@keyframes mcBlink{0%,100%{opacity:1}50%{opacity:.25}}
+</style>
+</helmet>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="ic-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 13l4.5-4"></path><path d="M12 5V3.5"></path></symbol>
+<symbol id="ic-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3.4"></circle><path d="M12 2.5v3"></path><path d="M12 18.5v3"></path><path d="M2.5 12h3"></path><path d="M18.5 12h3"></path><path d="M5.2 5.2l2.1 2.1"></path><path d="M16.7 16.7l2.1 2.1"></path><path d="M18.8 5.2l-2.1 2.1"></path><path d="M7.3 16.7l-2.1 2.1"></path></symbol>
+<symbol id="ic-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3.5" y="7" width="17" height="13" rx="2.2"></rect><path d="M3.5 11.5h17"></path><path d="M9.5 7v4.5"></path><path d="M8 4h8l2 3H6z"></path></symbol>
+<symbol id="ic-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20h16"></path><path d="M6.5 20v-6.5"></path><path d="M12 20V5.5"></path><path d="M17.5 20v-9.5"></path></symbol>
+<symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.2l7.2 2.8v5.6c0 4.4-3 7.6-7.2 9.2-4.2-1.6-7.2-4.8-7.2-9.2V6z"></path></symbol>
+<symbol id="ic-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.2c3 3.9 5 6.6 5 9.1a5 5 0 0 1-10 0c0-2.5 2-5.2 5-9.1z"></path></symbol>
+<symbol id="ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9.5l6 6 6-6"></path></symbol>
+<symbol id="ic-chevr" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 6l6 6-6 6"></path></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></symbol>
+<symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></symbol>
+<symbol id="ic-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6"></rect><path d="M10.5 18.5h3"></path></symbol>
+<symbol id="ic-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="9.4" y="2.6" width="5.2" height="10.4" rx="2.6"></rect><path d="M5.8 11.6a6.2 6.2 0 0 0 12.4 0"></path><path d="M12 17.8V21"></path></symbol>
+<symbol id="ic-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 9V6.5A2.5 2.5 0 0 1 6.5 4H9"></path><path d="M15 4h2.5A2.5 2.5 0 0 1 20 6.5V9"></path><path d="M20 15v2.5a2.5 2.5 0 0 1-2.5 2.5H15"></path><path d="M9 20H6.5A2.5 2.5 0 0 1 4 17.5V15"></path><path d="M4 12h16"></path></symbol>
+<symbol id="ic-disc" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8.2"></circle><circle cx="12" cy="12" r="2.6"></circle><path d="M12 3.8v2"></path><path d="M12 18.2v2"></path><path d="M3.8 12h2"></path><path d="M18.2 12h2"></path></symbol>
+<symbol id="ic-chain" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="7.6" cy="12" r="3.4"></circle><circle cx="16.4" cy="12" r="3.4"></circle><path d="M11 12h2"></path></symbol>
+<symbol id="ic-tyre" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8.4"></circle><circle cx="12" cy="12" r="3.6"></circle><path d="M12 3.6v2.4"></path><path d="M12 18v2.4"></path><path d="M3.6 12H6"></path><path d="M18 12h2.4"></path></symbol>
+<symbol id="ic-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3.6" y="5" width="16.8" height="15.4" rx="2.4"></rect><path d="M3.6 10h16.8"></path><path d="M8.5 3v4"></path><path d="M15.5 3v4"></path></symbol>
+<symbol id="ic-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4l8.6 15H3.4z"></path><path d="M12 9.6v4.2"></path><path d="M12 16.8h.01"></path></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.4 4.4L19 7.5"></path></symbol>
+<symbol id="ic-cam" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.6"></rect><circle cx="12" cy="13.5" r="3.4"></circle><path d="M9 7l1.4-2.4h3.2L15 7"></path></symbol>
+<symbol id="ic-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3.8 11.6L20 5l-6.6 14.4-2-6.2z"></path></symbol>
+<symbol id="ic-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3.2h7l5 5v12.6H6z"></path><path d="M13 3.2v5h5"></path><path d="M9 13h6"></path><path d="M9 16.6h4"></path></symbol>
+<symbol id="ic-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4v10.5"></path><path d="M7.8 10.4L12 14.6l4.2-4.2"></path><path d="M4.5 19.5h15"></path></symbol>
+<symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.4V12l3.2 2"></path></symbol>
+<symbol id="ic-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12.4V4.6h7.8L20 12.8 12.8 20z"></path><circle cx="8" cy="8.6" r="1.3"></circle></symbol>
+<symbol id="ic-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13.4 3L6 13.4h5L10.6 21 18 10.6h-5z"></path></symbol>
+<symbol id="ic-fuel" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="4.4" y="4" width="9.6" height="16.4" rx="2.2"></rect><path d="M4.4 11.6H14"></path><path d="M17.4 8.6v8.2a1.9 1.9 0 0 0 1.9 1.9"></path><path d="M14 7.4h3.4"></path></symbol>
+<symbol id="ic-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3.4" y="6.4" width="17.2" height="12.6" rx="2.6"></rect><path d="M3.4 11h17.2"></path><path d="M16.4 15h1.6"></path></symbol>
+</defs></svg>
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px 16px;background:#05070C">
+<div style="position:relative;width:400px;height:868px;max-height:calc(100vh - 44px);display:flex;flex-direction:column;background:#0F172A;border:1px solid #1E293B;border-radius:44px;overflow:hidden;box-shadow:0 44px 90px -24px rgba(0,0,0,.95),0 0 0 10px #0B0F19">
+
+<div style="flex:none;display:flex;align-items:center;justify-content:space-between;padding:14px 26px 6px;font:600 12px/1 'Chakra Petch',sans-serif;color:#94A3B8;letter-spacing:.04em">
+<span>09:41</span>
+<div style="display:flex;align-items:center;gap:5px">
+<div style="display:flex;align-items:flex-end;gap:2px"><div style="width:3px;height:5px;background:#94A3B8;border-radius:1px"></div><div style="width:3px;height:8px;background:#94A3B8;border-radius:1px"></div><div style="width:3px;height:11px;background:#94A3B8;border-radius:1px"></div><div style="width:3px;height:11px;background:#334155;border-radius:1px"></div></div>
+<span style="font-size:10px">4G</span>
+<div style="width:22px;height:11px;border:1.4px solid #94A3B8;border-radius:3px;padding:1.4px;margin-left:2px"><div style="width:72%;height:100%;background:#10B981;border-radius:1px"></div></div>
+</div>
+</div>
+
+<div style="flex:none;padding:6px 16px 12px;border-bottom:1px solid rgba(51,65,85,.6);position:relative;z-index:30;background:#0F172A">
+<div style="display:flex;align-items:center;gap:10px">
+<button onClick="{{ toggleSwitcher }}" style="flex:1;min-height:52px;display:flex;align-items:center;gap:11px;background:#1E293B;border:1px solid #334155;border-radius:16px;padding:8px 12px;cursor:pointer;text-align:left" style-hover="border-color:#FF6B00">
+<div style="width:36px;height:36px;flex:none;border-radius:11px;background:repeating-linear-gradient(120deg,#0F172A 0 5px,#243349 5px 10px);border:1px solid #475569;display:flex;align-items:center;justify-content:center;font:700 13px 'Chakra Petch',sans-serif;color:#FF6B00">{{ bike.initial }}</div>
+<div style="min-width:0;flex:1">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font:700 15px/1.1 'Chakra Petch',sans-serif;color:#F1F5F9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ bike.nick }}</span>
+<svg width="15" height="15" viewBox="0 0 24 24" style="color:#FF6B00;flex:none"><use href="#ic-chev"></use></svg>
+</div>
+<div style="font:400 11px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ bike.full }}</div>
+</div>
+</button>
+<button onClick="{{ toggleSync }}" style="min-height:52px;min-width:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:#1E293B;border:1px solid #334155;border-radius:16px;padding:6px 9px;cursor:pointer">
+<div style="width:8px;height:8px;border-radius:99px;background:{{ syncColor }};animation:mcBlink 2.4s ease-in-out infinite"></div>
+<span style="font:600 8px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:{{ syncColor }}">{{ syncLabel }}</span>
+<span style="font:400 8px/1 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ syncSub }}</span>
+</button>
+</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:9px">
+<div style="display:flex;align-items:center;gap:5px;background:rgba(6,182,212,.09);border:1px solid rgba(6,182,212,.28);border-radius:9px;padding:5px 8px;white-space:nowrap;flex:none">
+<svg width="12" height="12" viewBox="0 0 24 24" style="color:#06B6D4;flex:none"><use href="#ic-drop"></use></svg>
+<span style="font:600 10px/1 'Chakra Petch',sans-serif;color:#67E8F9;letter-spacing:.02em">{{ spec.oil }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:5px;background:rgba(6,182,212,.09);border:1px solid rgba(6,182,212,.28);border-radius:9px;padding:5px 8px;white-space:nowrap;flex:none">
+<svg width="12" height="12" viewBox="0 0 24 24" style="color:#06B6D4;flex:none"><use href="#ic-tyre"></use></svg>
+<span style="font:600 10px/1 'Chakra Petch',sans-serif;color:#67E8F9;letter-spacing:.02em">{{ spec.tyre }}</span>
+</div>
+<button onClick="{{ toggleSpecs }}" style="margin-left:auto;display:flex;align-items:center;gap:4px;background:none;border:1px solid #334155;border-radius:9px;padding:5px 8px;cursor:pointer;min-height:26px">
+<span style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#94A3B8">{{ specsLabel }}</span>
+<svg width="11" height="11" viewBox="0 0 24 24" style="color:#94A3B8"><use href="#ic-chev"></use></svg>
+</button>
+</div>
+<sc-if value="{{ specsOpen }}">
+<div style="margin-top:10px;background:#0B1120;border:1px solid #334155;border-radius:14px;padding:11px 12px;animation:mcIn .22s ease-out">
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#64748B;margin-bottom:9px">FACTORY SPECS · THAILAND MODEL</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px 12px">
+<sc-for list="{{ specRows }}" as="r" hint-placeholder-count="6">
+<div>
+<div style="font:400 9.5px/1.2 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ r.k }}</div>
+<div style="font:600 11.5px/1.3 'Chakra Petch',sans-serif;color:#E2E8F0">{{ r.v }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{ switcher }}">
+<div style="position:absolute;inset:0;z-index:25;background:rgba(2,6,15,.66);animation:mcFade .18s ease-out">
+<div onClick="{{ closeSwitcher }}" style="position:absolute;inset:0"></div>
+<div style="position:absolute;top:120px;left:14px;right:14px;background:#1E293B;border:1px solid #334155;border-radius:20px;padding:10px;box-shadow:0 26px 50px -12px rgba(0,0,0,.8);animation:mcIn .2s ease-out">
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#64748B;padding:6px 8px 9px">MY GARAGE · {{ garageCount }} BIKES</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ garage }}" as="g" hint-placeholder-count="3">
+<button onClick="{{ g.onSelect }}" style="min-height:56px;display:flex;align-items:center;gap:11px;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:14px;padding:8px 11px;cursor:pointer;text-align:left;width:100%">
+<div style="width:34px;height:34px;flex:none;border-radius:10px;background:repeating-linear-gradient(120deg,#0F172A 0 5px,#243349 5px 10px);border:1px solid #475569;display:flex;align-items:center;justify-content:center;font:700 12px 'Chakra Petch',sans-serif;color:{{ g.fg }}">{{ g.initial }}</div>
+<div style="flex:1;min-width:0">
+<div style="font:700 13.5px/1.2 'Chakra Petch',sans-serif;color:#F1F5F9">{{ g.nick }}</div>
+<div style="font:400 10.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">{{ g.sub }}</div>
+</div>
+<sc-if value="{{ g.active }}"><svg width="18" height="18" viewBox="0 0 24 24" style="color:#FF6B00;flex:none"><use href="#ic-check"></use></svg></sc-if>
+</button>
+</sc-for>
+<button onClick="{{ openAddBike }}" style="min-height:48px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,107,0,.1);border:1px dashed rgba(255,107,0,.5);border-radius:14px;cursor:pointer;color:#FF8A33;padding:10px">
+<svg width="17" height="17" viewBox="0 0 24 24"><use href="#ic-plus"></use></svg>
+<span style="font:600 12px/1 'Chakra Petch',sans-serif;letter-spacing:.06em">ADD NEW BIKE</span>
+</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<div id="mc-scroll" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 22px">
+
+<sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:14px;animation:mcIn .26s ease-out">
+<div style="position:relative;border-radius:22px;overflow:hidden;border:1px solid #334155;background:#1E293B">
+<div style="position:relative;height:176px;background:repeating-linear-gradient(116deg,#16223A 0 9px,#1C2B45 9px 18px)">
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,0) 30%,rgba(15,23,42,.86) 72%,#1E293B 100%)"></div>
+<div style="position:absolute;top:11px;left:11px;display:flex;gap:6px">
+<div style="display:flex;align-items:center;gap:5px;background:rgba(2,6,15,.72);border:1px solid rgba(148,163,184,.3);border-radius:8px;padding:4px 7px">
+<svg width="11" height="11" viewBox="0 0 24 24" style="color:#10B981"><use href="#ic-check"></use></svg>
+<span style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#A7F3D0;white-space:nowrap">COMPRESSED · {{ bike.photoSize }}</span>
+</div>
+</div>
+<div style="position:absolute;top:11px;right:11px;background:rgba(2,6,15,.72);border:1px solid rgba(148,163,184,.3);border-radius:8px;padding:4px 8px;font:700 10px/1 'Chakra Petch',sans-serif;color:#E2E8F0;letter-spacing:.06em">{{ bike.year }}</div>
+<div style="position:absolute;top:64px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.5">
+<svg width="20" height="20" viewBox="0 0 24 24" style="color:#64748B"><use href="#ic-cam"></use></svg>
+<span style="font:400 9px/1 ui-monospace,Menlo,monospace;color:#64748B;letter-spacing:.06em">drop bike cover photo</span>
+</div>
+<div style="position:absolute;bottom:11px;left:14px;right:14px">
+<div style="font:700 22px/1.05 'Chakra Petch',sans-serif;color:#F8FAFC;letter-spacing:-.01em">{{ bike.nick }}</div>
+<div style="font:400 11.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">{{ bike.full }} · {{ bike.plate }}</div>
+</div>
+</div>
+<div style="display:flex;align-items:flex-end;justify-content:space-between;padding:12px 14px 14px;gap:10px">
+<div>
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#64748B;margin-bottom:3px">ODOMETER</div>
+<div style="display:flex;align-items:baseline;gap:5px">
+<span style="font:700 32px/1 'Chakra Petch',sans-serif;color:#F8FAFC;letter-spacing:-.02em;font-variant-numeric:tabular-nums">{{ bike.odoStr }}</span>
+<span style="font:600 12px/1 'Chakra Petch',sans-serif;color:#FF6B00;letter-spacing:.1em">KM</span>
+</div>
+</div>
+<div style="text-align:right">
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#64748B;margin-bottom:4px">HEALTH</div>
+<div style="display:flex;align-items:center;gap:6px">
+<div style="width:8px;height:8px;border-radius:99px;background:{{ scoreColor }}"></div>
+<span style="font:700 17px/1 'Chakra Petch',sans-serif;color:{{ scoreColor }}">{{ healthScore }}%</span>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<button onClick="{{ qaFuel }}" style="min-height:76px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;background:rgba(255,107,0,.13);border:1px solid rgba(255,107,0,.42);border-radius:16px;padding:10px;cursor:pointer;text-align:left">
+<svg width="19" height="19" viewBox="0 0 24 24" style="color:#FF8A33"><use href="#ic-fuel"></use></svg>
+<div>
+<div style="font:600 11px/1.2 'Chakra Petch',sans-serif;color:#FF8A33;letter-spacing:.02em">LOG FUEL</div>
+<div style="font:400 8.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">OCR scan</div>
+</div>
+</button>
+<button onClick="{{ qaService }}" style="min-height:76px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;background:#1E293B;border:1px solid #334155;border-radius:16px;padding:10px;cursor:pointer;text-align:left">
+<svg width="19" height="19" viewBox="0 0 24 24" style="color:#E2E8F0"><use href="#ic-cog"></use></svg>
+<div>
+<div style="font:600 11px/1.2 'Chakra Petch',sans-serif;color:#E2E8F0;letter-spacing:.02em">SERVICE</div>
+<div style="font:400 8.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">record job</div>
+</div>
+</button>
+<button onClick="{{ qaTrip }}" style="min-height:76px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;background:rgba(6,182,212,.11);border:1px solid rgba(6,182,212,.34);border-radius:16px;padding:10px;cursor:pointer;text-align:left">
+<svg width="19" height="19" viewBox="0 0 24 24" style="color:#22D3EE"><use href="#ic-nav"></use></svg>
+<div>
+<div style="font:600 11px/1.2 'Chakra Petch',sans-serif;color:#22D3EE;letter-spacing:.02em">TRIP CALC</div>
+<div style="font:400 8.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">fuel + cost</div>
+</div>
+</button>
+</div>
+
+<div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+<div style="font:600 11px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#94A3B8">BIKE HEALTH</div>
+<button onClick="{{ goMaint }}" style="display:flex;align-items:center;gap:3px;background:none;border:0;cursor:pointer;padding:4px;color:#06B6D4">
+<span style="font:600 10px/1 'Chakra Petch',sans-serif;letter-spacing:.08em">DETAILS</span>
+<svg width="12" height="12" viewBox="0 0 24 24"><use href="#ic-chevr"></use></svg>
+</button>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+<sc-for list="{{ rings }}" as="r" hint-placeholder-count="4">
+<div style="background:#1E293B;border:1px solid #334155;border-radius:18px;padding:12px;display:flex;align-items:center;gap:11px">
+<div style="position:relative;width:56px;height:56px;flex:none">
+<svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)">
+<circle cx="28" cy="28" r="23" fill="none" stroke="#0F172A" strokeWidth="6"></circle>
+<circle cx="28" cy="28" r="23" fill="none" stroke="{{ r.color }}" strokeWidth="6" strokeLinecap="round" strokeDasharray="{{ r.dash }}" style="transition:stroke-dasharray 1s cubic-bezier(.22,1,.36,1)"></circle>
+</svg>
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+<sc-if value="{{ r.isOil }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ r.color }}"><use href="#ic-drop"></use></svg></sc-if>
+<sc-if value="{{ r.isBrake }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ r.color }}"><use href="#ic-disc"></use></svg></sc-if>
+<sc-if value="{{ r.isChain }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ r.color }}"><use href="#ic-chain"></use></svg></sc-if>
+<sc-if value="{{ r.isTyre }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ r.color }}"><use href="#ic-tyre"></use></svg></sc-if>
+<sc-if value="{{ r.isAir }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ r.color }}"><use href="#ic-box"></use></svg></sc-if>
+</div>
+</div>
+<div style="min-width:0">
+<div style="font:600 11px/1.25 'IBM Plex Sans Thai',sans-serif;color:#E2E8F0">{{ r.label }}</div>
+<div style="font:700 15px/1.2 'Chakra Petch',sans-serif;color:{{ r.color }};font-variant-numeric:tabular-nums">{{ r.pct }}%</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ r.sub }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div>
+<div style="font:600 11px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#94A3B8;margin-bottom:9px">RECENT ACTIVITY</div>
+<div style="background:#1E293B;border:1px solid #334155;border-radius:18px;overflow:hidden">
+<sc-for list="{{ activity }}" as="a" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:11px;padding:11px 13px;border-bottom:1px solid rgba(51,65,85,.5)">
+<div style="width:32px;height:32px;flex:none;border-radius:10px;background:{{ a.bg }};display:flex;align-items:center;justify-content:center">
+<sc-if value="{{ a.isFuel }}"><svg width="15" height="15" viewBox="0 0 24 24" style="color:{{ a.fg }}"><use href="#ic-fuel"></use></svg></sc-if>
+<sc-if value="{{ a.isService }}"><svg width="15" height="15" viewBox="0 0 24 24" style="color:{{ a.fg }}"><use href="#ic-cog"></use></svg></sc-if>
+</div>
+<div style="flex:1;min-width:0">
+<div style="font:500 11.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#E2E8F0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.title }}</div>
+<div style="font:400 9.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ a.sub }}</div>
+</div>
+<div style="font:600 10px/1 'Chakra Petch',sans-serif;color:#94A3B8;flex:none">{{ a.when }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMaint }}">
+<div style="display:flex;flex-direction:column;gap:13px;animation:mcIn .26s ease-out">
+<div style="background:#1E293B;border:1px solid #334155;border-radius:20px;padding:14px">
+<div style="display:flex;align-items:center;gap:14px">
+<div style="position:relative;width:74px;height:74px;flex:none">
+<svg width="74" height="74" viewBox="0 0 74 74" style="transform:rotate(-90deg)">
+<circle cx="37" cy="37" r="31" fill="none" stroke="#0F172A" strokeWidth="8"></circle>
+<circle cx="37" cy="37" r="31" fill="none" stroke="{{ scoreColor }}" strokeWidth="8" strokeLinecap="round" strokeDasharray="{{ scoreDash }}" style="transition:stroke-dasharray 1.1s cubic-bezier(.22,1,.36,1)"></circle>
+</svg>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<span style="font:700 20px/1 'Chakra Petch',sans-serif;color:#F8FAFC">{{ healthScore }}</span>
+<span style="font:600 8px/1 'Chakra Petch',sans-serif;color:#64748B;letter-spacing:.1em">SCORE</span>
+</div>
+</div>
+<div style="flex:1;min-width:0">
+<div style="font:700 15px/1.2 'Chakra Petch',sans-serif;color:#F8FAFC">{{ scoreHeadline }}</div>
+<div style="font:400 10.5px/1.45 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:3px;text-wrap:pretty">{{ profileNote }}</div>
+</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:12px">
+<sc-for list="{{ profileChips }}" as="p" hint-placeholder-count="3">
+<button onClick="{{ p.onSelect }}" style="flex:1;min-height:44px;background:{{ p.bg }};border:1px solid {{ p.border }};border-radius:12px;padding:7px 4px;cursor:pointer">
+<div style="font:600 11px/1.2 'Chakra Petch',sans-serif;color:{{ p.fg }};letter-spacing:.04em">{{ p.label }}</div>
+<div style="font:400 8.5px/1.2 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:2px">{{ p.thai }}</div>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ maintCards }}" as="m" hint-placeholder-count="5">
+<div style="background:#1E293B;border:1px solid {{ m.border }};border-radius:18px;padding:13px">
+<div style="display:flex;align-items:flex-start;gap:11px">
+<div style="width:36px;height:36px;flex:none;border-radius:11px;background:{{ m.tint }};display:flex;align-items:center;justify-content:center">
+<sc-if value="{{ m.isOil }}"><svg width="18" height="18" viewBox="0 0 24 24" style="color:{{ m.color }}"><use href="#ic-drop"></use></svg></sc-if>
+<sc-if value="{{ m.isBrake }}"><svg width="18" height="18" viewBox="0 0 24 24" style="color:{{ m.color }}"><use href="#ic-disc"></use></svg></sc-if>
+<sc-if value="{{ m.isChain }}"><svg width="18" height="18" viewBox="0 0 24 24" style="color:{{ m.color }}"><use href="#ic-chain"></use></svg></sc-if>
+<sc-if value="{{ m.isTyre }}"><svg width="18" height="18" viewBox="0 0 24 24" style="color:{{ m.color }}"><use href="#ic-tyre"></use></svg></sc-if>
+<sc-if value="{{ m.isAir }}"><svg width="18" height="18" viewBox="0 0 24 24" style="color:{{ m.color }}"><use href="#ic-box"></use></svg></sc-if>
+</div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+<div style="font:600 13px/1.25 'IBM Plex Sans Thai',sans-serif;color:#F1F5F9">{{ m.label }}</div>
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:{{ m.color }};background:{{ m.tint }};border-radius:6px;padding:4px 6px;flex:none">{{ m.statusLabel }}</div>
+</div>
+<div style="font:400 9.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:1px">{{ m.thai }}</div>
+<div style="display:flex;align-items:baseline;gap:5px;margin-top:8px">
+<span style="font:700 19px/1 'Chakra Petch',sans-serif;color:{{ m.color }};font-variant-numeric:tabular-nums">{{ m.remValue }}</span>
+<span style="font:400 10px/1.2 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">{{ m.remLabel }}</span>
+</div>
+<div style="height:7px;border-radius:99px;background:#0F172A;overflow:hidden;margin-top:9px">
+<div style="height:100%;width:{{ m.w }};background:{{ m.color }};border-radius:99px;transition:width 1s cubic-bezier(.22,1,.36,1)"></div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-top:7px;gap:8px">
+<span style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ m.last }}</span>
+<button onClick="{{ m.onLog }}" style="min-height:32px;display:flex;align-items:center;gap:5px;background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.35);border-radius:9px;padding:6px 9px;cursor:pointer;flex:none">
+<svg width="12" height="12" viewBox="0 0 24 24" style="color:#FF8A33"><use href="#ic-plus"></use></svg>
+<span style="font:600 9.5px/1 'Chakra Petch',sans-serif;letter-spacing:.06em;color:#FF8A33">LOG REPLACEMENT</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+<button onClick="{{ openVoice }}" style="min-height:60px;display:flex;align-items:center;gap:10px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.32);border-radius:16px;padding:11px;cursor:pointer;text-align:left">
+<svg width="20" height="20" viewBox="0 0 24 24" style="color:#22D3EE;flex:none"><use href="#ic-mic"></use></svg>
+<div>
+<div style="font:600 11.5px/1.2 'Chakra Petch',sans-serif;color:#67E8F9">VOICE ENTRY</div>
+<div style="font:400 8.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">พูดแทนพิมพ์ · TH/EN</div>
+</div>
+</button>
+<button onClick="{{ openScan }}" style="min-height:60px;display:flex;align-items:center;gap:10px;background:#1E293B;border:1px solid #334155;border-radius:16px;padding:11px;cursor:pointer;text-align:left">
+<svg width="20" height="20" viewBox="0 0 24 24" style="color:#94A3B8;flex:none"><use href="#ic-scan"></use></svg>
+<div>
+<div style="font:600 11.5px/1.2 'Chakra Petch',sans-serif;color:#E2E8F0">SCAN RECEIPT</div>
+<div style="font:400 8.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">OCR · อ่านใบเสร็จ</div>
+</div>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMods }}">
+<div style="display:flex;flex-direction:column;gap:13px;animation:mcIn .26s ease-out">
+<div style="background:#1E293B;border:1px solid #334155;border-radius:20px;padding:14px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+<div>
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#64748B">PROJECT SPEND</div>
+<div style="display:flex;align-items:baseline;gap:4px;margin-top:4px">
+<span style="font:700 26px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ modSpent }}</span>
+<span style="font:600 11px/1 'Chakra Petch',sans-serif;color:#FF6B00;letter-spacing:.06em">THB</span>
+</div>
+<div style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:3px">{{ modInstalledCount }} parts installed on {{ bike.nick }}</div>
+</div>
+<div style="text-align:right">
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#64748B">WISHLIST</div>
+<div style="font:700 16px/1.2 'Chakra Petch',sans-serif;color:#22D3EE;font-variant-numeric:tabular-nums;margin-top:4px">{{ modWish }}</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ modWishCount }} items pending</div>
+</div>
+</div>
+<div style="display:flex;height:9px;border-radius:99px;overflow:hidden;background:#0F172A;margin-top:13px;gap:2px">
+<div style="width:{{ modBarSpent }};background:#FF6B00;transition:width 1s cubic-bezier(.22,1,.36,1)"></div>
+<div style="width:{{ modBarOrdered }};background:#F59E0B;transition:width 1s cubic-bezier(.22,1,.36,1)"></div>
+<div style="width:{{ modBarWish }};background:#06B6D4;transition:width 1s cubic-bezier(.22,1,.36,1)"></div>
+</div>
+<div style="display:flex;gap:12px;margin-top:9px">
+<div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:2px;background:#FF6B00"></div><span style="font:400 9px 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">Installed</span></div>
+<div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:2px;background:#F59E0B"></div><span style="font:400 9px 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">Ordered {{ modOrdered }}</span></div>
+<div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:2px;background:#06B6D4"></div><span style="font:400 9px 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">Wishlist</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:5px;background:#0B1120;border:1px solid #334155;border-radius:14px;padding:4px">
+<sc-for list="{{ pipes }}" as="p" hint-placeholder-count="3">
+<button onClick="{{ p.onSelect }}" style="flex:1;min-height:40px;display:flex;align-items:center;justify-content:center;gap:5px;background:{{ p.bg }};border:0;border-radius:10px;cursor:pointer;padding:8px 4px">
+<span style="font:600 11px/1 'Chakra Petch',sans-serif;letter-spacing:.05em;color:{{ p.fg }}">{{ p.label }}</span>
+<span style="font:600 9px/1 'Chakra Petch',sans-serif;background:{{ p.badgeBg }};color:{{ p.fg }};border-radius:5px;padding:3px 4px">{{ p.count }}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ parts }}" as="p" hint-placeholder-count="3">
+<div style="background:#1E293B;border:1px solid #334155;border-radius:18px;padding:12px">
+<div style="display:flex;gap:11px">
+<div style="width:58px;height:58px;flex:none;border-radius:13px;background:repeating-linear-gradient(135deg,#0F172A 0 6px,#243349 6px 12px);border:1px solid #334155;display:flex;align-items:center;justify-content:center">
+<svg width="16" height="16" viewBox="0 0 24 24" style="color:#475569"><use href="#ic-cam"></use></svg>
+</div>
+<div style="flex:1;min-width:0">
+<div style="font:600 12.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#F1F5F9">{{ p.name }}</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:{{ p.catFg }};background:{{ p.catBg }};border-radius:5px;padding:4px 6px">{{ p.cat }}</span>
+<span style="font:700 13px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ p.price }}</span>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;color:#64748B;letter-spacing:.06em">THB</span>
+</div>
+</div>
+</div>
+<sc-if value="{{ p.hasTrigger }}">
+<div style="display:flex;gap:7px;background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.26);border-radius:11px;padding:8px 9px;margin-top:10px">
+<svg width="13" height="13" viewBox="0 0 24 24" style="color:#FBBF24;flex:none;margin-top:1px"><use href="#ic-alert"></use></svg>
+<span style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#FCD34D;text-wrap:pretty">{{ p.trigger }}</span>
+</div>
+</sc-if>
+<div style="display:flex;gap:7px;background:#0B1120;border:1px solid rgba(51,65,85,.7);border-radius:11px;padding:8px 9px;margin-top:7px">
+<svg width="13" height="13" viewBox="0 0 24 24" style="color:#64748B;flex:none;margin-top:1px"><use href="#ic-box"></use></svg>
+<div style="min-width:0">
+<div style="font:600 8px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B">ORIGINAL STOCK PART</div>
+<div style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:2px">{{ p.stock }}</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B;flex:1">{{ p.meta }}</div>
+<button onClick="{{ p.onAction }}" style="min-height:36px;background:{{ p.actionBg }};border:1px solid {{ p.actionBorder }};border-radius:10px;padding:8px 12px;cursor:pointer;flex:none">
+<span style="font:600 10px/1 'Chakra Petch',sans-serif;letter-spacing:.07em;color:{{ p.actionFg }}">{{ p.actionLabel }}</span>
+</button>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ partsEmpty }}">
+<div style="border:1px dashed #334155;border-radius:18px;padding:26px 16px;text-align:center">
+<div style="font:600 12px/1.4 'Chakra Petch',sans-serif;color:#64748B">Nothing in {{ pipeLabel }} yet</div>
+<div style="font:400 10px/1.5 'IBM Plex Sans Thai',sans-serif;color:#475569;margin-top:4px">Parts you move here will show up with their stock-part storage note.</div>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCost }}">
+<div style="display:flex;flex-direction:column;gap:13px;animation:mcIn .26s ease-out">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+<div style="background:#1E293B;border:1px solid #334155;border-radius:16px;padding:12px">
+<div style="display:flex;align-items:center;gap:6px">
+<svg width="13" height="13" viewBox="0 0 24 24" style="color:#FF8A33"><use href="#ic-fuel"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B">AVG CONSUMPTION</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:7px">
+<span style="font:700 21px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ st.kmpl }}</span>
+<span style="font:600 9.5px/1 'Chakra Petch',sans-serif;color:#FF8A33;letter-spacing:.06em">KM/L</span>
+</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:3px">last 6 fill-ups</div>
+</div>
+<div style="background:#1E293B;border:1px solid #334155;border-radius:16px;padding:12px">
+<div style="display:flex;align-items:center;gap:6px">
+<svg width="13" height="13" viewBox="0 0 24 24" style="color:#22D3EE"><use href="#ic-wallet"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B">COST PER KM</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:7px">
+<span style="font:700 21px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ st.perKm }}</span>
+<span style="font:600 9.5px/1 'Chakra Petch',sans-serif;color:#22D3EE;letter-spacing:.06em">฿/KM</span>
+</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:3px">gasohol at ฿{{ fuelPrice }}</div>
+</div>
+<div style="background:#1E293B;border:1px solid #334155;border-radius:16px;padding:12px">
+<div style="display:flex;align-items:center;gap:6px">
+<svg width="13" height="13" viewBox="0 0 24 24" style="color:#22D3EE"><use href="#ic-chart"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B">FUEL · 6 MONTHS</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:7px">
+<span style="font:700 21px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ st.fuel6 }}</span>
+<span style="font:600 9.5px/1 'Chakra Petch',sans-serif;color:#22D3EE;letter-spacing:.06em">฿</span>
+</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:3px">≈ {{ st.perMonth }}/month</div>
+</div>
+<div style="background:#1E293B;border:1px solid #334155;border-radius:16px;padding:12px">
+<div style="display:flex;align-items:center;gap:6px">
+<svg width="13" height="13" viewBox="0 0 24 24" style="color:#FF8A33"><use href="#ic-cog"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B">MAINTENANCE</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:7px">
+<span style="font:700 21px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ st.maint }}</span>
+<span style="font:600 9.5px/1 'Chakra Petch',sans-serif;color:#FF8A33;letter-spacing:.06em">฿</span>
+</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:3px">{{ st.serviceCount }} logged services</div>
+</div>
+</div>
+
+<div style="background:#1E293B;border:1px solid #334155;border-radius:20px;padding:14px">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div style="font:600 10.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#94A3B8">MONTHLY FUEL SPEND</div>
+<div style="font:400 9.5px/1 'IBM Plex Sans Thai',sans-serif;color:#64748B">฿ per month</div>
+</div>
+<div style="display:flex;align-items:flex-end;gap:8px;height:104px;margin-top:14px">
+<sc-for list="{{ monthly }}" as="b" hint-placeholder-count="6">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;color:{{ b.fg }};font-variant-numeric:tabular-nums">{{ b.v }}</span>
+<div style="width:100%;height:{{ b.h }};background:{{ b.bg }};border-radius:6px 6px 3px 3px;transition:height 1s cubic-bezier(.22,1,.36,1)"></div>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;color:#64748B;letter-spacing:.04em">{{ b.m }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div id="mc-trip" style="background:#1E293B;border:1px solid {{ tripBorder }};border-radius:20px;padding:14px;transition:border-color .5s ease">
+<div style="display:flex;align-items:center;gap:8px">
+<svg width="17" height="17" viewBox="0 0 24 24" style="color:#22D3EE"><use href="#ic-nav"></use></svg>
+<div style="font:700 13.5px/1 'Chakra Petch',sans-serif;color:#F8FAFC;letter-spacing:.02em">TRIP COST ESTIMATOR</div>
+</div>
+<div style="font:400 10px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:5px">Based on {{ bike.nick }} · {{ bike.kmplStr }} km/L · gasohol 95 at ฿{{ fuelPrice }}/L</div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<div style="flex:1">
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">DESTINATION DISTANCE (KM)</label>
+<input type="text" inputMode="decimal" value="{{ tripKm }}" onChange="{{ onTripKm }}" style="width:100%;min-height:50px;background:#0B1120;border:1px solid #334155;border-radius:13px;padding:12px 14px;color:#F8FAFC;font:700 18px 'Chakra Petch',sans-serif;font-variant-numeric:tabular-nums;outline:none" />
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px">
+<sc-for list="{{ tripChips }}" as="t" hint-placeholder-count="3">
+<button onClick="{{ t.onClick }}" style="min-height:34px;background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;padding:8px 10px;cursor:pointer">
+<span style="font:500 9.5px/1 'IBM Plex Sans Thai',sans-serif;color:{{ t.fg }}">{{ t.label }}</span>
+</button>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;padding-top:13px;border-top:1px solid rgba(51,65,85,.7)">
+<div>
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#64748B">FUEL NEEDED</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:5px"><span style="font:700 19px/1 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ tripLiters }}</span><span style="font:600 9px 'Chakra Petch',sans-serif;color:#94A3B8">L</span></div>
+</div>
+<div>
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#64748B">EST. COST</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:5px"><span style="font:700 19px/1 'Chakra Petch',sans-serif;color:#FF8A33;font-variant-numeric:tabular-nums">{{ tripCost }}</span><span style="font:600 9px 'Chakra Petch',sans-serif;color:#FF8A33">฿</span></div>
+</div>
+<div>
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#64748B">REFUEL STOPS</div>
+<div style="display:flex;align-items:baseline;gap:3px;margin-top:5px"><span style="font:700 19px/1 'Chakra Petch',sans-serif;color:#22D3EE;font-variant-numeric:tabular-nums">{{ tripStops }}</span><span style="font:600 9px 'Chakra Petch',sans-serif;color:#64748B">tank {{ bike.tank }}L</span></div>
+</div>
+</div>
+<div style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#64748B;margin-top:10px">{{ tripNote }}</div>
+</div>
+
+<div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+<div style="font:600 11px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#94A3B8">FUEL LOG</div>
+<button onClick="{{ openFuel }}" style="display:flex;align-items:center;gap:4px;background:none;border:0;cursor:pointer;padding:4px;color:#FF8A33">
+<svg width="13" height="13" viewBox="0 0 24 24"><use href="#ic-plus"></use></svg>
+<span style="font:600 10px/1 'Chakra Petch',sans-serif;letter-spacing:.08em">ADD ENTRY</span>
+</button>
+</div>
+<div style="background:#1E293B;border:1px solid #334155;border-radius:18px;overflow:hidden">
+<sc-for list="{{ fuelLogs }}" as="f" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:11px;padding:11px 13px;border-bottom:1px solid rgba(51,65,85,.5)">
+<div style="width:34px;height:34px;flex:none;border-radius:10px;background:rgba(255,107,0,.11);display:flex;align-items:center;justify-content:center">
+<svg width="15" height="15" viewBox="0 0 24 24" style="color:#FF8A33"><use href="#ic-fuel"></use></svg>
+</div>
+<div style="flex:1;min-width:0">
+<div style="font:500 11.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#E2E8F0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.station }}</div>
+<div style="font:400 9.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ f.sub }}</div>
+</div>
+<div style="text-align:right;flex:none">
+<div style="font:700 12.5px/1.2 'Chakra Petch',sans-serif;color:#F8FAFC;font-variant-numeric:tabular-nums">{{ f.thb }}</div>
+<div style="font:600 9px/1.2 'Chakra Petch',sans-serif;color:{{ f.kmplColor }}">{{ f.kmpl }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVault }}">
+<div style="display:flex;flex-direction:column;gap:13px;animation:mcIn .26s ease-out">
+<div style="background:#4C0519;border:1.5px solid #F43F5E;border-radius:20px;padding:14px;box-shadow:0 0 0 1px rgba(244,63,94,.2),0 14px 30px -14px rgba(244,63,94,.5)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="width:26px;height:26px;border-radius:8px;background:#F43F5E;display:flex;align-items:center;justify-content:center">
+<svg width="15" height="15" viewBox="0 0 24 24" style="color:#4C0519"><use href="#ic-alert"></use></svg>
+</div>
+<div>
+<div style="font:700 14px/1 'Chakra Petch',sans-serif;color:#FFF1F2;letter-spacing:.06em">ICE · EMERGENCY</div>
+<div style="font:400 9px/1.2 'IBM Plex Sans Thai',sans-serif;color:#FDA4AF">ข้อมูลฉุกเฉิน · แสดงให้กู้ภัย</div>
+</div>
+</div>
+<button onClick="{{ openIce }}" style="min-height:40px;background:#F43F5E;border:0;border-radius:11px;padding:10px 12px;cursor:pointer">
+<span style="font:700 10px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#4C0519">FULL SCREEN</span>
+</button>
+</div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:12px;margin-top:13px;align-items:center">
+<div style="width:62px;height:62px;border-radius:16px;background:rgba(255,241,242,.1);border:1px solid rgba(253,164,175,.4);display:flex;flex-direction:column;align-items:center;justify-content:center">
+<span style="font:700 24px/1 'Chakra Petch',sans-serif;color:#FFF1F2">{{ ice.blood }}</span>
+<span style="font:600 7.5px/1 'Chakra Petch',sans-serif;color:#FDA4AF;letter-spacing:.1em">BLOOD</span>
+</div>
+<div>
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#FDA4AF">ALLERGIES · แพ้ยา</div>
+<div style="font:500 12px/1.4 'IBM Plex Sans Thai',sans-serif;color:#FFF1F2;margin-top:4px">{{ ice.allergies }}</div>
+<div style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#FDA4AF;margin-top:4px">{{ ice.notes }}</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px;margin-top:12px">
+<sc-for list="{{ ice.contacts }}" as="c" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:10px;background:rgba(2,6,15,.32);border:1px solid rgba(253,164,175,.28);border-radius:13px;padding:9px 10px">
+<div style="flex:1;min-width:0">
+<div style="font:600 12px/1.3 'IBM Plex Sans Thai',sans-serif;color:#FFF1F2">{{ c.name }}</div>
+<div style="font:400 9.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#FDA4AF">{{ c.rel }} · {{ c.phone }}</div>
+</div>
+<a href="{{ c.tel }}" style="min-height:44px;min-width:70px;display:flex;align-items:center;justify-content:center;gap:6px;background:#F43F5E;border-radius:12px;text-decoration:none;padding:10px 12px">
+<svg width="14" height="14" viewBox="0 0 24 24" style="color:#4C0519"><use href="#ic-phone"></use></svg>
+<span style="font:700 10px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#4C0519">CALL</span>
+</a>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:9px;margin-top:11px;padding-top:11px;border-top:1px solid rgba(253,164,175,.24)">
+<div style="flex:1">
+<div style="font:600 8px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#FDA4AF">INSURER</div>
+<div style="font:500 10.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#FFF1F2;margin-top:3px">{{ ice.insurer }}</div>
+</div>
+<div style="flex:1">
+<div style="font:600 8px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#FDA4AF">POLICY</div>
+<div style="font:600 10.5px/1.3 'Chakra Petch',sans-serif;color:#FFF1F2;margin-top:3px">{{ ice.policy }}</div>
+</div>
+</div>
+</div>
+
+<div>
+<div style="font:600 11px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#94A3B8;margin-bottom:9px">DOCUMENT VAULT</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+<button onClick="{{ d.onOpen }}" style="min-height:64px;display:flex;align-items:center;gap:11px;background:#1E293B;border:1px solid {{ d.border }};border-radius:16px;padding:11px;cursor:pointer;text-align:left;width:100%">
+<div style="width:42px;height:42px;flex:none;border-radius:11px;background:repeating-linear-gradient(135deg,#0F172A 0 5px,#243349 5px 10px);border:1px solid #334155;display:flex;align-items:center;justify-content:center">
+<sc-if value="{{ d.isTax }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ d.color }}"><use href="#ic-cal"></use></svg></sc-if>
+<sc-if value="{{ d.isPrb }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ d.color }}"><use href="#ic-shield"></use></svg></sc-if>
+<sc-if value="{{ d.isVol }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ d.color }}"><use href="#ic-file"></use></svg></sc-if>
+<sc-if value="{{ d.isLic }}"><svg width="17" height="17" viewBox="0 0 24 24" style="color:{{ d.color }}"><use href="#ic-tag"></use></svg></sc-if>
+</div>
+<div style="flex:1;min-width:0">
+<div style="font:600 12px/1.3 'IBM Plex Sans Thai',sans-serif;color:#F1F5F9">{{ d.name }}</div>
+<div style="font:400 10px/1.35 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">{{ d.thai }} · หมดอายุ {{ d.expiryTh }}</div>
+</div>
+<div style="flex:none;text-align:right">
+<div style="font:700 9px/1 'Chakra Petch',sans-serif;letter-spacing:.06em;color:{{ d.color }};background:{{ d.tint }};border:1px solid {{ d.border }};border-radius:7px;padding:5px 7px">{{ d.daysLabel }}</div>
+</div>
+</button>
+</sc-for>
+</div>
+</div>
+
+<button onClick="{{ openResale }}" style="min-height:66px;display:flex;align-items:center;gap:12px;background:rgba(6,182,212,.09);border:1px solid rgba(6,182,212,.34);border-radius:18px;padding:13px;cursor:pointer;text-align:left;width:100%">
+<div style="width:40px;height:40px;flex:none;border-radius:12px;background:rgba(6,182,212,.16);display:flex;align-items:center;justify-content:center">
+<svg width="19" height="19" viewBox="0 0 24 24" style="color:#22D3EE"><use href="#ic-file"></use></svg>
+</div>
+<div style="flex:1">
+<div style="font:700 13px/1.2 'Chakra Petch',sans-serif;color:#67E8F9;letter-spacing:.03em">GENERATE RESALE REPORT</div>
+<div style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:3px">Vehicle passport · {{ resale.serviceCount }} verified services ready to share</div>
+</div>
+<svg width="16" height="16" viewBox="0 0 24 24" style="color:#22D3EE;flex:none"><use href="#ic-chevr"></use></svg>
+</button>
+</div>
+</sc-if>
+
+</div>
+
+<div style="flex:none;display:flex;align-items:stretch;background:#0B1120;border-top:1px solid #1E293B;padding:0 4px 8px;position:relative;z-index:20">
+<button onClick="{{ nav.dash.go }}" style="flex:1;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:0;cursor:pointer;padding:9px 0 4px;position:relative">
+<div style="position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:{{ nav.dash.bar }};transition:background .2s"></div>
+<svg width="21" height="21" viewBox="0 0 24 24" style="color:{{ nav.dash.color }};transition:color .2s"><use href="#ic-gauge"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.09em;color:{{ nav.dash.color }}">GARAGE</span>
+</button>
+<button onClick="{{ nav.maint.go }}" style="flex:1;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:0;cursor:pointer;padding:9px 0 4px;position:relative">
+<div style="position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:{{ nav.maint.bar }};transition:background .2s"></div>
+<svg width="21" height="21" viewBox="0 0 24 24" style="color:{{ nav.maint.color }};transition:color .2s"><use href="#ic-cog"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.09em;color:{{ nav.maint.color }}">SERVICE</span>
+</button>
+<button onClick="{{ nav.mods.go }}" style="flex:1;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:0;cursor:pointer;padding:9px 0 4px;position:relative">
+<div style="position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:{{ nav.mods.bar }};transition:background .2s"></div>
+<svg width="21" height="21" viewBox="0 0 24 24" style="color:{{ nav.mods.color }};transition:color .2s"><use href="#ic-box"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.09em;color:{{ nav.mods.color }}">MODS</span>
+</button>
+<button onClick="{{ nav.cost.go }}" style="flex:1;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:0;cursor:pointer;padding:9px 0 4px;position:relative">
+<div style="position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:{{ nav.cost.bar }};transition:background .2s"></div>
+<svg width="21" height="21" viewBox="0 0 24 24" style="color:{{ nav.cost.color }};transition:color .2s"><use href="#ic-chart"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.09em;color:{{ nav.cost.color }}">COSTS</span>
+</button>
+<button onClick="{{ nav.vault.go }}" style="flex:1;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:0;cursor:pointer;padding:9px 0 4px;position:relative">
+<div style="position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:{{ nav.vault.bar }};transition:background .2s"></div>
+<svg width="21" height="21" viewBox="0 0 24 24" style="color:{{ nav.vault.color }};transition:color .2s"><use href="#ic-shield"></use></svg>
+<span style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.09em;color:{{ nav.vault.color }}">VAULT</span>
+</button>
+</div>
+
+<sc-if value="{{ toast }}">
+<div style="position:absolute;left:14px;right:14px;bottom:78px;z-index:60;display:flex;align-items:center;gap:9px;background:#0B1120;border:1px solid #10B981;border-radius:14px;padding:11px 12px;box-shadow:0 18px 34px -14px rgba(0,0,0,.9);animation:mcIn .22s ease-out">
+<svg width="16" height="16" viewBox="0 0 24 24" style="color:#10B981;flex:none"><use href="#ic-check"></use></svg>
+<span style="font:500 11px/1.4 'IBM Plex Sans Thai',sans-serif;color:#D1FAE5;flex:1">{{ toast }}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ mFuel }}">
+<div style="position:absolute;inset:0;z-index:70;background:rgba(2,6,15,.74);display:flex;align-items:flex-end;animation:mcFade .18s ease-out">
+<div onClick="{{ closeModal }}" style="position:absolute;inset:0"></div>
+<div id="mc-sheet" style="position:relative;width:100%;max-height:88%;overflow-y:auto;background:#1E293B;border-top:1px solid #334155;border-radius:26px 26px 44px 44px;padding:16px 16px 22px;animation:mcUp .3s cubic-bezier(.22,1,.36,1)">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+<div>
+<div style="font:700 16px/1.1 'Chakra Petch',sans-serif;color:#F8FAFC">LOG FUEL</div>
+<div style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:2px">บันทึกการเติมน้ำมัน · {{ bike.nick }}</div>
+</div>
+<button onClick="{{ closeModal }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#0B1120;border:1px solid #334155;border-radius:13px;cursor:pointer;color:#94A3B8"><svg width="17" height="17" viewBox="0 0 24 24"><use href="#ic-x"></use></svg></button>
+</div>
+<div style="position:relative;height:120px;border-radius:16px;border:1px dashed {{ scanBorder }};background:repeating-linear-gradient(135deg,#0B1120 0 8px,#111C30 8px 16px);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px">
+<sc-if value="{{ fScanning }}">
+<div style="position:absolute;left:6%;right:6%;height:2px;background:#FF6B00;box-shadow:0 0 14px 3px rgba(255,107,0,.7);animation:mcScan .9s ease-in-out infinite alternate"></div>
+</sc-if>
+<svg width="24" height="24" viewBox="0 0 24 24" style="color:{{ scanColor }}"><use href="#ic-scan"></use></svg>
+<div style="font:600 10.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:{{ scanColor }}">{{ scanLabel }}</div>
+<div style="font:400 9px/1 ui-monospace,Menlo,monospace;color:#64748B">{{ scanSub }}</div>
+</div>
+<button onClick="{{ doScan }}" style="width:100%;min-height:50px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,107,0,.13);border:1px solid rgba(255,107,0,.42);border-radius:14px;margin-top:10px;cursor:pointer">
+<svg width="17" height="17" viewBox="0 0 24 24" style="color:#FF8A33"><use href="#ic-cam"></use></svg>
+<span style="font:700 11.5px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#FF8A33">SCAN PUMP RECEIPT (OCR)</span>
+</button>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px">
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">LITRES</label>
+<input type="text" inputMode="decimal" value="{{ fLiters }}" onChange="{{ onFLiters }}" placeholder="0.00" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 16px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">TOTAL (฿)</label>
+<input type="text" inputMode="decimal" value="{{ fThb }}" onChange="{{ onFThb }}" placeholder="0.00" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 16px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">ODOMETER (KM)</label>
+<input type="text" inputMode="numeric" value="{{ fOdo }}" onChange="{{ onFOdo }}" placeholder="{{ bike.odo }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 16px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">STATION</label>
+<input type="text" value="{{ fStation }}" onChange="{{ onFStation }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:500 12px 'IBM Plex Sans Thai',sans-serif;outline:none" />
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;background:#0B1120;border:1px solid #334155;border-radius:13px;padding:11px 12px;margin-top:11px">
+<span style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">Calculated consumption</span>
+<span style="font:700 14px/1 'Chakra Petch',sans-serif;color:{{ fCalcColor }}">{{ fCalc }}</span>
+</div>
+<button onClick="{{ saveFuel }}" style="width:100%;min-height:54px;background:#FF6B00;border:0;border-radius:15px;margin-top:12px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(255,107,0,.9)">
+<span style="font:700 13px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#0F172A">SAVE FUEL ENTRY</span>
+</button>
+<div style="font:400 9px/1.4 'IBM Plex Sans Thai',sans-serif;color:#64748B;text-align:center;margin-top:9px">{{ offlineNote }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mVoice }}">
+<div style="position:absolute;inset:0;z-index:70;background:rgba(2,6,15,.8);display:flex;align-items:center;justify-content:center;padding:22px;animation:mcFade .18s ease-out">
+<div onClick="{{ closeModal }}" style="position:absolute;inset:0"></div>
+<div style="position:relative;width:100%;background:#1E293B;border:1px solid #334155;border-radius:24px;padding:18px;animation:mcIn .24s ease-out">
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+<div style="position:relative;width:78px;height:78px;display:flex;align-items:center;justify-content:center">
+<sc-if value="{{ vListening }}">
+<div style="position:absolute;inset:0;border-radius:99px;border:2px solid #06B6D4;animation:mcHalo 1.6s ease-out infinite"></div>
+</sc-if>
+<div style="width:64px;height:64px;border-radius:99px;background:{{ vBg }};display:flex;align-items:center;justify-content:center">
+<svg width="27" height="27" viewBox="0 0 24 24" style="color:{{ vFg }};animation:{{ vAnim }}"><use href="#ic-mic"></use></svg>
+</div>
+</div>
+<div style="font:700 13px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:{{ vFg }}">{{ vTitle }}</div>
+<div style="min-height:46px;width:100%;background:#0B1120;border:1px solid #334155;border-radius:14px;padding:12px;text-align:center">
+<span style="font:500 12.5px/1.5 'IBM Plex Sans Thai',sans-serif;color:#E2E8F0">{{ vText }}</span>
+</div>
+<sc-if value="{{ vDone }}">
+<div style="width:100%;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:14px;padding:12px">
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#6EE7B7;margin-bottom:9px">PARSED ENTRY</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ vParsed }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+<span style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8">{{ p.k }}</span>
+<span style="font:600 11.5px/1.3 'Chakra Petch',sans-serif;color:#F1F5F9">{{ p.v }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<div style="display:flex;gap:8px;width:100%">
+<button onClick="{{ closeModal }}" style="flex:1;min-height:50px;background:#0B1120;border:1px solid #334155;border-radius:14px;cursor:pointer"><span style="font:600 11.5px 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#94A3B8">CANCEL</span></button>
+<button onClick="{{ vAction }}" style="flex:1.4;min-height:50px;background:{{ vBtnBg }};border:0;border-radius:14px;cursor:pointer"><span style="font:700 11.5px 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#0F172A">{{ vBtnLabel }}</span></button>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mLog }}">
+<div style="position:absolute;inset:0;z-index:70;background:rgba(2,6,15,.74);display:flex;align-items:flex-end;animation:mcFade .18s ease-out">
+<div onClick="{{ closeModal }}" style="position:absolute;inset:0"></div>
+<div style="position:relative;width:100%;background:#1E293B;border-top:1px solid #334155;border-radius:26px 26px 44px 44px;padding:16px 16px 22px;animation:mcUp .3s cubic-bezier(.22,1,.36,1)">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+<div>
+<div style="font:700 16px/1.1 'Chakra Petch',sans-serif;color:#F8FAFC">RECORD SERVICE</div>
+<div style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:2px">{{ lgPartLabel }}</div>
+</div>
+<button onClick="{{ closeModal }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#0B1120;border:1px solid #334155;border-radius:13px;cursor:pointer;color:#94A3B8"><svg width="17" height="17" viewBox="0 0 24 24"><use href="#ic-x"></use></svg></button>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ lgParts }}" as="p" hint-placeholder-count="4">
+<button onClick="{{ p.onSelect }}" style="min-height:38px;background:{{ p.bg }};border:1px solid {{ p.border }};border-radius:10px;padding:9px 11px;cursor:pointer">
+<span style="font:500 10px/1 'IBM Plex Sans Thai',sans-serif;color:{{ p.fg }}">{{ p.label }}</span>
+</button>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px">
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">ODOMETER (KM)</label>
+<input type="text" inputMode="numeric" value="{{ lgOdo }}" onChange="{{ onLgOdo }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 16px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">COST (฿)</label>
+<input type="text" inputMode="numeric" value="{{ lgCost }}" onChange="{{ onLgCost }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 16px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin:12px 0 6px">SHOP / GARAGE</label>
+<input type="text" value="{{ lgShop }}" onChange="{{ onLgShop }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:500 12px 'IBM Plex Sans Thai',sans-serif;outline:none" />
+</div>
+<button onClick="{{ saveLog }}" style="width:100%;min-height:54px;background:#FF6B00;border:0;border-radius:15px;margin-top:13px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(255,107,0,.9)">
+<span style="font:700 13px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#0F172A">SAVE & RESET COUNTER</span>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mIce }}">
+<div style="position:absolute;inset:0;z-index:80;background:#4C0519;padding:20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;animation:mcFade .18s ease-out">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div style="font:700 12px/1 'Chakra Petch',sans-serif;letter-spacing:.2em;color:#FDA4AF">IN CASE OF EMERGENCY</div>
+<button onClick="{{ closeModal }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(255,241,242,.12);border:1px solid rgba(253,164,175,.4);border-radius:13px;cursor:pointer;color:#FFF1F2"><svg width="18" height="18" viewBox="0 0 24 24"><use href="#ic-x"></use></svg></button>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
+<div>
+<div style="font:400 11px/1.2 'IBM Plex Sans Thai',sans-serif;color:#FDA4AF">RIDER · ผู้ขับขี่</div>
+<div style="font:700 30px/1.1 'Chakra Petch',sans-serif;color:#FFF1F2;margin-top:4px">{{ ice.name }}</div>
+<div style="font:400 12px/1.4 'IBM Plex Sans Thai',sans-serif;color:#FECDD3;margin-top:3px">{{ ice.nameTh }} · {{ bike.plate }}</div>
+</div>
+<div style="display:flex;gap:10px">
+<div style="flex:1;background:#FFF1F2;border-radius:18px;padding:14px">
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#9F1239">BLOOD TYPE</div>
+<div style="font:700 40px/1 'Chakra Petch',sans-serif;color:#9F1239;margin-top:6px">{{ ice.blood }}</div>
+</div>
+<div style="flex:1.3;background:rgba(255,241,242,.1);border:1px solid rgba(253,164,175,.4);border-radius:18px;padding:14px">
+<div style="font:600 9px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#FDA4AF">ALLERGIES</div>
+<div style="font:600 14px/1.4 'IBM Plex Sans Thai',sans-serif;color:#FFF1F2;margin-top:6px">{{ ice.allergies }}</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ ice.contacts }}" as="c" hint-placeholder-count="2">
+<a href="{{ c.tel }}" style="min-height:64px;display:flex;align-items:center;gap:12px;background:#FFF1F2;border-radius:16px;padding:12px 14px;text-decoration:none">
+<div style="flex:1;min-width:0">
+<div style="font:700 15px/1.2 'Chakra Petch',sans-serif;color:#881337">{{ c.name }}</div>
+<div style="font:500 11px/1.3 'IBM Plex Sans Thai',sans-serif;color:#9F1239">{{ c.rel }} · {{ c.phone }}</div>
+</div>
+<div style="width:48px;height:48px;border-radius:14px;background:#F43F5E;display:flex;align-items:center;justify-content:center;flex:none">
+<svg width="20" height="20" viewBox="0 0 24 24" style="color:#FFF1F2"><use href="#ic-phone"></use></svg>
+</div>
+</a>
+</sc-for>
+</div>
+<div style="background:rgba(2,6,15,.3);border:1px solid rgba(253,164,175,.3);border-radius:16px;padding:13px">
+<div style="display:flex;justify-content:space-between;gap:10px">
+<div><div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#FDA4AF">INSURANCE</div><div style="font:600 12px/1.3 'IBM Plex Sans Thai',sans-serif;color:#FFF1F2;margin-top:4px">{{ ice.insurer }}</div><div style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#FECDD3">{{ ice.cls }}</div></div>
+<div style="text-align:right"><div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#FDA4AF">HOSPITAL</div><div style="font:600 12px/1.3 'IBM Plex Sans Thai',sans-serif;color:#FFF1F2;margin-top:4px">{{ ice.hospital }}</div></div>
+</div>
+<div style="font:600 11px/1.3 'Chakra Petch',sans-serif;color:#FFF1F2;margin-top:11px;padding-top:11px;border-top:1px solid rgba(253,164,175,.24)">POLICY {{ ice.policy }}</div>
+</div>
+</div>
+<div style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#FDA4AF;text-align:center">Works offline · แสดงหน้านี้ให้เจ้าหน้าที่กู้ภัย 1669</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mDoc }}">
+<div style="position:absolute;inset:0;z-index:70;background:rgba(2,6,15,.8);display:flex;align-items:center;justify-content:center;padding:20px;animation:mcFade .18s ease-out">
+<div onClick="{{ closeModal }}" style="position:absolute;inset:0"></div>
+<div style="position:relative;width:100%;background:#1E293B;border:1px solid #334155;border-radius:24px;padding:16px;animation:mcIn .24s ease-out">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+<div>
+<div style="font:700 15px/1.15 'Chakra Petch',sans-serif;color:#F8FAFC">{{ docView.name }}</div>
+<div style="font:400 10px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:3px">{{ docView.thai }} · {{ docView.issuer }}</div>
+</div>
+<button onClick="{{ closeModal }}" style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#0B1120;border:1px solid #334155;border-radius:13px;cursor:pointer;color:#94A3B8"><svg width="17" height="17" viewBox="0 0 24 24"><use href="#ic-x"></use></svg></button>
+</div>
+<div style="position:relative;height:186px;border-radius:16px;margin-top:13px;background:repeating-linear-gradient(125deg,#0B1120 0 9px,#141F35 9px 18px);border:1px solid #334155;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px">
+<svg width="26" height="26" viewBox="0 0 24 24" style="color:#475569"><use href="#ic-file"></use></svg>
+<span style="font:400 9.5px/1 ui-monospace,Menlo,monospace;color:#64748B">scanned document preview</span>
+<div style="position:absolute;bottom:10px;left:10px;background:rgba(2,6,15,.7);border:1px solid #334155;border-radius:7px;padding:5px 7px;font:400 8.5px/1 ui-monospace,Menlo,monospace;color:#94A3B8">stored offline · 312 KB</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;background:{{ docView.tint }};border:1px solid {{ docView.border }};border-radius:14px;padding:12px">
+<div>
+<div style="font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:{{ docView.color }}">EXPIRES · หมดอายุ</div>
+<div style="font:700 14px/1.2 'Chakra Petch',sans-serif;color:#F8FAFC;margin-top:4px">{{ docView.expiryTh }}</div>
+</div>
+<div style="font:700 13px/1 'Chakra Petch',sans-serif;color:{{ docView.color }}">{{ docView.daysLabel }}</div>
+</div>
+<button onClick="{{ remindDoc }}" style="width:100%;min-height:50px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.34);border-radius:14px;margin-top:10px;cursor:pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" style="color:#22D3EE"><use href="#ic-cal"></use></svg>
+<span style="font:700 11.5px/1 'Chakra Petch',sans-serif;letter-spacing:.08em;color:#67E8F9">SET RENEWAL REMINDER</span>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mResale }}">
+<div style="position:absolute;inset:0;z-index:70;background:rgba(2,6,15,.82);display:flex;align-items:flex-end;animation:mcFade .18s ease-out">
+<div onClick="{{ closeModal }}" style="position:absolute;inset:0"></div>
+<div id="mc-sheet" style="position:relative;width:100%;max-height:92%;overflow-y:auto;background:#1E293B;border-top:1px solid #334155;border-radius:26px 26px 44px 44px;padding:16px 16px 22px;animation:mcUp .32s cubic-bezier(.22,1,.36,1)">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+<div>
+<div style="font:700 9px/1 'Chakra Petch',sans-serif;letter-spacing:.2em;color:#22D3EE">MOTOCARE VEHICLE PASSPORT</div>
+<div style="font:700 19px/1.1 'Chakra Petch',sans-serif;color:#F8FAFC;margin-top:6px">{{ bike.full }}</div>
+<div style="font:400 10.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:2px">{{ bike.year }} · {{ bike.plate }} · {{ bike.odoStr }} km</div>
+</div>
+<button onClick="{{ closeModal }}" style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#0B1120;border:1px solid #334155;border-radius:13px;cursor:pointer;color:#94A3B8"><svg width="17" height="17" viewBox="0 0 24 24"><use href="#ic-x"></use></svg></button>
+</div>
+<div style="display:flex;align-items:center;gap:11px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.32);border-radius:16px;padding:12px;margin-top:13px">
+<div style="width:38px;height:38px;flex:none;border-radius:99px;border:1.5px solid #10B981;display:flex;align-items:center;justify-content:center">
+<svg width="19" height="19" viewBox="0 0 24 24" style="color:#10B981"><use href="#ic-check"></use></svg>
+</div>
+<div>
+<div style="font:700 12.5px/1.2 'Chakra Petch',sans-serif;color:#6EE7B7;letter-spacing:.04em">{{ resale.serviceCount }} SERVICES VERIFIED</div>
+<div style="font:400 9.5px/1.4 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:2px">Receipts photographed & timestamped · ประวัติครบ</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px">
+<sc-for list="{{ resale.stats }}" as="s" hint-placeholder-count="4">
+<div style="background:#0B1120;border:1px solid #334155;border-radius:14px;padding:11px">
+<div style="font:600 8px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B">{{ s.k }}</div>
+<div style="font:700 15px/1.2 'Chakra Petch',sans-serif;color:#F1F5F9;margin-top:5px;font-variant-numeric:tabular-nums">{{ s.v }}</div>
+<div style="font:400 8.5px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ s.sub }}</div>
+</div>
+</sc-for>
+</div>
+<div style="font:600 9.5px/1 'Chakra Petch',sans-serif;letter-spacing:.14em;color:#64748B;margin:14px 0 8px">SERVICE HISTORY</div>
+<div style="display:flex;flex-direction:column;gap:0;background:#0B1120;border:1px solid #334155;border-radius:16px;overflow:hidden">
+<sc-for list="{{ resale.history }}" as="h" hint-placeholder-count="4">
+<div style="display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid rgba(51,65,85,.5)">
+<div style="width:6px;height:6px;border-radius:99px;background:#10B981;margin-top:5px;flex:none"></div>
+<div style="flex:1;min-width:0">
+<div style="font:500 11px/1.35 'IBM Plex Sans Thai',sans-serif;color:#E2E8F0">{{ h.what }}</div>
+<div style="font:400 9px/1.3 'IBM Plex Sans Thai',sans-serif;color:#64748B">{{ h.sub }}</div>
+</div>
+<div style="font:600 10.5px/1.3 'Chakra Petch',sans-serif;color:#94A3B8;flex:none">{{ h.cost }}</div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:9px;margin-top:13px">
+<div style="flex:none;width:74px;height:74px;border-radius:14px;background:repeating-conic-gradient(#0B1120 0 25%,#243349 0 50%) 0 0/12px 12px;border:1px solid #334155"></div>
+<div style="flex:1">
+<div style="font:400 9.5px/1.5 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;text-wrap:pretty">Buyer scans this code to open a read-only passport — service history, mods, and document validity, no personal data. ผู้ซื้อสแกนดูประวัติได้ทันที</div>
+</div>
+</div>
+<button onClick="{{ shareResale }}" style="width:100%;min-height:54px;display:flex;align-items:center;justify-content:center;gap:9px;background:#06B6D4;border:0;border-radius:15px;margin-top:13px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(6,182,212,.9)">
+<svg width="17" height="17" viewBox="0 0 24 24" style="color:#0F172A"><use href="#ic-dl"></use></svg>
+<span style="font:700 12.5px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#0F172A">EXPORT PDF PASSPORT</span>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mBike }}">
+<div style="position:absolute;inset:0;z-index:75;background:rgba(2,6,15,.78);display:flex;align-items:flex-end;animation:mcFade .18s ease-out">
+<div onClick="{{ closeModal }}" style="position:absolute;inset:0"></div>
+<div style="position:relative;width:100%;background:#1E293B;border-top:1px solid #334155;border-radius:26px 26px 44px 44px;padding:16px 16px 22px;animation:mcUp .3s cubic-bezier(.22,1,.36,1)">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:13px">
+<div>
+<div style="font:700 16px/1.1 'Chakra Petch',sans-serif;color:#F8FAFC">ADD NEW BIKE</div>
+<div style="font:400 10px/1.3 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;margin-top:2px">เพิ่มรถใหม่เข้าโรงรถ</div>
+</div>
+<button onClick="{{ closeModal }}" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#0B1120;border:1px solid #334155;border-radius:13px;cursor:pointer;color:#94A3B8"><svg width="17" height="17" viewBox="0 0 24 24"><use href="#ic-x"></use></svg></button>
+</div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:7px">BRAND</label>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ brands }}" as="b" hint-placeholder-count="5">
+<button onClick="{{ b.onSelect }}" style="min-height:40px;background:{{ b.bg }};border:1px solid {{ b.border }};border-radius:11px;padding:10px 12px;cursor:pointer">
+<span style="font:600 11px/1 'Chakra Petch',sans-serif;letter-spacing:.04em;color:{{ b.fg }}">{{ b.label }}</span>
+</button>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px">
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">MODEL</label>
+<input type="text" value="{{ nbModel }}" onChange="{{ onNbModel }}" placeholder="e.g. Aerox 155" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:500 12.5px 'IBM Plex Sans Thai',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">NICKNAME</label>
+<input type="text" value="{{ nbNick }}" onChange="{{ onNbNick }}" placeholder="e.g. Blue Bullet" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:500 12.5px 'IBM Plex Sans Thai',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">YEAR</label>
+<input type="text" inputMode="numeric" value="{{ nbYear }}" onChange="{{ onNbYear }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 15px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+<div>
+<label style="display:block;font:600 8.5px/1 'Chakra Petch',sans-serif;letter-spacing:.12em;color:#64748B;margin-bottom:6px">ODOMETER (KM)</label>
+<input type="text" inputMode="numeric" value="{{ nbOdo }}" onChange="{{ onNbOdo }}" style="width:100%;min-height:48px;background:#0B1120;border:1px solid #334155;border-radius:12px;padding:11px 13px;color:#F8FAFC;font:700 15px 'Chakra Petch',sans-serif;outline:none" />
+</div>
+</div>
+<div style="display:flex;gap:8px;background:#0B1120;border:1px solid #334155;border-radius:13px;padding:11px;margin-top:11px">
+<svg width="14" height="14" viewBox="0 0 24 24" style="color:#22D3EE;flex:none;margin-top:1px"><use href="#ic-bolt"></use></svg>
+<span style="font:400 9.5px/1.45 'IBM Plex Sans Thai',sans-serif;color:#94A3B8;text-wrap:pretty">Factory specs and service intervals for Thailand-market models are filled in automatically — oil grade, tyre pressure, and chain/belt schedule.</span>
+</div>
+<button onClick="{{ addBike }}" style="width:100%;min-height:54px;background:#FF6B00;border:0;border-radius:15px;margin-top:12px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(255,107,0,.9)">
+<span style="font:700 13px/1 'Chakra Petch',sans-serif;letter-spacing:.1em;color:#0F172A">ADD TO GARAGE</span>
+</button>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;fuelPricePerLitre&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:37.5,&quot;min&quot;:25,&quot;max&quot;:60,&quot;step&quot;:0.5,&quot;unit&quot;:&quot; ฿/L&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Riding context&quot;},&quot;ridingProfile&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;urban&quot;,&quot;mixed&quot;,&quot;touring&quot;],&quot;default&quot;:&quot;urban&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Riding context&quot;},&quot;bilingualThai&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Localisation&quot;}}">
+class Component extends DCLogic {
+  state = {
+    tab: 'dash', bikes: null, activeId: 'zontes', switcher: false, specs: false,
+    profile: this.props.ridingProfile || 'urban', pipeline: 'wishlist',
+    modal: null, mounted: false, online: false, toast: null, flashTrip: false,
+    tripKm: '147', tripLabel: 'pattaya',
+    f: { liters: '', thb: '', odo: '', station: 'PTT Station · Rama IX', scanning: false, scanned: false },
+    v: { listening: false, text: '', done: false },
+    lg: { key: 'oil', odo: '', cost: '', shop: '' },
+    nb: { brand: 'Yamaha', model: '', nick: '', year: '2026', odo: '0' }
+  };
+
+  TH_M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  C = { good:'#10B981', soon:'#F59E0B', urgent:'#F43F5E', o:'#FF6B00', o2:'#FF8A33', c:'#06B6D4', c2:'#22D3EE' };
+  PROFILES = {
+    urban:   { label:'URBAN', thai:'ในเมือง', factor:.8,   note:'Stop-and-go Bangkok traffic detected — oil, chain and brake intervals shortened 20%.' },
+    mixed:   { label:'MIXED', thai:'ผสม',     factor:1,    note:'City and highway blend — factory service intervals applied as published.' },
+    touring: { label:'TOURING', thai:'ทางไกล', factor:1.15, note:'Steady long-distance highway riding — intervals extended 15% on wear parts.' }
+  };
+
+  componentDidMount() {
+    this.setState({ bikes: this.seed() });
+    this._t1 = setTimeout(() => this.setState({ mounted: true }), 160);
+  }
+  componentWillUnmount() { [this._t1,this._t2,this._t3,this._t4].forEach(clearTimeout); clearInterval(this._iv); }
+
+  seed() {
+    return [
+      { id:'zontes', nick:'Gray Shadow', brand:'Zontes', model:'368G', year:2024, plate:'กก 8899 กรุงเทพ',
+        odo:6800, kmpl:28.5, tank:13.5, drive:'Chain', photoSize:'218 KB',
+        specs:[['Engine oil','1.8 L · 10W-40'],['Tyre pressure','29 / 33 PSI'],['Spark plug','NGK CR8E'],['Chain slack','25–30 mm'],['Coolant','1.1 L · Long life'],['Fuel','Gasohol 95 · 13.5 L']],
+        parts:[
+          { key:'oil',   label:'Engine Oil + Filter', thai:'น้ำมันเครื่อง + กรอง', icon:'#ic-drop',  interval:5000,  lastOdo:4000, lastDate:'14 Apr 2026', prof:true },
+          { key:'brake', label:'Brake Pads (Front)',  thai:'ผ้าเบรกหน้า',          icon:'#ic-disc',  interval:15000, lastOdo:0,    lastDate:'New from dealer', prof:true },
+          { key:'chain', label:'Chain Lube & Tension',thai:'โซ่ · หล่อลื่น/ตั้งระยะ', icon:'#ic-chain', interval:800,   lastOdo:6450, lastDate:'19 Jul 2026', prof:true },
+          { key:'tyre',  label:'Tyres (Front / Rear)',thai:'ยางหน้า/หลัง',          icon:'#ic-tyre',  interval:20000, lastOdo:0,    lastDate:'New from dealer', prof:false },
+          { key:'air',   label:'Air Filter',          thai:'ไส้กรองอากาศ',          icon:'#ic-box',   interval:8000,  lastOdo:3000, lastDate:'2 Feb 2026', prof:true }
+        ],
+        mods:[
+          { id:'m1', name:'Öhlins STX 36 Rear Shock', cat:'HANDLING', price:24900, stage:'installed', stock:'Stock shock — boxed, bedroom closet', trigger:'', meta:'Installed 12 May 2026 · 4,900 km' },
+          { id:'m2', name:'Bar-End Mirror Set (CNC)', cat:'STYLE', price:4200, stage:'installed', stock:'OEM mirrors — under the bed, wrapped', trigger:'', meta:'Installed 3 Mar 2026 · 3,100 km' },
+          { id:'m3', name:'Radiator Guard + Slider Kit', cat:'PROTECTION', price:3450, stage:'ordered', stock:'No stock part removed', trigger:'', meta:'Shopee · arriving 4 Aug 2026' },
+          { id:'m4', name:'Akrapovič Slip-On Exhaust', cat:'PERFORMANCE', price:32000, stage:'wishlist', stock:'Stock exhaust stays — keep for resale', trigger:'Needs ECU re-map + valve clearance check every 6,000 km after fitting', meta:'Saved 18 Jun 2026' },
+          { id:'m5', name:'Pirelli Diablo Rosso IV', cat:'HANDLING', price:11800, stage:'wishlist', stock:'Stock tyres scrapped on swap', trigger:'Resets tyre wear tracker · softer compound = shorter life in Bangkok heat', meta:'Saved 2 Jul 2026' },
+          { id:'m6', name:'USB-C Charger + Phone Mount', cat:'UTILITY', price:1290, stage:'wishlist', stock:'No stock part removed', trigger:'', meta:'Saved 21 Jul 2026' }
+        ],
+        fuelLogs:[
+          { date:'28 Jul 2026', station:'PTT Station · Rama IX', liters:8.42, thb:315, odo:6800 },
+          { date:'21 Jul 2026', station:'Bangchak · Ladprao 71', liters:7.9, thb:296, odo:6562 },
+          { date:'14 Jul 2026', station:'PT · Rangsit Klong 3', liters:8.1, thb:304, odo:6330 }
+        ],
+        monthly:[['FEB',980],['MAR',1150],['APR',1040],['MAY',1290],['JUN',1120],['JUL',1240]],
+        services:[
+          { date:'19 Jul 2026', odo:6450, what:'Chain lube & tension adjust', shop:'Zontes Bangkok · Rama IX', cost:150 },
+          { date:'14 Apr 2026', odo:4000, what:'Engine oil + filter (Motul 7100)', shop:'Zontes Bangkok · Rama IX', cost:890 },
+          { date:'2 Feb 2026',  odo:3000, what:'Air filter + valve clearance check', shop:'Zontes Bangkok · Rama IX', cost:1240 },
+          { date:'8 Dec 2025',  odo:1000, what:'First service (1,000 km)', shop:'Zontes Bangkok · Rama IX', cost:0 }
+        ],
+        docs:[
+          { id:'tax', name:'Road Tax Sticker', thai:'ป้ายวงกลม', expiry:'2026-08-22', issuer:'กรมการขนส่งทางบก', icon:'#ic-cal' },
+          { id:'prb', name:'Compulsory Insurance', thai:'พ.ร.บ.', expiry:'2026-09-02', issuer:'Viriyah Insurance', icon:'#ic-shield' },
+          { id:'vol', name:'Voluntary Insurance', thai:'ประกันชั้น 1', expiry:'2027-03-20', issuer:'Viriyah Insurance', icon:'#ic-file' },
+          { id:'lic', name:'Driver License', thai:'ใบขับขี่รถจักรยานยนต์', expiry:'2029-05-08', issuer:'DLT Bangkok', icon:'#ic-tag' }
+        ]
+      },
+      { id:'wave', nick:'Daily Wave', brand:'Honda', model:'Wave 125i', year:2019, plate:'1กท 4412 กรุงเทพ',
+        odo:42150, kmpl:48.2, tank:4, drive:'Chain', photoSize:'164 KB',
+        specs:[['Engine oil','0.8 L · 10W-30'],['Tyre pressure','25 / 29 PSI'],['Spark plug','NGK CPR6EA-9'],['Chain slack','30–40 mm'],['Cooling','Air cooled'],['Fuel','Gasohol 91 · 4.0 L']],
+        parts:[
+          { key:'oil',   label:'Engine Oil', thai:'น้ำมันเครื่อง', icon:'#ic-drop', interval:3000, lastOdo:41900, lastDate:'12 Jul 2026', prof:true },
+          { key:'brake', label:'Brake Shoes (Rear)', thai:'ผ้าเบรกหลัง', icon:'#ic-disc', interval:14000, lastOdo:33000, lastDate:'9 Sep 2025', prof:true },
+          { key:'chain', label:'Chain & Sprocket Set', thai:'โซ่และสเตอร์', icon:'#ic-chain', interval:16000, lastOdo:28000, lastDate:'4 Feb 2025', prof:true },
+          { key:'tyre',  label:'Tyres (Front / Rear)', thai:'ยางหน้า/หลัง', icon:'#ic-tyre', interval:18000, lastOdo:25000, lastDate:'20 Nov 2024', prof:false },
+          { key:'air',   label:'Air Filter', thai:'ไส้กรองอากาศ', icon:'#ic-box', interval:12000, lastOdo:36000, lastDate:'2 Feb 2026', prof:true }
+        ],
+        mods:[
+          { id:'w1', name:'LED Headlight Bulb H4', cat:'UTILITY', price:890, stage:'installed', stock:'Halogen bulb — toolbox drawer', trigger:'', meta:'Installed 8 Jan 2026 · 38,400 km' },
+          { id:'w2', name:'Rear Rack + Delivery Box 45L', cat:'UTILITY', price:2350, stage:'installed', stock:'No stock part removed', trigger:'', meta:'Installed 2 Aug 2025 · 31,900 km' },
+          { id:'w3', name:'Racing Boy Rear Shock', cat:'HANDLING', price:2900, stage:'wishlist', stock:'Stock shock stays on shelf', trigger:'Stiffer rate — check rear tyre wear every 3,000 km', meta:'Saved 12 Jul 2026' }
+        ],
+        fuelLogs:[
+          { date:'29 Jul 2026', station:'Susco · Petchkasem', liters:3.8, thb:135, odo:42150 },
+          { date:'23 Jul 2026', station:'PTT · Bang Wa', liters:3.6, thb:128, odo:41968 },
+          { date:'16 Jul 2026', station:'Esso · Thonburi', liters:3.9, thb:139, odo:41782 }
+        ],
+        monthly:[['FEB',540],['MAR',610],['APR',580],['MAY',640],['JUN',600],['JUL',655]],
+        services:[
+          { date:'12 Jul 2026', odo:41900, what:'Engine oil (Honda 10W-30)', shop:'ร้านช่างหนุ่ม · บางแค', cost:320 },
+          { date:'2 Feb 2026', odo:36000, what:'Air filter + spark plug', shop:'ร้านช่างหนุ่ม · บางแค', cost:410 },
+          { date:'9 Sep 2025', odo:33000, what:'Rear brake shoes', shop:'Honda Bigwing · Petchkasem', cost:520 },
+          { date:'4 Feb 2025', odo:28000, what:'Chain & sprocket set', shop:'ร้านช่างหนุ่ม · บางแค', cost:1150 }
+        ],
+        docs:[
+          { id:'tax', name:'Road Tax Sticker', thai:'ป้ายวงกลม', expiry:'2026-10-04', issuer:'กรมการขนส่งทางบก', icon:'#ic-cal' },
+          { id:'prb', name:'Compulsory Insurance', thai:'พ.ร.บ.', expiry:'2026-08-11', issuer:'Thanachart Insurance', icon:'#ic-shield' },
+          { id:'lic', name:'Driver License', thai:'ใบขับขี่รถจักรยานยนต์', expiry:'2029-05-08', issuer:'DLT Bangkok', icon:'#ic-tag' }
+        ]
+      },
+      { id:'vespa', nick:'Bianca', brand:'Vespa', model:'Sprint S 150', year:2022, plate:'2ขค 771 กรุงเทพ',
+        odo:12430, kmpl:41.5, tank:8, drive:'Belt', photoSize:'202 KB',
+        specs:[['Engine oil','1.0 L · 5W-40'],['Tyre pressure','26 / 33 PSI'],['Spark plug','NGK CPR8EA-9'],['Drive belt','22 × 792 mm'],['Gear oil','0.13 L'],['Fuel','Gasohol 95 · 8.0 L']],
+        parts:[
+          { key:'oil',   label:'Engine Oil', thai:'น้ำมันเครื่อง', icon:'#ic-drop', interval:5000, lastOdo:10500, lastDate:'19 May 2026', prof:true },
+          { key:'brake', label:'Brake Pads (Front)', thai:'ผ้าเบรกหน้า', icon:'#ic-disc', interval:15000, lastOdo:0, lastDate:'New from dealer', prof:true },
+          { key:'chain', label:'Drive Belt + Rollers', thai:'สายพาน + เม็ดตุ้ม', icon:'#ic-chain', interval:10000, lastOdo:5000, lastDate:'11 Aug 2025', prof:true },
+          { key:'tyre',  label:'Tyres (Front / Rear)', thai:'ยางหน้า/หลัง', icon:'#ic-tyre', interval:16000, lastOdo:0, lastDate:'New from dealer', prof:false },
+          { key:'air',   label:'Air Filter', thai:'ไส้กรองอากาศ', icon:'#ic-box', interval:9000, lastOdo:5000, lastDate:'11 Aug 2025', prof:true }
+        ],
+        mods:[
+          { id:'v1', name:'Chrome Rear Carrier', cat:'STYLE', price:3800, stage:'installed', stock:'No stock part removed', trigger:'', meta:'Installed 4 Apr 2026 · 9,800 km' },
+          { id:'v2', name:'Malossi Variator Kit', cat:'PERFORMANCE', price:6900, stage:'ordered', stock:'Stock variator — shoe box, closet', trigger:'Belt inspection drops to every 5,000 km after fitting', meta:'Lazada · arriving 6 Aug 2026' },
+          { id:'v3', name:'Brown Leather Saddle Cover', cat:'STYLE', price:1450, stage:'wishlist', stock:'Original saddle stays fitted', trigger:'', meta:'Saved 25 Jul 2026' }
+        ],
+        fuelLogs:[
+          { date:'27 Jul 2026', station:'Shell · Sathorn', liters:6.2, thb:238, odo:12430 },
+          { date:'18 Jul 2026', station:'PTT · Silom', liters:5.9, thb:226, odo:12175 },
+          { date:'8 Jul 2026', station:'Caltex · Rama IV', liters:6.4, thb:245, odo:11930 }
+        ],
+        monthly:[['FEB',720],['MAR',690],['APR',810],['MAY',760],['JUN',700],['JUL',709]],
+        services:[
+          { date:'19 May 2026', odo:10500, what:'Engine oil + gear oil', shop:'Vespa Sathorn', cost:1450 },
+          { date:'11 Aug 2025', odo:5000, what:'Drive belt, rollers, air filter', shop:'Vespa Sathorn', cost:3900 },
+          { date:'2 Mar 2025', odo:2000, what:'Second service', shop:'Vespa Sathorn', cost:850 }
+        ],
+        docs:[
+          { id:'tax', name:'Road Tax Sticker', thai:'ป้ายวงกลม', expiry:'2027-01-18', issuer:'กรมการขนส่งทางบก', icon:'#ic-cal' },
+          { id:'prb', name:'Compulsory Insurance', thai:'พ.ร.บ.', expiry:'2027-01-18', issuer:'Muang Thai Insurance', icon:'#ic-shield' },
+          { id:'vol', name:'Voluntary Insurance', thai:'ประกันชั้น 2+', expiry:'2026-12-01', issuer:'Muang Thai Insurance', icon:'#ic-file' },
+          { id:'lic', name:'Driver License', thai:'ใบขับขี่รถจักรยานยนต์', expiry:'2029-05-08', issuer:'DLT Bangkok', icon:'#ic-tag' }
+        ]
+      }
+    ];
+  }
+
+  n(v) { return Number(v || 0).toLocaleString('en-US'); }
+  money(v) { return '฿' + this.n(Math.round(v)); }
+  thDate(iso) { const d = new Date(iso); return d.getDate() + ' ' + this.TH_M[d.getMonth()] + ' ' + (d.getFullYear() + 543); }
+  days(iso) { return Math.round((new Date(iso) - new Date()) / 86400000); }
+  active() { return (this.state.bikes || this.seed()).find(b => b.id === this.state.activeId) || (this.state.bikes || this.seed())[0]; }
+  factor() { return this.PROFILES[this.state.profile].factor; }
+
+  wear(p, bike) {
+    const iv = Math.round(p.interval * (p.prof ? this.factor() : 1));
+    const due = p.lastOdo + iv, rem = due - bike.odo;
+    const pct = Math.max(0, Math.min(100, Math.round(rem / iv * 100)));
+    let st = 'good';
+    if (rem <= 0) st = 'urgent';
+    else if (pct < 14 || (p.interval > 2000 && rem < 400)) st = 'urgent';
+    else if (pct < 36) st = 'soon';
+    return { iv, due, rem, pct, st, color: this.C[st] };
+  }
+
+  patch(fn) {
+    this.setState(s => ({ bikes: s.bikes.map(b => b.id === s.activeId ? fn(b) : b) }));
+  }
+  toast(msg) {
+    clearTimeout(this._t2);
+    this.setState({ toast: msg });
+    this._t2 = setTimeout(() => this.setState({ toast: null }), 3000);
+  }
+  reanimate() {
+    this.setState({ mounted: false });
+    clearTimeout(this._t3);
+    this._t3 = setTimeout(() => this.setState({ mounted: true }), 90);
+  }
+
+  renderVals() {
+    const S = this.state, C = this.C, bike = this.active(), f = this.factor();
+    const on = S.online;
+    const tabs = [
+      ['dash','GARAGE','#ic-gauge'], ['maint','SERVICE','#ic-cog'], ['mods','MODS','#ic-box'],
+      ['cost','COSTS','#ic-chart'], ['vault','VAULT','#ic-shield']
+    ];
+    const wear = bike.parts.map(p => ({ p, w: this.wear(p, bike) }));
+    const score = Math.round(wear.reduce((a, x) => a + x.w.pct, 0) / wear.length);
+    const scoreSt = score < 35 ? 'urgent' : score < 55 ? 'soon' : 'good';
+    const ring = (pct) => (S.mounted ? (pct / 100 * 144.5).toFixed(1) : '0') + ' 144.5';
+    const bigRing = (pct) => (S.mounted ? (pct / 100 * 194.8).toFixed(1) : '0') + ' 194.8';
+
+    const partLabel = k => (bike.parts.find(p => p.key === k) || {}).label || '';
+    const fuelPrice = (this.props.fuelPricePerLitre ?? 37.5);
+
+    // trip
+    const km = parseFloat(S.tripKm) || 0;
+    const liters = km / bike.kmpl, cost = liters * fuelPrice;
+    const stops = Math.max(0, Math.ceil(liters / bike.tank) - 1);
+
+    // mods
+    const sum = st => bike.mods.filter(m => m.stage === st).reduce((a, m) => a + m.price, 0);
+    const spent = sum('installed'), ordered = sum('ordered'), wish = sum('wishlist');
+    const total = Math.max(1, spent + ordered + wish);
+    const catColor = { HANDLING:['#22D3EE','rgba(6,182,212,.13)'], STYLE:['#C4B5FD','rgba(139,92,246,.14)'], PERFORMANCE:['#FF8A33','rgba(255,107,0,.13)'], PROTECTION:['#6EE7B7','rgba(16,185,129,.12)'], UTILITY:['#94A3B8','rgba(148,163,184,.13)'] };
+    const stageNext = { wishlist:['MARK ORDERED','ordered'], ordered:['MARK INSTALLED','installed'], installed:['VIEW RECEIPT','installed'] };
+    const pipeParts = bike.mods.filter(m => m.stage === S.pipeline);
+
+    // fuel stats
+    const logs = bike.fuelLogs;
+    const thbPerKm = (fuelPrice / bike.kmpl);
+    const maxSpend = Math.max.apply(null, bike.monthly.map(m => m[1]));
+    const maintTotal = bike.services.reduce((a, s) => a + s.cost, 0);
+    const fuelTotal = bike.monthly.reduce((a, m) => a + m[1], 0);
+
+    // fuel modal calc
+    const fl = parseFloat(S.f.liters) || 0, fo = parseFloat(S.f.odo) || 0;
+    const prevOdo = logs.length ? logs[0].odo : 0;
+    const calcKmpl = (fl > 0 && fo > prevOdo) ? ((fo - prevOdo) / fl) : 0;
+
+    const docs = bike.docs.map(d => {
+      const dd = this.days(d.expiry);
+      const st = dd < 0 ? 'urgent' : dd < 30 ? 'urgent' : dd < 75 ? 'soon' : 'good';
+      const color = C[st];
+      const tint = st === 'urgent' ? 'rgba(244,63,94,.11)' : st === 'soon' ? 'rgba(245,158,11,.11)' : 'rgba(16,185,129,.09)';
+      const border = st === 'urgent' ? 'rgba(244,63,94,.45)' : st === 'soon' ? 'rgba(245,158,11,.4)' : '#334155';
+      return { ...d, isTax:d.id === 'tax', isPrb:d.id === 'prb', isVol:d.id === 'vol', isLic:d.id === 'lic',
+        expiryTh: this.thDate(d.expiry), days: dd,
+        daysLabel: dd < 0 ? Math.abs(dd) + 'd OVER' : dd + 'd LEFT',
+        color, tint, border, onOpen: () => this.setState({ modal: 'doc', docId: d.id }) };
+    });
+    const docView = docs.find(d => d.id === S.docId) || docs[0];
+
+    const acts = bike.services.slice(0, 2).map(s => ({ isService:true, bg:'rgba(255,107,0,.11)', fg:C.o2, title:s.what, sub:s.shop + ' · ' + this.n(s.odo) + ' km', when:s.date.split(' ').slice(0,2).join(' ') }));
+    const fuelActs = logs.slice(0, 2).map(l => ({ isFuel:true, bg:'rgba(6,182,212,.11)', fg:C.c2, title:l.liters.toFixed(2) + ' L · ' + this.money(l.thb), sub:l.station, when:l.date.split(' ').slice(0,2).join(' ') }));
+    const keyFlags = k => ({ isOil:k === 'oil', isBrake:k === 'brake', isChain:k === 'chain', isTyre:k === 'tyre', isAir:k === 'air' });
+
+    return {
+      bilingual: this.props.bilingualThai !== false,
+      fuelPrice: fuelPrice.toFixed(2).replace(/\.00$/, ''),
+      bike: { nick:bike.nick, full:bike.brand + ' ' + bike.model, year:bike.year, plate:bike.plate,
+        odoStr:this.n(bike.odo), odo:bike.odo, kmplStr:bike.kmpl.toFixed(1), tank:bike.tank,
+        initial:bike.brand.charAt(0), photoSize:bike.photoSize },
+      garageCount: (S.bikes || []).length || 3,
+      garage: (S.bikes || this.seed()).map(b => ({
+        id:b.id, nick:b.nick, initial:b.brand.charAt(0),
+        sub:b.brand + ' ' + b.model + ' · ' + this.n(b.odo) + ' km',
+        active:b.id === S.activeId,
+        bg:b.id === S.activeId ? 'rgba(255,107,0,.1)' : '#0B1120',
+        border:b.id === S.activeId ? 'rgba(255,107,0,.5)' : '#334155',
+        fg:b.id === S.activeId ? C.o : '#94A3B8',
+        onSelect: () => { this.setState({ activeId:b.id, switcher:false, pipeline:'wishlist' }); this.reanimate(); this.toast('Switched to ' + b.nick + ' · data reloaded'); }
+      })),
+      switcher: S.switcher, toggleSwitcher: () => this.setState({ switcher: !S.switcher }),
+      closeSwitcher: () => this.setState({ switcher: false }),
+      openAddBike: () => this.setState({ switcher:false, modal:'bike' }),
+      specsOpen: S.specs, specsLabel: S.specs ? 'HIDE SPECS' : 'SPECS',
+      toggleSpecs: () => this.setState({ specs: !S.specs }),
+      spec: { oil:bike.specs[0][1], tyre:bike.specs[1][1] },
+      specRows: bike.specs.map(s => ({ k:s[0], v:s[1] })),
+      syncColor: on ? C.c : C.soon, syncLabel: on ? 'SYNCED' : 'OFFLINE',
+      syncSub: on ? 'just now' : '2 queued',
+      toggleSync: () => { this.setState({ online: !on }); this.toast(on ? 'Offline mode · entries queue locally' : 'Back online · 2 entries synced'); },
+
+      nav: tabs.reduce((acc, t) => {
+        acc[t[0]] = { color: S.tab === t[0] ? C.o : '#64748B', bar: S.tab === t[0] ? C.o : 'transparent',
+          go: () => this.setState({ tab:t[0] }) };
+        return acc;
+      }, {}),
+      isDash: S.tab === 'dash', isMaint: S.tab === 'maint', isMods: S.tab === 'mods',
+      isCost: S.tab === 'cost', isVault: S.tab === 'vault',
+      goMaint: () => this.setState({ tab:'maint' }),
+
+      healthScore: score, scoreColor: C[scoreSt], scoreDash: bigRing(score),
+      scoreHeadline: scoreSt === 'good' ? 'Bike is in good shape' : scoreSt === 'soon' ? 'Service window opening' : 'Service needed now',
+      profileNote: this.PROFILES[S.profile].note,
+      profileChips: Object.keys(this.PROFILES).map(k => ({
+        label:this.PROFILES[k].label, thai:this.PROFILES[k].thai,
+        bg: S.profile === k ? 'rgba(255,107,0,.13)' : '#0B1120',
+        border: S.profile === k ? 'rgba(255,107,0,.5)' : '#334155',
+        fg: S.profile === k ? C.o2 : '#94A3B8',
+        onSelect: () => { this.setState({ profile:k }); this.reanimate(); }
+      })),
+      rings: wear.slice(0, 4).map(x => ({
+        ...keyFlags(x.p.key),
+        label:x.p.label.replace(/ \(.*\)/, ''), color:x.w.color, pct:x.w.pct,
+        dash: ring(x.w.pct),
+        sub: x.w.rem <= 0 ? 'overdue ' + this.n(-x.w.rem) + ' km' : this.n(x.w.rem) + ' km left'
+      })),
+      qaFuel: () => this.setState({ modal:'fuel' }),
+      qaService: () => this.setState({ modal:'log', lg:{ key:'oil', odo:String(bike.odo), cost:'', shop:'' } }),
+      qaTrip: () => { this.setState({ tab:'cost', flashTrip:true }); clearTimeout(this._t4); this._t4 = setTimeout(() => this.setState({ flashTrip:false }), 1400); },
+      activity: [fuelActs[0], acts[0], fuelActs[1], acts[1]].filter(Boolean).slice(0, 4),
+
+      maintCards: wear.map(x => ({
+        ...keyFlags(x.p.key),
+        label:x.p.label, thai:x.p.thai, color:x.w.color,
+        tint: x.w.st === 'urgent' ? 'rgba(244,63,94,.12)' : x.w.st === 'soon' ? 'rgba(245,158,11,.12)' : 'rgba(16,185,129,.1)',
+        border: x.w.st === 'urgent' ? 'rgba(244,63,94,.42)' : '#334155',
+        statusLabel: x.w.st === 'urgent' ? (x.w.rem <= 0 ? 'OVERDUE' : 'URGENT') : x.w.st === 'soon' ? 'SERVICE SOON' : 'GOOD',
+        remValue: x.w.rem <= 0 ? this.n(-x.w.rem) : this.n(x.w.rem),
+        remLabel: (x.w.rem <= 0 ? 'km past due · ' : 'km remaining · ') + this.PROFILES[S.profile].label.toLowerCase() + ' profile',
+        w: (S.mounted ? x.w.pct : 0) + '%',
+        last: 'Last: ' + x.p.lastDate + (x.p.lastOdo ? ' @ ' + this.n(x.p.lastOdo) + ' km' : '') + ' · every ' + this.n(x.w.iv) + ' km',
+        onLog: () => this.setState({ modal:'log', lg:{ key:x.p.key, odo:String(bike.odo), cost:'', shop:'' } })
+      })),
+      openVoice: () => { this.setState({ modal:'voice', v:{ listening:false, text:'Tap the mic and say what you did', done:false } }); },
+      openScan: () => { this.setState({ modal:'fuel', f:{ ...S.f, liters:'', thb:'', odo:'', scanning:false, scanned:false } }); this.toast('Receipt OCR ready · point at the pump slip'); },
+
+      modSpent: this.n(spent), modWish: this.money(wish), modOrdered: this.money(ordered),
+      modInstalledCount: bike.mods.filter(m => m.stage === 'installed').length,
+      modWishCount: bike.mods.filter(m => m.stage === 'wishlist').length,
+      modBarSpent: (spent / total * 100).toFixed(1) + '%',
+      modBarOrdered: (ordered / total * 100).toFixed(1) + '%',
+      modBarWish: (wish / total * 100).toFixed(1) + '%',
+      pipes: [['wishlist','WISHLIST'],['ordered','ORDERED'],['installed','INSTALLED']].map(p => ({
+        label:p[1], count:bike.mods.filter(m => m.stage === p[0]).length,
+        bg: S.pipeline === p[0] ? '#1E293B' : 'transparent',
+        fg: S.pipeline === p[0] ? C.o2 : '#64748B',
+        badgeBg: S.pipeline === p[0] ? 'rgba(255,107,0,.15)' : 'rgba(148,163,184,.12)',
+        onSelect: () => this.setState({ pipeline:p[0] })
+      })),
+      pipeLabel: S.pipeline, partsEmpty: pipeParts.length === 0,
+      parts: pipeParts.map(m => ({
+        name:m.name, cat:m.cat, catFg:(catColor[m.cat] || catColor.UTILITY)[0], catBg:(catColor[m.cat] || catColor.UTILITY)[1],
+        price:this.n(m.price), stock:m.stock, trigger:m.trigger, hasTrigger:!!m.trigger, meta:m.meta,
+        actionLabel: stageNext[m.stage][0],
+        actionBg: m.stage === 'installed' ? '#0B1120' : 'rgba(255,107,0,.13)',
+        actionBorder: m.stage === 'installed' ? '#334155' : 'rgba(255,107,0,.4)',
+        actionFg: m.stage === 'installed' ? '#94A3B8' : C.o2,
+        onAction: () => {
+          if (m.stage === 'installed') { this.toast('Receipt for ' + m.name + ' opened from vault'); return; }
+          const next = stageNext[m.stage][1];
+          this.patch(b => ({ ...b, mods: b.mods.map(x => x.id === m.id ? { ...x, stage: next, meta: next === 'ordered' ? 'Ordered today · ETA 5–7 days' : 'Installed today @ ' + this.n(b.odo) + ' km' } : x) }));
+          this.toast(m.name + ' moved to ' + next);
+        }
+      })),
+
+      st: { kmpl:bike.kmpl.toFixed(1), perKm:thbPerKm.toFixed(2), fuel6:this.n(fuelTotal),
+        perMonth:this.money(fuelTotal / 6), maint:this.n(maintTotal), serviceCount:bike.services.length },
+      monthly: bike.monthly.map((m, i) => ({ m:m[0], v:this.n(m[1]),
+        h: (S.mounted ? Math.round(m[1] / maxSpend * 76) + 8 : 4) + 'px',
+        bg: i === bike.monthly.length - 1 ? C.o : 'rgba(6,182,212,.42)',
+        fg: i === bike.monthly.length - 1 ? C.o2 : '#94A3B8' })),
+      fuelLogs: logs.map((l, i) => ({ station:l.station,
+        sub:l.date + ' · ' + l.liters.toFixed(2) + ' L · ' + this.n(l.odo) + ' km',
+        thb:this.money(l.thb),
+        kmpl: i < logs.length - 1 ? ((l.odo - logs[i + 1].odo) / l.liters).toFixed(1) + ' km/L' : '—',
+        kmplColor: i < logs.length - 1 && ((l.odo - logs[i + 1].odo) / l.liters) >= bike.kmpl ? C.good : '#94A3B8' })),
+      tripKm: S.tripKm, onTripKm: e => this.setState({ tripKm:e.target.value.replace(/[^0-9.]/g, '') }),
+      tripBorder: S.flashTrip ? C.c : '#334155',
+      tripChips: [['Pattaya',147],['Khao Yai',190],['Hua Hin',199],['Commute · daily',34]].map(t => ({
+        label:t[0] + ' · ' + t[1] + ' km',
+        bg: String(t[1]) === S.tripKm ? 'rgba(6,182,212,.13)' : '#0B1120',
+        border: String(t[1]) === S.tripKm ? 'rgba(6,182,212,.45)' : '#334155',
+        fg: String(t[1]) === S.tripKm ? C.c2 : '#94A3B8',
+        onClick: () => this.setState({ tripKm:String(t[1]) })
+      })),
+      tripLiters: liters.toFixed(2), tripCost: this.n(Math.round(cost)), tripStops: stops,
+      tripNote: km > 0
+        ? 'Round trip ' + this.n(Math.round(km * 2)) + ' km ≈ ' + this.money(cost * 2) + ' · adds ' + this.n(Math.round(km * 2)) + ' km to the odometer, pulling the next oil change ' + this.n(Math.round(km * 2)) + ' km closer.'
+        : 'Enter a distance to estimate fuel and cost.',
+
+      ice: {
+        name:'Napat Sirichai', nameTh:'ณภัทร ศิริชัย', blood:'O+',
+        allergies:'Penicillin · Shellfish', notes:'Wears contact lenses · no other conditions',
+        insurer:'Viriyah Insurance', policy:'VIR-2569-884213', cls:'Class 1 · ประกันชั้น 1', hospital:'Samitivej Srinakarin',
+        contacts:[
+          { name:'Ploy (wife)', rel:'ภรรยา', phone:'081-234-5678', tel:'tel:+66812345678' },
+          { name:'Somchai (father)', rel:'บิดา', phone:'089-876-5432', tel:'tel:+66898765432' }
+        ]
+      },
+      openIce: () => this.setState({ modal:'ice' }),
+      docs, docView,
+      remindDoc: () => { this.setState({ modal:null }); this.toast('Reminder set · 30 days before ' + docView.name + ' expires'); },
+      openResale: () => this.setState({ modal:'resale' }),
+      resale: {
+        serviceCount: bike.services.length,
+        stats: [
+          { k:'ODOMETER', v:this.n(bike.odo) + ' km', sub:'verified by fuel logs' },
+          { k:'AVG CONSUMPTION', v:bike.kmpl.toFixed(1) + ' km/L', sub:'no sudden drops' },
+          { k:'MAINTENANCE SPEND', v:this.money(maintTotal), sub:'all receipts attached' },
+          { k:'MODS INSTALLED', v:this.money(spent), sub:'stock parts kept' }
+        ],
+        history: bike.services.map(s => ({ what:s.what, sub:s.date + ' · ' + this.n(s.odo) + ' km · ' + s.shop, cost: s.cost ? this.money(s.cost) : 'free' }))
+      },
+      shareResale: () => { this.setState({ modal:null }); this.toast('Vehicle passport PDF ready to share'); },
+
+      mFuel: S.modal === 'fuel', mVoice: S.modal === 'voice', mLog: S.modal === 'log',
+      mIce: S.modal === 'ice', mDoc: S.modal === 'doc', mResale: S.modal === 'resale', mBike: S.modal === 'bike',
+      closeModal: () => this.setState({ modal:null }),
+      offlineNote: on ? 'Saved to cloud instantly' : 'No signal? Entry is stored on device and syncs when you are back online.',
+
+      fLiters:S.f.liters, fThb:S.f.thb, fOdo:S.f.odo, fStation:S.f.station,
+      fScanning:S.f.scanning,
+      scanLabel: S.f.scanning ? 'READING RECEIPT…' : S.f.scanned ? 'RECEIPT MATCHED' : 'NO RECEIPT SCANNED',
+      scanColor: S.f.scanning ? C.o : S.f.scanned ? C.good : '#64748B',
+      scanBorder: S.f.scanning ? 'rgba(255,107,0,.6)' : S.f.scanned ? 'rgba(16,185,129,.5)' : '#334155',
+      scanSub: S.f.scanning ? 'ocr · thai + latin' : S.f.scanned ? 'PTT · 95 gasohol · 4 fields filled' : 'or type the numbers below',
+      onFLiters: e => this.setState({ f:{ ...S.f, liters:e.target.value } }),
+      onFThb: e => this.setState({ f:{ ...S.f, thb:e.target.value } }),
+      onFOdo: e => this.setState({ f:{ ...S.f, odo:e.target.value } }),
+      onFStation: e => this.setState({ f:{ ...S.f, station:e.target.value } }),
+      fCalc: calcKmpl ? calcKmpl.toFixed(1) + ' km/L' : '—',
+      fCalcColor: calcKmpl ? (calcKmpl >= bike.kmpl ? C.good : C.soon) : '#64748B',
+      doScan: () => {
+        this.setState({ f:{ ...S.f, scanning:true, scanned:false } });
+        clearTimeout(this._t2);
+        setTimeout(() => this.setState(st => ({ f:{ ...st.f, scanning:false, scanned:true, liters:'8.42', thb:'315.75', odo:String(bike.odo + 247), station:'PTT Station · Rama IX' } })), 1500);
+      },
+      saveFuel: () => {
+        const L = parseFloat(S.f.liters), T = parseFloat(S.f.thb), O = parseInt(S.f.odo, 10);
+        if (!L || !T || !O) { this.toast('Fill litres, total and odometer first'); return; }
+        const kmpl = O > prevOdo ? Number(((O - prevOdo) / L).toFixed(1)) : bike.kmpl;
+        this.patch(b => ({ ...b, odo:Math.max(b.odo, O), kmpl,
+          fuelLogs:[{ date:'31 Jul 2026', station:S.f.station, liters:L, thb:T, odo:O }, ...b.fuelLogs] }));
+        this.setState({ modal:null, f:{ liters:'', thb:'', odo:'', station:'PTT Station · Rama IX', scanning:false, scanned:false } });
+        this.reanimate();
+        this.toast('Fuel logged · odometer now ' + this.n(O) + ' km · ' + kmpl + ' km/L');
+      },
+
+      vListening:S.v.listening, vDone:S.v.done, vText:S.v.text,
+      vTitle: S.v.listening ? 'LISTENING… พูดได้เลย' : S.v.done ? 'PARSED' : 'VOICE ENTRY',
+      vBg: S.v.listening ? 'rgba(6,182,212,.18)' : S.v.done ? 'rgba(16,185,129,.15)' : '#0B1120',
+      vFg: S.v.listening ? C.c2 : S.v.done ? C.good : '#94A3B8',
+      vAnim: S.v.listening ? 'mcPulse 1.1s ease-in-out infinite' : 'none',
+      vParsed: [
+        { k:'Part', v:partLabel('oil') },
+        { k:'Odometer', v:this.n(bike.odo) + ' km' },
+        { k:'Cost', v:'฿890' },
+        { k:'Shop', v:'Zontes Bangkok · Rama IX' }
+      ],
+      vBtnLabel: S.v.done ? 'SAVE ENTRY' : S.v.listening ? 'LISTENING…' : 'START SPEAKING',
+      vBtnBg: S.v.done ? C.good : C.c,
+      vAction: () => {
+        if (S.v.done) {
+          this.patch(b => ({ ...b, parts:b.parts.map(p => p.key === 'oil' ? { ...p, lastOdo:b.odo, lastDate:'31 Jul 2026' } : p),
+            services:[{ date:'31 Jul 2026', odo:b.odo, what:'Engine oil (Motul 7100) · voice entry', shop:'Zontes Bangkok · Rama IX', cost:890 }, ...b.services] }));
+          this.setState({ modal:null });
+          this.reanimate();
+          this.toast('Oil change saved by voice · counter reset');
+          return;
+        }
+        if (S.v.listening) return;
+        const phrase = 'เปลี่ยนน้ำมันเครื่อง Motul 7100 ราคา 890 บาท ที่ ' + this.n(bike.odo) + ' กม.';
+        this.setState({ v:{ listening:true, text:'', done:false } });
+        let i = 0;
+        clearInterval(this._iv);
+        this._iv = setInterval(() => {
+          i += 1;
+          this.setState({ v:{ listening:i < phrase.length, text:phrase.slice(0, i), done:i >= phrase.length } });
+          if (i >= phrase.length) clearInterval(this._iv);
+        }, 42);
+      },
+
+      lgPartLabel: partLabel(S.lg.key) + ' · ' + bike.nick,
+      lgParts: bike.parts.map(p => ({ label:p.label.replace(/ \(.*\)/, ''),
+        bg: S.lg.key === p.key ? 'rgba(255,107,0,.13)' : '#0B1120',
+        border: S.lg.key === p.key ? 'rgba(255,107,0,.45)' : '#334155',
+        fg: S.lg.key === p.key ? C.o2 : '#94A3B8',
+        onSelect: () => this.setState({ lg:{ ...S.lg, key:p.key } }) })),
+      lgOdo:S.lg.odo, lgCost:S.lg.cost, lgShop:S.lg.shop,
+      onLgOdo: e => this.setState({ lg:{ ...S.lg, odo:e.target.value.replace(/[^0-9]/g, '') } }),
+      onLgCost: e => this.setState({ lg:{ ...S.lg, cost:e.target.value.replace(/[^0-9]/g, '') } }),
+      onLgShop: e => this.setState({ lg:{ ...S.lg, shop:e.target.value } }),
+      saveLog: () => {
+        const O = parseInt(S.lg.odo, 10) || bike.odo, cost = parseInt(S.lg.cost, 10) || 0;
+        const label = partLabel(S.lg.key);
+        this.patch(b => ({ ...b, odo:Math.max(b.odo, O),
+          parts:b.parts.map(p => p.key === S.lg.key ? { ...p, lastOdo:O, lastDate:'31 Jul 2026' } : p),
+          services:[{ date:'31 Jul 2026', odo:O, what:label, shop:S.lg.shop || 'Self-serviced at home', cost }, ...b.services] }));
+        this.setState({ modal:null });
+        this.reanimate();
+        this.toast(label + ' logged at ' + this.n(O) + ' km · counter reset');
+      },
+
+      brands: ['Honda','Yamaha','Zontes','Vespa','Kawasaki'].map(b => ({ label:b,
+        bg: S.nb.brand === b ? 'rgba(255,107,0,.13)' : '#0B1120',
+        border: S.nb.brand === b ? 'rgba(255,107,0,.45)' : '#334155',
+        fg: S.nb.brand === b ? C.o2 : '#94A3B8',
+        onSelect: () => this.setState({ nb:{ ...S.nb, brand:b } }) })),
+      nbModel:S.nb.model, nbNick:S.nb.nick, nbYear:S.nb.year, nbOdo:S.nb.odo,
+      onNbModel: e => this.setState({ nb:{ ...S.nb, model:e.target.value } }),
+      onNbNick: e => this.setState({ nb:{ ...S.nb, nick:e.target.value } }),
+      onNbYear: e => this.setState({ nb:{ ...S.nb, year:e.target.value.replace(/[^0-9]/g, '') } }),
+      onNbOdo: e => this.setState({ nb:{ ...S.nb, odo:e.target.value.replace(/[^0-9]/g, '') } }),
+      addBike: () => {
+        const nb = S.nb;
+        if (!nb.model.trim()) { this.toast('Enter the model name first'); return; }
+        const odo = parseInt(nb.odo, 10) || 0;
+        const id = 'b' + Date.now();
+        const fresh = {
+          id, nick:nb.nick.trim() || nb.model, brand:nb.brand, model:nb.model.trim(),
+          year:parseInt(nb.year, 10) || 2026, plate:'รอจดทะเบียน', odo, kmpl:38, tank:7, drive:'Chain', photoSize:'—',
+          specs:[['Engine oil','1.0 L · 10W-40'],['Tyre pressure','28 / 32 PSI'],['Spark plug','Factory spec'],['Chain slack','25–30 mm'],['Cooling','Liquid cooled'],['Fuel','Gasohol 95']],
+          parts:[
+            { key:'oil', label:'Engine Oil', thai:'น้ำมันเครื่อง', icon:'#ic-drop', interval:4000, lastOdo:odo, lastDate:'today', prof:true },
+            { key:'brake', label:'Brake Pads (Front)', thai:'ผ้าเบรกหน้า', icon:'#ic-disc', interval:14000, lastOdo:odo, lastDate:'today', prof:true },
+            { key:'chain', label:'Chain Lube & Tension', thai:'โซ่ · หล่อลื่น', icon:'#ic-chain', interval:800, lastOdo:odo, lastDate:'today', prof:true },
+            { key:'tyre', label:'Tyres (Front / Rear)', thai:'ยางหน้า/หลัง', icon:'#ic-tyre', interval:18000, lastOdo:odo, lastDate:'today', prof:false },
+            { key:'air', label:'Air Filter', thai:'ไส้กรองอากาศ', icon:'#ic-box', interval:9000, lastOdo:odo, lastDate:'today', prof:true }
+          ],
+          mods:[], fuelLogs:[], monthly:[['FEB',0],['MAR',0],['APR',0],['MAY',0],['JUN',0],['JUL',0]],
+          services:[{ date:'31 Jul 2026', odo, what:'Added to MotoCare garage', shop:'—', cost:0 }],
+          docs:[
+            { id:'tax', name:'Road Tax Sticker', thai:'ป้ายวงกลม', expiry:'2027-07-31', issuer:'กรมการขนส่งทางบก', icon:'#ic-cal' },
+            { id:'prb', name:'Compulsory Insurance', thai:'พ.ร.บ.', expiry:'2027-07-31', issuer:'—', icon:'#ic-shield' }
+          ]
+        };
+        this.setState(st => ({ bikes:[...st.bikes, fresh], activeId:id, modal:null, tab:'dash',
+          nb:{ brand:'Yamaha', model:'', nick:'', year:'2026', odo:'0' } }));
+        this.reanimate();
+        this.toast(fresh.nick + ' added · Thai factory specs applied');
+      },
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
