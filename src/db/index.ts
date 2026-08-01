@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie';
 import type { Bike, Config, Rider, SyncQueueEntry, Mod, Part, RidingProfile } from '../types';
 import { seedBikes, seedConfig, seedRider } from './seed';
-import { consumption } from '../lib/wear';
+import { consumption, isValidKmpl } from '../lib/wear';
 
 export const CONFIG_KEY = 'config';
 export const RIDER_KEY = 'rider';
@@ -97,9 +97,10 @@ export async function recordFuelLog(
     const today = new Date().toISOString().slice(0, 10);
     const prevOdo = bike.fuelLogs[0]?.odo ?? 0;
     const newOdo = Math.max(bike.odo, entry.odo);
-    const kmpl = entry.odo > prevOdo
+    const computedKmpl = entry.odo > prevOdo
       ? Number(consumption(entry.odo, prevOdo, entry.liters).toFixed(1))
-      : bike.kmpl;
+      : null;
+    const kmpl = computedKmpl !== null && isValidKmpl(computedKmpl) ? computedKmpl : bike.kmpl;
     const fuelLogs = [
       { date: today, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
       ...bike.fuelLogs,

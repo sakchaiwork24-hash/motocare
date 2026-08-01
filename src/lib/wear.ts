@@ -113,6 +113,10 @@ export function consumption(odo: number, prevOdo: number, liters: number): numbe
   return (odo - prevOdo) / liters;
 }
 
+export function isValidKmpl(n: number): boolean {
+  return Number.isFinite(n) && n >= 8 && n <= 120; // sane range for motorcycle km/L, catches bad odo/data-entry errors
+}
+
 /** Ported from MotoCare.dc.html's `days(iso)` (line 1148). `now` is injectable for tests. */
 export function docCountdown(expiryIso: string, now: Date = new Date()): number {
   return Math.round((new Date(expiryIso).getTime() - now.getTime()) / 86_400_000);

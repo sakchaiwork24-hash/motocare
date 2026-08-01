@@ -1,6 +1,31 @@
 import { describe, expect, it } from 'vitest';
 import { seedBikes } from '../db/seed';
-import { consumption, docCountdown, healthScore, healthStatus, tripEstimate, wear, wearStatusLabel } from './wear';
+import { consumption, docCountdown, healthScore, healthStatus, isValidKmpl, tripEstimate, wear, wearStatusLabel } from './wear';
+
+describe('isValidKmpl', () => {
+  it('returns true for valid consumption within range', () => {
+    expect(isValidKmpl(8)).toBe(true);
+    expect(isValidKmpl(35.5)).toBe(true);
+    expect(isValidKmpl(120)).toBe(true);
+  });
+
+  it('returns false for values below 8', () => {
+    expect(isValidKmpl(7.9)).toBe(false);
+    expect(isValidKmpl(0)).toBe(false);
+    expect(isValidKmpl(-10)).toBe(false);
+  });
+
+  it('returns false for values above 120', () => {
+    expect(isValidKmpl(120.1)).toBe(false);
+    expect(isValidKmpl(153.8)).toBe(false);
+  });
+
+  it('returns false for non-finite numbers', () => {
+    expect(isValidKmpl(Infinity)).toBe(false);
+    expect(isValidKmpl(-Infinity)).toBe(false);
+    expect(isValidKmpl(NaN)).toBe(false);
+  });
+});
 
 describe('wearStatusLabel', () => {
   it('maps status to correct label', () => {
