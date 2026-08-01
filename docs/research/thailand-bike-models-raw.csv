@@ -1,13 +1,12 @@
-﻿# Source(s): Manufacturer websites (Honda/Yamaha/Suzuki/Kawasaki/GPX/Vespa-Piaggio/Zontes/CFMoto/SYM/Keeway/Royal Enfield/KTM/Ducati/BMW Motorrad/Triumph/Harley-Davidson Thailand), Motorcycle Specs databases, Webike Thailand, local media reviews. Original gather: 2026-08-01 via agy (antigravity CLI), full-lineup pass (one brand per invocation). VERIFIED/CORRECTED pass: 2026-08-01 via agy (antigravity CLI, plan-mode/read-only), 5 parallel audits by brand group cross-checking Thailand-market availability, spec plausibility, and fuel-efficiency sanity vs real-world figures. 403 -> 355 rows (48 net removed: discontinued/global-only/invented models incl. all 9 Benda rows - no authorized Thailand distributor found). See project changelog for full row-level detail.
+﻿# Source(s): Manufacturer websites (Honda/Yamaha/Suzuki/Kawasaki/GPX/Vespa-Piaggio/Zontes/CFMoto/SYM/Keeway/Royal Enfield/KTM/Ducati/BMW Motorrad/Triumph/Harley-Davidson Thailand), Motorcycle Specs databases, Webike Thailand, local media reviews. Original gather: 2026-08-01 via agy (antigravity CLI), full-lineup pass (one brand per invocation). VERIFIED/CORRECTED pass: 2026-08-01 via agy (antigravity CLI, plan-mode/read-only), 5 parallel audits by brand group cross-checking Thailand-market availability, spec plausibility, and fuel-efficiency sanity vs real-world figures. 403 -> 355 rows (48 net removed: discontinued/global-only/invented models incl. all 9 Benda rows - no authorized Thailand distributor found). KAWASAKI RE-CHECK (2026-08-01, WebSearch/WebFetch against kawasaki.co.th sitemap + Thai motoring media, not agy): removed Ninja H2 SX SE (confirmed discontinued in Thailand per ZigWheels), renamed Ninja 500 -> Ninja 500 SE and Z500 -> Z500 SE to match actual current SKU trim names, added 4 confirmed-current models missing from the original pass (KLE500, KLE500 SE, KX250, KX250 50th Anniversary - all verified via kawasaki.co.th official product pages and/or real THB pricing from Thai motoring outlets). All other previously-flagged Kawasaki rows (Z H2, Z650, Z650RS, Ninja 650, Ninja ZX-25R, Ninja ZX-4RR, Versys 1000 SE, Z900 SE) were individually re-verified as genuinely current with real Thai pricing and were NOT removed - the original "possibly global-only" suspicion turned out to be wrong for these. 355 -> 358 rows net. FULL-CATALOG RE-CHECK (2026-08-01, WebSearch/WebFetch, 6 parallel research-only passes covering all remaining 15 brands - Honda; Yamaha+Suzuki; BMW+Triumph; KTM+Ducati; Harley-Davidson+Vespa+Royal Enfield; CFMoto+GPX+Keeway+Zontes+SYM): removed several confirmed-discontinued/unconfirmed models (Honda: none; Suzuki GSX-S1000GT/GX; BMW F 800 GS; Triumph TF 250-X/Tiger 1200 GT Pro/GT Explorer; Harley-Davidson Fat Bob 114/CVO Pan America [hallucinated model]; CFMoto 300NK/Papio x3; SYM ADXTG 400; Vespa GTS Super Sport 300 HPE), renamed several trim-name mismatches (Honda CB500 Hornet->Hornet 500, C125->Super Cub C125; Yamaha TMAX (Standard/Tech Max)->TMAX 560/TMAX 560 Tech Max; Suzuki SV650 ABS->SV650A; Harley-Davidson Street Bob/Fat Boy/Heritage Classic/Breakout dropped "114"/"117" suffix, Ultra Limited->Street Glide Ultra; Vespa GTS Super 300 HPE->GTS 300 HPE; CFMoto 450NK->400NK w/ cc correction 449->399; SYM Maxsym 400->400i; Ducati Multistrada V2 S cc corrected 937->890; KTM 1290 Super Adventure S/R -> 1390, cc 1301->1350; Triumph Street Triple 765 R->765), and added ~45 confirmed-current models missing from the original agy pass across Honda/Yamaha/Suzuki/BMW/Triumph/Harley-Davidson/Ducati/Vespa/Royal Enfield/CFMoto/GPX/SYM (see src/data/bikeModelCatalog.ts inline entries for the full list - too many to enumerate here). Coverage varied by brand: Honda/Kawasaki/Zontes/Royal Enfield had strong official-site or price-list ground truth; BMW/Ducati/KTM/CFMoto official sites were partly unreachable so relied more heavily on Thai motoring media cross-checks - treat newly-added Estimate-LowConfidence rows from those brands as the least-verified tier in the catalog. 358 -> 385 rows net. See project changelog for full row-level detail. CLAUDE VERIFICATION PASS (2026-08-01, 5 parallel general-purpose research agents by brand group, WebSearch/WebFetch against official Thai distributor sites + Thai motoring media, independent of prior agy passes): corrected ~30 fields (renamed SKUs to match actual current Thai trim names e.g. CBR250RR->CBR250RR SP, Africa Twin CRF1100L->Africa Twin MT/DCT (2026), V-Strom 250SX->V-Strom SX, Ninja ZX-4RR->Ninja ZX-4R SE, Street Glide Ultra->Street Glide Limited; corrected displacement for Ducati Panigale V2/Streetfighter V2 (955->890, MY2025 platform downsize), Kawasaki Eliminator/Eliminator SE (451->399, Thai-spec differs from global), Harley-Davidson Street Bob/Fat Boy/Heritage Classic/Street Glide Limited/Road Glide Limited (1868->1923, Milwaukee-Eight 117 upgrade), Keeway Gemma 125 (125->117.3); downgraded several unconfirmed FuelEfficiencyBasis Claim->Estimate/Estimate-LowConfidence where no official km/L figure could be found), removed 26 rows confirmed discontinued or not currently sold in Thailand (Honda Click 125; Yamaha Lexi 125, MT-10, Finn (UBS) [ambiguous non-SKU trim]; Suzuki Raider R150 FI/GSX-R150/GSX-S150/VanVan 200/Avenis 125/Easy 115/GD110 HU/Gixxer SF 250/Gixxer 250/SV650A/SV650X ABS/GSX-S750 ABS/GSX-S1000/Katana [2023-2024 Thai lineup consolidation]; Kawasaki Z H2/Z H2 SE; Royal Enfield Himalayan 411cc [replaced by Himalayan 450]; Triumph Speed Triple 1200 RR; Harley-Davidson Road King Special/CVO Street Glide/CVO Road Glide [non-ST variants dropped from 2026 Thai lineup]; BMW K 1600 B), added 3 confirmed-current models missing from the catalog (Suzuki Smash Fi 115 "Plus ABS", Ducati Desmo450 MX, KTM 1390 Super Adventure S EVO). CFMoto section (all rows except 450MT) flagged as needing a dedicated follow-up pass -- official Thai distributor site (cfmotothailand.com) was unreachable this session and Thai-market availability could not be independently confirmed for most CFMoto models. A handful of other rows were flagged in agent reports as ambiguous/needing dealer-level confirmation (Vespa GTS Super 150 i-Get ABS naming, Vespa 180cc i-Get line not yet added pending spec sourcing, Ducati XDiavel V4 displacement, BMW R 12 S tank capacity, Triumph Tiger 900 GT Pro/Rally Pro naming, Keeway Shiny 125 page unreachable, GPX Popz 125/Legend250 TwinII not yet added, Kawasaki Versys 1000 SE possibly discontinued) but were left unchanged pending stronger sourcing rather than acted on speculatively. 385 -> 362 rows net. CLAUDE FOLLOW-UP PASS (2026-08-01, 2 parallel research agents resolving the CFMoto gap and the 8 flagged-ambiguous items above): CFMoto - only 450MT remains confirmed; the other 17 rows found no positive evidence either way (neither confirmed current nor confirmed discontinued - likely stale 2018-2019 dealer listings for several) so were left unchanged rather than removed speculatively, pending a dedicated distributor-site check once cfmotothailand.com is reachable. Of the 8 ambiguous items: removed Vespa GTS Super 150 i-Get ABS (duplicate/non-existent name, official site only has "GTS Super Sport 150 i-Get ABS") and Keeway Shiny 125 (nav artifact pointing to the Shiny 150 product page, no distinct 125 SKU found) and Kawasaki Versys 1000 SE (absent from kawasaki.co.th's current Versys line, which lists only Versys 650 - confirmed discontinued in Thailand, same pattern as Z H2); corrected Ducati XDiavel V4 displacement 1262->1158 (Granturismo V4 platform, confirmed via Thai dealer listing, Basis raised Estimate-LowConfidence->Claim) and BMW R 12 S tank 14L->16L; confirmed Triumph Tiger 900 GT Pro/Rally Pro naming is correct as-is for Thailand (triumphmotorcycles.co.th uses GT Pro/Rally Pro, not the Desert/Alpine Edition naming used in some other markets - no change made); added GPX Popz 125 (distinct from Popz 110), GPX Legend 250 Twin and Legend250 TwinII (distinct SKUs from the already-listed Legend 250 Twin III, per gpxthailand.com), and the Vespa 180cc i-Get line (Sprint 180/S 180/Tech 180/Officina 8 180, Primavera 180/S 180 i-Get ABS - displacement 174.1cc per secondary sourcing, tank capacity estimated at 8L matching the shared 150cc-chassis Sprint/Primavera models pending direct brochure confirmation, so marked Estimate-LowConfidence). See conversation history for full per-agent findings.
 Brand,Model,ModelYear,DisplacementCC,FuelTankLiters,FuelEfficiencyKmPerL,FuelEfficiencyBasis,FinalDrive
-Honda,Wave 110i,2024,109.5,5.0,76.9,Claim,Chain
+Honda,Wave 110i,2024,109.5,5,76.9,Claim,Chain
 Honda,Wave 125i,2024,123.9,5.4,71.4,Claim,Chain
 Honda,Super Cub,2024,109.5,4.2,71.4,Claim,Chain
 Honda,Scoopy,2024,109.5,4.2,55.6,Claim,Belt
-Honda,Click 125,2024,124.8,5.0,50.0,Claim,Belt
 Honda,Click 160 Standard,2024,156.9,5.5,46.9,Claim,Belt
 Honda,Click 160 ABS,2024,156.9,5.5,46.9,Claim,Belt
-Honda,Lead 125,2024,124.8,6.0,52.6,Claim,Belt
+Honda,Lead 125,2024,124.8,6,52.6,Claim,Belt
 Honda,Giorno+ Standard,2024,124.8,5.4,52.6,Claim,Belt
 Honda,Giorno+ ABS,2024,124.8,5.4,52.6,Claim,Belt
 Honda,PCX 160 Standard,2024,156.9,8.1,47.5,Claim,Belt
@@ -16,171 +15,183 @@ Honda,ADV 160,2024,156.9,8.1,42.5,Claim,Belt
 Honda,ADV 350,2024,329.6,11.7,29.4,Claim,Belt
 Honda,Forza 350,2024,329.6,11.7,29.4,Claim,Belt
 Honda,Monkey 125,2024,123.9,5.6,70.5,Claim,Chain
-Honda,Dax 125,2024,123.9,3.8,65.0,Claim,Chain
-Honda,C125,2024,123.9,3.7,68.8,Claim,Chain
-Honda,CT125,2024,123.9,5.3,63.9,Claim,Chain
-Honda,Grom 125 Standard,2024,123.9,6.0,65.5,Claim,Chain
-Honda,Grom 125 ABS,2024,123.9,6.0,65.5,Claim,Chain
-Honda,CB150R,2024,149.1,8.5,45.0,Estimate,Chain
-Honda,CBR150R,2024,149.1,12.0,45.0,Estimate,Chain
-Honda,CBR250RR,2024,249.7,14.5,27.0,Estimate,Chain
-Honda,CRF300L,2024,286.0,7.8,32.3,Claim,Chain
-Honda,CRF300 Rally,2024,286.0,12.8,32.3,Claim,Chain
-Honda,CL300,2024,286.0,12.0,32.3,Claim,Chain
-Honda,CB300R,2024,286.0,10.0,30.2,Claim,Chain
-Honda,CBR500R,2024,471.0,17.1,28.5,Claim,Chain
-Honda,CB500 Hornet,2024,471.0,17.1,28.5,Claim,Chain
-Honda,NX500,2024,471.0,17.5,27.8,Claim,Chain
-Honda,CL500,2024,471.0,12.0,27.7,Claim,Chain
-Honda,Rebel 500,2024,471.0,11.2,27.0,Claim,Chain
-Honda,CBR650R,2024,649.0,15.4,20.4,Claim,Chain
-Honda,CB650R,2024,649.0,15.4,20.4,Claim,Chain
-Honda,CB750 Hornet,2024,755.0,15.2,23.0,Claim,Chain
-Honda,XL750 Transalp,2024,755.0,16.9,23.0,Claim,Chain
-Honda,NC750X,2024,745.0,14.1,28.3,Claim,Chain
-Honda,X-ADV 750,2024,745.0,13.2,27.8,Claim,Chain
-Honda,Rebel 1100,2024,1084.0,13.6,18.8,Claim,Chain
-Honda,Africa Twin CRF1100L,2024,1084.0,18.8,20.4,Claim,Chain
-Honda,Africa Twin Adventure Sports CRF1100L,2024,1084.0,24.8,20.4,Claim,Chain
-Honda,NT1100,2024,1084.0,20.4,20.0,Claim,Chain
-Honda,CBR1000RR-R Fireblade SP,2024,1000.0,16.1,16.0,Estimate,Chain
-Honda,Goldwing GL1800,2024,1833.0,21.1,18.1,Claim,Shaft
+Honda,Dax 125,2024,123.9,3.8,65,Claim,Chain
+Honda,Super Cub C125,2024,123.9,3.7,68.8,Claim,Chain
+Honda,CT125,2024,123.9,5.4,63.9,Claim,Chain
+Honda,Grom 125 Standard,2024,123.9,6,65.5,Claim,Chain
+Honda,Grom 125 ABS,2024,123.9,6,65.5,Claim,Chain
+Honda,CB150R,2024,149.1,8.5,45,Estimate,Chain
+Honda,CBR150R,2024,149.1,12,45,Estimate,Chain
+Honda,CBR250RR SP,2024,249.7,14.5,27,Estimate,Chain
+Honda,CRF300L,2024,286,7.8,32.3,Claim,Chain
+Honda,CRF300 Rally,2024,286,12.8,32.3,Claim,Chain
+Honda,CL300,2024,286,12,32.3,Claim,Chain
+Honda,CB300R,2024,286,10,30.2,Claim,Chain
+Honda,CBR500R,2024,471,17.1,28.5,Claim,Chain
+Honda,Hornet 500,2024,471,17.1,28.5,Claim,Chain
+Honda,NX500,2024,471,17.5,27.8,Claim,Chain
+Honda,CL500,2024,471,12,27.7,Claim,Chain
+Honda,Rebel 500,2024,471,11.2,27,Claim,Chain
+Honda,CBR650R,2024,649,15.4,20.4,Claim,Chain
+Honda,CB650R,2024,649,15.4,20.4,Claim,Chain
+Honda,CB750 Hornet,2024,755,15.2,23,Claim,Chain
+Honda,XL750 Transalp,2024,755,16.9,23,Claim,Chain
+Honda,NC750X,2024,745,14.1,28.3,Claim,Chain
+Honda,X-ADV 750,2024,745,13.2,27.8,Claim,Chain
+Honda,Rebel 1100,2024,1084,13.6,20.4,Claim,Chain
+Honda,Africa Twin MT,2026,1084,18.8,20.4,Claim,Chain
+Honda,Africa Twin DCT,2026,1084,24.8,20.4,Claim,Chain
+Honda,NT1100,2024,1084,20.4,20,Claim,Chain
+Honda,CBR1000RR-R Fireblade SP,2024,1000,16.1,14.9,Claim,Chain
+Honda,Goldwing GL1800,2024,1833,21.1,18.1,Claim,Shaft
+Honda,GB350C,2024,348,15,35,Estimate-LowConfidence,Chain
+Honda,Forza750,2024,745,11.5,20,Estimate-LowConfidence,Chain
+Honda,CB1300 Super Four,2024,1284,21,15,Estimate-LowConfidence,Chain
+Honda,CB1300 Super Bol D'Or,2024,1284,21,15,Estimate-LowConfidence,Chain
+Honda,CB1100RS,2024,1140,16.8,18,Estimate-LowConfidence,Chain
+Honda,CB1000 Hornet SP,2024,1000,17,17,Estimate-LowConfidence,Chain
+Honda,CBR600RR,2024,599,18,19,Estimate-LowConfidence,Chain
+Honda,CRF450RL,2024,449,7.6,25,Estimate-LowConfidence,Chain
+Honda,Rebel 300,2024,286,11.2,41.9,Estimate,Chain
 Yamaha,Fazzio,2024,125,5.1,55.6,Claim,Belt
-Yamaha,Grand Filano Hybrid (STD),2024,125,4.4,60.0,Claim,Belt
-Yamaha,Grand Filano Hybrid (ABS),2024,125,4.4,60.0,Claim,Belt
-Yamaha,GT125,2024,125,4.2,45.0,Claim,Belt
-Yamaha,Aerox (Standard),2024,155,5.5,47.0,Claim,Belt
-Yamaha,Aerox (ABS),2024,155,5.5,47.0,Claim,Belt
-Yamaha,NMAX (Standard),2024,155,7.1,45.0,Claim,Belt
-Yamaha,NMAX (Tech Max),2025,155,7.1,45.0,Claim,Belt
-Yamaha,XMAX (Standard),2024,292,13.0,30.0,Claim,Belt
-Yamaha,XMAX (Tech Max),2024,292,13.0,30.0,Claim,Belt
-Yamaha,TMAX (Standard),2025,562,15.0,21.0,Claim,Belt
-Yamaha,TMAX (Tech Max),2025,562,15.0,21.0,Claim,Belt
-Yamaha,Finn (Spoke Wheel),2024,114,4.0,96.16,Claim,Chain
-Yamaha,Finn (Alloy Wheel),2024,114,4.0,96.16,Claim,Chain
-Yamaha,Finn (UBS),2024,114,4.0,96.16,Claim,Chain
-Yamaha,PG-1,2024,114,5.1,60.0,Claim,Chain
-Yamaha,Exciter 155,2024,155,5.4,46.0,Claim,Chain
-Yamaha,YZF-R15,2024,155,11.0,45.0,Claim,Chain
-Yamaha,YZF-R15M,2024,155,11.0,45.0,Claim,Chain
-Yamaha,YZF-R3,2024,321,14.0,25.0,Claim,Chain
-Yamaha,YZF-R7,2024,689,13.0,23.0,Claim,Chain
-Yamaha,YZF-R9,2025,890,14.0,20.0,Claim,Chain
-Yamaha,YZF-R1,2024,998,17.0,14.0,Claim,Chain
-Yamaha,YZF-R1M,2024,998,17.0,14.0,Claim,Chain
-Yamaha,MT-15,2024,155,10.0,45.0,Claim,Chain
-Yamaha,MT-03,2024,321,14.0,25.0,Claim,Chain
-Yamaha,MT-07,2025,689,14.0,23.0,Claim,Chain
-Yamaha,MT-09 (Standard),2024,890,14.0,20.0,Claim,Chain
-Yamaha,MT-09 (SP),2024,890,14.0,20.0,Claim,Chain
-Yamaha,MT-09 (Y-AMT),2024,890,14.0,20.0,Claim,Chain
-Yamaha,MT-10,2024,998,17.0,12.0,Claim,Chain
-Yamaha,XSR155,2024,155,10.0,45.0,Claim,Chain
-Yamaha,XSR700,2024,689,14.0,23.0,Claim,Chain
-Yamaha,XSR900,2024,890,14.0,20.0,Claim,Chain
-Yamaha,SR400,2024,399,12.0,28.0,Claim,Chain
-Yamaha,WR155R,2024,155,8.1,40.0,Claim,Chain
-Yamaha,Tenere 700,2024,689,16.0,23.0,Claim,Chain
-Yamaha,Tracer 9 GT,2024,890,18.0,20.0,Claim,Chain
-Yamaha,Tracer 9 GT+,2024,890,18.0,20.0,Claim,Chain
-Suzuki,Smash 115 FI,2026,113,3.7,66.7,Claim,Chain
-Suzuki,Raider R150 FI,2026,147,4.0,45.0,Estimate,Chain
-Suzuki,Raider J Crossover,2026,113,4.0,65.0,Claim,Chain
-Suzuki,Nex Crossover,2026,113,3.6,50.0,Claim,Belt
+Yamaha,Grand Filano Hybrid (STD),2024,125,4.4,62.5,Claim,Belt
+Yamaha,Grand Filano Hybrid (ABS),2024,125,4.4,62.5,Claim,Belt
+Yamaha,GT125,2024,125,4.2,45,Claim,Belt
+Yamaha,Aerox (Standard),2024,155,5.5,47,Claim,Belt
+Yamaha,Aerox (ABS),2024,155,5.5,47,Claim,Belt
+Yamaha,Aerox SP,2026,155,5.5,47,Estimate-LowConfidence,Belt
+Yamaha,NMAX (Standard),2024,155,7.1,45,Claim,Belt
+Yamaha,NMAX (Tech Max),2025,155,7.1,45,Claim,Belt
+Yamaha,XMAX (Standard),2024,292,13,30,Claim,Belt
+Yamaha,XMAX (Tech Max),2024,292,13,30,Claim,Belt
+Yamaha,TMAX 560,2025,562,15,21,Claim,Belt
+Yamaha,TMAX 560 Tech Max,2025,562,15,21,Claim,Belt
+Yamaha,Finn (Spoke Wheel),2024,114,4,96.16,Claim,Chain
+Yamaha,Finn (Alloy Wheel),2024,114,4,96.16,Claim,Chain
+Yamaha,PG-1,2024,114,5.1,60,Estimate,Chain
+Yamaha,Exciter 155,2024,155,5.4,46,Estimate,Chain
+Yamaha,YZF-R15,2024,155,11,45,Estimate,Chain
+Yamaha,YZF-R15M,2024,155,11,45,Estimate,Chain
+Yamaha,YZF-R3,2024,321,14,25,Claim,Chain
+Yamaha,YZF-R7,2024,689,13,23,Claim,Chain
+Yamaha,R9,2025,890,14,20,Claim,Chain
+Yamaha,YZF-R1,2024,998,17,14,Claim,Chain
+Yamaha,YZF-R1M,2024,998,17,14,Claim,Chain
+Yamaha,MT-15,2024,155,10,45,Claim,Chain
+Yamaha,MT-03,2024,321,14,25,Claim,Chain
+Yamaha,MT-07,2025,689,14,23,Claim,Chain
+Yamaha,MT-09 (Standard),2024,890,14,20,Claim,Chain
+Yamaha,MT-09 (SP),2024,890,14,20,Claim,Chain
+Yamaha,MT-09 (Y-AMT),2024,890,14,20,Claim,Chain
+Yamaha,XSR155,2024,155,10,45,Claim,Chain
+Yamaha,XSR700,2024,689,14,23,Claim,Chain
+Yamaha,XSR900,2024,890,14,20,Claim,Chain
+Yamaha,SR400,2024,399,12,28,Claim,Chain
+Yamaha,WR155R,2024,155,8.1,40,Claim,Chain
+Yamaha,Tenere 700,2024,689,16,23,Claim,Chain
+Yamaha,Tracer 9 GT,2024,890,18,20,Claim,Chain
+Yamaha,Tracer 9 GT+,2024,890,18,20,Claim,Chain
+Yamaha,Tracer 9 GT+ Y-AMT,2026,890,18,20,Estimate-LowConfidence,Chain
+Suzuki,Smash Fi 115 "Plus",2026,113,3.7,66.7,Claim,Chain
+Suzuki,DR-Z 4S,2026,397,7.1,25,Estimate-LowConfidence,Chain
+Suzuki,Raider J Crossover,2026,113,4,65,Claim,Chain
+Suzuki,Nex Crossover,2026,113,3.6,50,Claim,Belt
 Suzuki,Burgman Street 125EX,2026,124,5.5,52.6,Claim,Belt
-Suzuki,Burgman 400 ABS,2026,400,13.5,25.0,Claim,Belt
-Suzuki,Gixxer SF 250,2026,249,12.0,38.0,Estimate,Chain
-Suzuki,Gixxer 250,2026,249,12.0,38.0,Estimate,Chain
-Suzuki,V-Strom 250SX,2026,249,12.0,35.0,Estimate,Chain
-Suzuki,V-Strom 650XT ABS,2026,645,20.0,24.0,Claim,Chain
-Suzuki,V-Strom 800DE,2026,776,20.0,22.7,Claim,Chain
-Suzuki,V-Strom 1050DE,2026,1037,20.0,19.0,Estimate,Chain
-Suzuki,SV650 ABS,2026,645,14.5,26.0,Claim,Chain
-Suzuki,SV650X ABS,2026,645,14.5,26.0,Claim,Chain
-Suzuki,GSX-8S,2026,776,14.0,23.8,Claim,Chain
-Suzuki,GSX-8R,2026,776,14.0,23.8,Claim,Chain
-Suzuki,GSX-S750 ABS,2026,749,16.0,20.0,Estimate,Chain
-Suzuki,GSX-S1000,2026,999,19.0,16.4,Claim,Chain
-Suzuki,GSX-S1000GT,2026,999,19.0,16.4,Claim,Chain
-Suzuki,GSX-S1000GX,2026,999,19.0,16.1,Claim,Chain
-Suzuki,GSX-R1000R ABS,2026,999,16.0,16.0,Estimate,Chain
-Suzuki,Hayabusa,2026,1340,20.0,14.9,Claim,Chain
-Suzuki,Katana,2026,999,12.0,18.8,Claim,Chain
-GPX,DZ3 (Standard / Plus),2026,278.2,10.3,28.0,Estimate,Belt
-GPX,DX1,2026,124.8,5.0,45.0,Estimate,Belt
-GPX,Tuscany 150,2024,149.6,5.7,40.0,Estimate,Belt
-GPX,Drone 4 Valves,2024,149.6,7.5,40.0,Estimate,Belt
-GPX,Demon GR200R (DaCorSa),2024,198,11.0,35.0,Estimate,Chain
-GPX,Legend 250 Twin III,2024,234,14.5,30.0,Estimate,Chain
-GPX,Legend 250 Brighton,2024,234,14.5,30.0,Estimate,Chain
-GPX,Legend 150Fi,2024,149,12.0,40.0,Estimate,Chain
-GPX,Popz 110,2024,109,4.0,50.0,Estimate,Chain
-GPX,Rock 110,2024,109,4.0,50.0,Estimate,Chain
-Kawasaki,Ninja H2,2024,998,17.0,14.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja H2 SX SE,2024,998,19.0,16.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja ZX-10R,2024,998,17.0,16.5,Estimate-LowConfidence,Chain
-Kawasaki,Ninja ZX-10RR,2024,998,17.0,16.5,Estimate-LowConfidence,Chain
-Kawasaki,Ninja ZX-6R,2024,636,17.0,18.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja ZX-4R,2024,399,15.0,24.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja ZX-4RR,2024,399,15.0,24.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja ZX-25R,2024,249,15.0,22.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja 650,2024,649,15.0,22.0,Estimate-LowConfidence,Chain
-Kawasaki,Ninja 500,2024,451,14.0,26.0,Estimate-LowConfidence,Chain
-Kawasaki,Z H2,2024,998,19.0,15.0,Estimate-LowConfidence,Chain
-Kawasaki,Z H2 SE,2024,998,19.0,15.0,Estimate-LowConfidence,Chain
-Kawasaki,Z1000,2024,1043,17.0,15.0,Estimate-LowConfidence,Chain
-Kawasaki,Z900RS,2024,948,17.0,18.0,Estimate-LowConfidence,Chain
-Kawasaki,Z900RS SE,2024,948,17.0,18.0,Estimate-LowConfidence,Chain
-Kawasaki,Z900,2024,948,17.0,18.0,Estimate-LowConfidence,Chain
-Kawasaki,Z900 SE,2024,948,17.0,18.0,Estimate-LowConfidence,Chain
-Kawasaki,Z650RS,2024,649,12.0,22.0,Estimate-LowConfidence,Chain
-Kawasaki,Z650,2024,649,15.0,22.0,Estimate-LowConfidence,Chain
-Kawasaki,Z500,2024,451,14.0,26.0,Estimate-LowConfidence,Chain
-Kawasaki,Versys 1000 SE,2024,1043,21.0,16.0,Estimate-LowConfidence,Chain
-Kawasaki,Versys 650,2024,649,21.0,20.0,Estimate-LowConfidence,Chain
-Kawasaki,Vulcan S,2024,649,14.0,22.0,Estimate-LowConfidence,Chain
-Kawasaki,Eliminator,2024,451,12.0,26.0,Estimate-LowConfidence,Chain
-Kawasaki,Eliminator SE,2024,451,12.0,26.0,Estimate-LowConfidence,Chain
-Kawasaki,Meguro K3,2024,773,15.0,21.0,Estimate-LowConfidence,Chain
-Kawasaki,Meguro S1,2024,233,12.0,33.0,Estimate-LowConfidence,Chain
-Kawasaki,W800,2024,773,15.0,21.0,Estimate-LowConfidence,Chain
-Kawasaki,W230,2024,233,12.0,33.0,Estimate-LowConfidence,Chain
-Kawasaki,KLR650,2024,652,23.0,20.0,Estimate-LowConfidence,Chain
-Kawasaki,KLR650 Adventure,2024,652,23.0,20.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX230,2024,233,7.5,30.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX230 S,2024,233,7.5,30.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX230 SE,2024,233,7.5,30.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX230 SM,2024,233,7.5,30.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX230 SHERPA,2024,233,7.6,30.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX230R,2024,233,6.6,30.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX140R F,2024,144,5.8,40.0,Estimate-LowConfidence,Chain
-Kawasaki,KLX110R L,2024,112,3.8,45.0,Estimate-LowConfidence,Chain
-Vespa,LX 125 i-Get,2025,124.5,7.0,40,Claim,Belt
-Vespa,S 125 i-Get,2025,124.5,7.0,40,Claim,Belt
-Vespa,Sprint 125 i-Get ABS,2025,124.5,8.0,40,Claim,Belt
-Vespa,Sprint 150 i-Get ABS,2025,154.8,8.0,40,Claim,Belt
-Vespa,Sprint S 150 i-Get ABS,2025,154.8,8.0,40,Claim,Belt
-Vespa,Primavera 150 i-Get ABS,2025,154.8,8.0,40,Claim,Belt
-Vespa,Primavera S 150 i-Get ABS,2025,154.8,8.0,40,Claim,Belt
-Vespa,GTS Super 150 i-Get ABS,2025,154.8,7.0,40,Claim,Belt
-Vespa,GTS Super Sport 150 i-Get ABS,2025,154.8,7.0,40,Claim,Belt
-Vespa,GTS Super 300 HPE,2025,278.3,8.5,30.3,Claim,Belt
-Vespa,GTS Super Sport 300 HPE,2025,278.3,8.5,30.3,Claim,Belt
+Suzuki,Burgman 400 ABS,2026,400,13.5,25,Claim,Belt
+Suzuki,V-Strom SX,2026,249,12,35,Estimate,Chain
+Suzuki,V-Strom 650XT ABS,2026,645,20,24,Claim,Chain
+Suzuki,V-Strom 800DE,2026,776,20,22.7,Claim,Chain
+Suzuki,V-Strom 1050DE,2026,1037,20,19,Estimate,Chain
+Suzuki,GSX-8S,2026,776,14,23.8,Claim,Chain
+Suzuki,GSX-8R,2026,776,14,23.8,Claim,Chain
+Suzuki,GSX-R1000R ABS,2026,999,16,16,Estimate,Chain
+Suzuki,Hayabusa,2026,1340,20,14.9,Claim,Chain
+GPX,DZ3 (Standard / Plus),2026,278.2,10.3,28,Estimate,Belt
+GPX,DX1,2026,124.8,5,45,Estimate,Belt
+GPX,Tuscany 150,2024,149.6,5.7,40,Estimate,Belt
+GPX,Drone 4 Valves,2024,149.6,7.5,40,Estimate,Belt
+GPX,Demon GR200R (DaCorSa),2024,198,11,35,Estimate,Chain
+GPX,Legend 250 Twin III,2024,234,14.5,30,Estimate,Chain
+GPX,Legend 250 Twin,2024,234,14.5,30,Estimate-LowConfidence,Chain
+GPX,Legend250 TwinII,2024,234,14.5,30,Estimate-LowConfidence,Chain
+GPX,Legend 250 Brighton,2024,234,14.5,30,Estimate,Chain
+GPX,Legend 150Fi,2024,149,12,40,Estimate,Chain
+GPX,Popz 110,2024,109,4,50,Estimate,Chain
+GPX,Popz 125,2024,124,4,48,Estimate-LowConfidence,Chain
+GPX,Rock,2024,109,4,50,Estimate,Chain
+GPX,Mad 300Max,2025,292.4,14,28,Estimate-LowConfidence,Chain
+GPX,Raptor 180,2025,180.8,11.5,38,Estimate-LowConfidence,Chain
+GPX,Demon 150GR FI,2025,149,9,40,Estimate-LowConfidence,Chain
+Kawasaki,Ninja H2,2024,998,17,14,Estimate-LowConfidence,Chain
+Kawasaki,Ninja ZX-10R,2024,998,17,16.5,Estimate-LowConfidence,Chain
+Kawasaki,Ninja ZX-10RR,2024,998,17,16.5,Estimate-LowConfidence,Chain
+Kawasaki,Ninja ZX-6R,2024,636,17,18,Estimate-LowConfidence,Chain
+Kawasaki,Ninja ZX-4R,2024,399,15,24,Estimate-LowConfidence,Chain
+Kawasaki,Ninja ZX-4R SE,2024,399,15,24,Estimate-LowConfidence,Chain
+Kawasaki,Ninja ZX-25R,2024,249,15,22,Estimate-LowConfidence,Chain
+Kawasaki,Ninja 650,2024,649,15,22,Estimate-LowConfidence,Chain
+Kawasaki,Ninja 500 SE,2024,451,14,26,Estimate-LowConfidence,Chain
+Kawasaki,Z1000,2024,1043,17,15,Estimate-LowConfidence,Chain
+Kawasaki,Z900RS,2024,948,17,18,Estimate-LowConfidence,Chain
+Kawasaki,Z900RS SE,2024,948,17,18,Estimate-LowConfidence,Chain
+Kawasaki,Z900,2024,948,17,18,Estimate-LowConfidence,Chain
+Kawasaki,Z900 SE,2024,948,17,18,Estimate-LowConfidence,Chain
+Kawasaki,Z650RS,2024,649,12,22,Estimate-LowConfidence,Chain
+Kawasaki,Z650,2024,649,15,22,Estimate-LowConfidence,Chain
+Kawasaki,Z500 SE,2024,451,14,26,Estimate-LowConfidence,Chain
+Kawasaki,KLE500,2026,451,16,26,Estimate-LowConfidence,Chain
+Kawasaki,KLE500 SE,2026,451,16,26,Estimate-LowConfidence,Chain
+Kawasaki,KX250,2026,249,6.2,,N/A,Chain
+Kawasaki,KX250 50th Anniversary,2026,249,6.2,,N/A,Chain
+Kawasaki,Versys 650,2024,649,21,20,Estimate-LowConfidence,Chain
+Kawasaki,Vulcan S,2024,649,14,22,Estimate-LowConfidence,Chain
+Kawasaki,Eliminator,2024,399,13,26,Estimate-LowConfidence,Chain
+Kawasaki,Eliminator SE,2024,399,13,26,Estimate-LowConfidence,Chain
+Kawasaki,Meguro K3,2024,773,15,21,Estimate-LowConfidence,Chain
+Kawasaki,Meguro S1,2024,233,12,33,Estimate-LowConfidence,Chain
+Kawasaki,W800,2024,773,15,21,Estimate-LowConfidence,Chain
+Kawasaki,W230,2024,233,12,33,Estimate-LowConfidence,Chain
+Kawasaki,KLR650,2024,652,23,20,Estimate-LowConfidence,Chain
+Kawasaki,KLR650 Adventure,2024,652,23,20,Estimate-LowConfidence,Chain
+Kawasaki,KLX230,2024,233,7.5,30,Estimate-LowConfidence,Chain
+Kawasaki,KLX230 S,2024,233,7.5,30,Estimate-LowConfidence,Chain
+Kawasaki,KLX230 SE,2024,233,7.5,30,Estimate-LowConfidence,Chain
+Kawasaki,KLX230 SM,2024,233,7.5,30,Estimate-LowConfidence,Chain
+Kawasaki,KLX230 SHERPA,2024,233,7.6,30,Estimate-LowConfidence,Chain
+Kawasaki,KLX230R,2024,233,6.6,30,Estimate-LowConfidence,Chain
+Kawasaki,KLX140R F,2024,144,5.8,40,Estimate-LowConfidence,Chain
+Kawasaki,KLX110R L,2024,112,3.8,45,Estimate-LowConfidence,Chain
+Vespa,LX 125 i-Get,2025,124.5,7,40,Claim,Belt
+Vespa,LX 150 i-Get ABS,2025,154.8,7,40,Estimate-LowConfidence,Belt
+Vespa,S 150 i-Get ABS,2025,154.8,7,40,Estimate-LowConfidence,Belt
+Vespa,S 125 i-Get,2025,124.5,7,40,Claim,Belt
+Vespa,Sprint 125 i-Get ABS,2025,124.5,8,40,Claim,Belt
+Vespa,Sprint 150 i-Get ABS,2025,154.8,8,40,Claim,Belt
+Vespa,Sprint S 150 i-Get ABS,2025,154.8,8,40,Claim,Belt
+Vespa,Primavera 150 i-Get ABS,2025,154.8,8,40,Claim,Belt
+Vespa,Primavera S 150 i-Get ABS,2025,154.8,8,40,Claim,Belt
+Vespa,GTS Super Sport 150 i-Get ABS,2025,154.8,7,40,Claim,Belt
+Vespa,GTS 300 HPE,2025,278.3,8.5,30.3,Claim,Belt
 Vespa,GTS Super Tech 300 HPE,2025,278.3,8.5,30.3,Claim,Belt
 Vespa,GTV 300 HPE,2025,278.3,8.5,30.3,Claim,Belt
-Vespa,946,2025,154.8,8.0,40,Claim,Belt
-Zontes,150X,2026,149.5,11.0,47.6,Claim,Belt
-Zontes,350D,2026,349.0,12.0,28.5,Claim,Belt
-Zontes,350E,2026,349.0,16.0,28.5,Claim,Belt
-Zontes,368D,2026,368.0,12.0,28.5,Claim,Belt
-Zontes,368E,2026,368.0,17.0,28.5,Claim,Belt
-Zontes,368G,2026,368.0,17.5,28.5,Claim,Belt
-Zontes,368K,2026,368.0,17.0,28.5,Claim,Belt
+Vespa,946,2025,154.8,8,40,Claim,Belt
+Vespa,Sprint 180 i-Get ABS,2026,174.1,8,43.1,Estimate-LowConfidence,Belt
+Vespa,Sprint S 180 i-Get ABS,2026,174.1,8,43.1,Estimate-LowConfidence,Belt
+Vespa,Sprint Tech 180 i-Get,2026,174.1,8,43.1,Estimate-LowConfidence,Belt
+Vespa,Sprint Officina 8 180 i-Get,2026,174.1,8,43.1,Estimate-LowConfidence,Belt
+Vespa,Primavera 180 i-Get ABS,2026,174.1,8,43.1,Estimate-LowConfidence,Belt
+Vespa,Primavera S 180 i-Get ABS,2026,174.1,8,43.1,Estimate-LowConfidence,Belt
+Zontes,150X,2026,149.5,11,47.6,Claim,Belt
+Zontes,350D,2026,349,12,28.5,Claim,Belt
+Zontes,350E,2026,349,16,28.5,Claim,Belt
+Zontes,368D,2026,368,12,28.5,Claim,Belt
+Zontes,368E,2026,368,17,28.5,Claim,Belt
+Zontes,368G,2026,368,17.5,28.5,Claim,Belt
+Zontes,368K,2026,368,17,28.5,Claim,Belt
 CFMoto,250NK,2026,249,12.5,32,Claim,Chain
-CFMoto,300NK,2026,292,12.5,30,Claim,Chain
-CFMoto,450NK,2026,449,14,22,Claim,Chain
+CFMoto,400NK,2026,399,14,24,Estimate-LowConfidence,Chain
 CFMoto,650NK,2026,649,17,20,Claim,Chain
+CFMoto,650GT,2026,649,17,20,Estimate-LowConfidence,Chain
 CFMoto,675NK,2026,674,15,20,Estimate-LowConfidence,Chain
 CFMoto,800NK,2026,799,15,20,Claim,Chain
 CFMoto,250SR,2026,249,12,32,Claim,Chain
@@ -196,26 +207,26 @@ CFMoto,800MT-X,2026,799,19,18,Estimate-LowConfidence,Chain
 CFMoto,450CL-C,2026,449,12,22,Claim,Belt
 CFMoto,700CL-X Heritage,2026,693,13,20,Claim,Chain
 CFMoto,700CL-X Sport,2026,693,13,20,Claim,Chain
-CFMoto,Papio XO-1,2026,126,7,45,Claim,Chain
-CFMoto,Papio CL,2026,126,7,45,Claim,Chain
-CFMoto,Papio SS,2026,126,7,45,Claim,Chain
-SYM,ADXTG 400,2025,399,13,25,Claim,Chain
 SYM,Husky 150,2025,150,15,39,Estimate,Belt
-SYM,Maxsym 400,2025,399,13,27,Claim,Belt
-Keeway,V302C,2026,298,15,36,Claim,Belt
+SYM,Maxsym 400i,2025,399,13,27,Claim,Belt
+SYM,Sports Bonus SR,2025,110,4.5,50,Estimate-LowConfidence,Chain
+SYM,Fiddle II 125,2025,124.6,5.4,45,Estimate-LowConfidence,Belt
+SYM,GTS 300i ABS,2025,279,13.5,28,Estimate-LowConfidence,Belt
+SYM,Maxsym 600i,2025,565,15,18,Estimate-LowConfidence,Belt
+Keeway,V302C,2026,298,15,37,Claim,Belt
 Keeway,Superlight 200,2026,197,15,35,Estimate,Chain
 Keeway,Victoria 200,2026,171.7,10,35,Estimate,Belt
 Keeway,GT270,2026,278,12,31,Claim,Belt
-Keeway,Versilia 150,2026,149.6,5.6,40,Claim,Belt
-Keeway,Versilia 150 MAX,2026,149.6,5.6,40,Claim,Belt
+Keeway,Versilia 150,2026,149.6,5.6,40,Estimate,Belt
+Keeway,Versilia 150 MAX,2026,149.6,5.6,40,Estimate,Belt
 Keeway,Shiny 150,2026,149.6,5.8,40,Estimate,Belt
-Keeway,Shiny 125,2026,124.6,5.8,45,Estimate,Belt
-Keeway,Gemma 125,2026,125,5,53,Claim,Belt
+Keeway,Gemma 125,2026,117.3,5,53,Estimate,Belt
 Royal Enfield,Hunter 350,2026,349,13,36,Claim,Chain
 Royal Enfield,Classic 350,2026,349,13,35,Claim,Chain
 Royal Enfield,Bullet 350,2026,349,13,35,Claim,Chain
 Royal Enfield,Meteor 350,2026,349,15,35,Claim,Chain
 Royal Enfield,Himalayan 450,2026,452,17,30,Claim,Chain
+Royal Enfield,Scram 411,2026,411,15,30,Estimate-LowConfidence,Chain
 Royal Enfield,Guerrilla 450,2026,452,11,29.5,Claim,Chain
 Royal Enfield,Interceptor 650,2026,648,13.7,25,Claim,Chain
 Royal Enfield,Continental GT 650,2026,648,12.5,25,Claim,Chain
@@ -223,43 +234,44 @@ Royal Enfield,Super Meteor 650,2026,648,15.7,22,Claim,Chain
 Royal Enfield,Shotgun 650,2026,648,13.8,22,Claim,Chain
 Royal Enfield,Bear 650,2026,648,13.7,22,Claim,Chain
 Royal Enfield,Classic 650,2026,648,14.8,21.5,Claim,Chain
-KTM,200 Duke,2025,199.5,13.4,35.0,Estimate-LowConfidence,Chain
-KTM,250 Duke,2025,249.0,15.0,32.0,Estimate-LowConfidence,Chain
-KTM,390 Duke,2025,398.7,15.0,29.4,Claim,Chain
-KTM,790 Duke,2025,799.0,14.0,21.7,Claim,Chain
-KTM,890 Duke R,2025,889.0,14.0,21.0,Claim,Chain
-KTM,990 Duke,2025,947.0,14.8,21.3,Claim,Chain
-KTM,1390 Super Duke R,2025,1350.0,17.5,16.9,Claim,Chain
-KTM,1390 Super Duke R EVO,2025,1350.0,17.5,16.9,Claim,Chain
-KTM,RC 200,2025,199.5,13.7,35.0,Estimate-LowConfidence,Chain
-KTM,RC 390,2025,373.0,13.7,28.9,Claim,Chain
-KTM,250 Adventure,2025,248.8,14.5,32.0,Estimate-LowConfidence,Chain
-KTM,390 Adventure,2025,373.0,14.5,29.6,Claim,Chain
-KTM,390 Adventure SW,2025,373.0,14.5,29.6,Claim,Chain
-KTM,790 Adventure,2025,799.0,20.0,23.8,Claim,Chain
-KTM,890 Adventure,2025,889.0,20.0,22.2,Claim,Chain
-KTM,890 Adventure R,2025,889.0,20.0,22.2,Claim,Chain
-KTM,1290 Super Adventure S,2025,1301.0,23.0,17.5,Claim,Chain
-KTM,1290 Super Adventure R,2025,1301.0,23.0,17.5,Claim,Chain
-KTM,890 SMT,2025,889.0,15.8,21.7,Claim,Chain
+KTM,200 Duke,2025,199.5,13.4,35,Estimate-LowConfidence,Chain
+KTM,250 Duke,2025,249,15,32,Estimate-LowConfidence,Chain
+KTM,390 Duke,2025,398.7,15,29.4,Claim,Chain
+KTM,790 Duke,2025,799,14,21.7,Claim,Chain
+KTM,890 Duke R,2025,889,14,21,Claim,Chain
+KTM,990 Duke,2025,947,14.8,21.3,Claim,Chain
+KTM,1390 Super Duke R,2025,1350,17.5,16.9,Claim,Chain
+KTM,1390 Super Duke R EVO,2025,1350,17.5,16.9,Claim,Chain
+KTM,RC 200,2025,199.5,13.7,35,Estimate-LowConfidence,Chain
+KTM,RC 390,2025,373,13.7,28.9,Claim,Chain
+KTM,250 Adventure,2025,248.8,14.5,32,Estimate-LowConfidence,Chain
+KTM,390 Adventure,2025,373,14.5,29.6,Claim,Chain
+KTM,390 Adventure SW,2025,373,14.5,29.6,Claim,Chain
+KTM,790 Adventure,2025,799,20,23.8,Claim,Chain
+KTM,890 Adventure,2025,889,20,22.2,Claim,Chain
+KTM,890 Adventure R,2025,889,20,22.2,Claim,Chain
+KTM,1390 Super Adventure S,2025,1350,23,17.5,Estimate-LowConfidence,Chain
+KTM,1390 Super Adventure R,2025,1350,23,17.5,Estimate-LowConfidence,Chain
+KTM,890 SMT,2025,889,15.8,21.7,Claim,Chain
 KTM,690 SMC R,2025,692.7,13.5,23.2,Claim,Chain
 KTM,690 Enduro R,2025,692.7,13.5,23.2,Claim,Chain
-KTM,250 EXC-F,2025,249.9,8.5,25.0,Estimate-LowConfidence,Chain
-KTM,350 EXC-F,2025,349.7,8.5,25.0,Estimate-LowConfidence,Chain
-KTM,450 EXC-F,2025,449.9,8.5,25.0,Estimate-LowConfidence,Chain
-KTM,300 EXC,2025,293.2,9.0,15.0,Estimate-LowConfidence,Chain
-Ducati,Panigale V2,2025,955,17,16.7,Claim,Chain
+KTM,250 EXC-F,2025,249.9,8.5,25,Estimate-LowConfidence,Chain
+KTM,350 EXC-F,2025,349.7,8.5,25,Estimate-LowConfidence,Chain
+KTM,450 EXC-F,2025,449.9,8.5,25,Estimate-LowConfidence,Chain
+KTM,300 EXC,2025,293.2,9,15,Estimate-LowConfidence,Chain
+Ducati,Panigale V2,2025,890,17,16.7,Claim,Chain
+Ducati,Panigale V2 S,2025,890,17,16.7,Estimate-LowConfidence,Chain
 Ducati,Panigale V4,2025,1103,17,13.2,Claim,Chain
 Ducati,Panigale V4 S,2025,1103,17,13.2,Claim,Chain
 Ducati,Panigale V4 R,2025,998,17,12.5,Claim,Chain
 Ducati,SuperSport 950 S,2025,937,16,17.8,Claim,Chain
 Ducati,Monster,2025,937,14,19.2,Claim,Chain
 Ducati,Monster SP,2025,937,14,19.2,Claim,Chain
-Ducati,Streetfighter V2,2025,955,17,16.7,Claim,Chain
+Ducati,Streetfighter V2,2025,890,17,16.7,Claim,Chain
 Ducati,Streetfighter V4,2025,1103,17,13.2,Claim,Chain
 Ducati,Streetfighter V4 S,2025,1103,17,13.2,Claim,Chain
 Ducati,Streetfighter V4 SP2,2025,1103,17,13.2,Claim,Chain
-Ducati,Multistrada V2 S,2025,937,20,16.9,Claim,Chain
+Ducati,Multistrada V2 S,2025,890,20,16.9,Estimate-LowConfidence,Chain
 Ducati,Multistrada V4 S,2025,1158,22,15.4,Claim,Chain
 Ducati,Multistrada V4 Pikes Peak,2025,1158,22,14.1,Claim,Chain
 Ducati,Multistrada V4 Rally,2025,1158,30,15.1,Claim,Chain
@@ -270,88 +282,89 @@ Ducati,Hypermotard 950 SP,2025,937,14.5,19.6,Claim,Chain
 Ducati,DesertX,2025,937,21,17.8,Claim,Chain
 Ducati,DesertX Rally,2025,937,21,17.8,Claim,Chain
 Ducati,Diavel V4,2025,1158,20,15.6,Claim,Chain
+Ducati,XDiavel V4,2025,1158,18,15,Claim,Chain
 Ducati,Scrambler Icon,2025,803,13.5,19.2,Claim,Chain
 Ducati,Scrambler Nightshift,2025,803,13.5,19.2,Claim,Chain
 Ducati,Scrambler Full Throttle,2025,803,13.5,19.2,Claim,Chain
-BMW,G 310 R,2025,313,11.0,30.3,Claim,Chain
-BMW,G 310 RR,2025,313,11.0,30.3,Claim,Chain
+BMW,G 310 R,2025,313,11,30.3,Claim,Chain
+BMW,G 310 RR,2025,313,11,30.3,Claim,Chain
 BMW,G 310 GS,2025,313,11.5,30.3,Claim,Chain
 BMW,C 400 X,2025,350,12.8,28.5,Claim,Belt
 BMW,C 400 GT,2025,350,12.8,28.5,Claim,Belt
-BMW,CE 02,2025,N/A,N/A,N/A,N/A,Belt
-BMW,CE 04,2025,N/A,N/A,N/A,N/A,Belt
-BMW,F 800 GS,2025,895,15.0,23.2,Claim,Chain
-BMW,F 900 R,2025,895,13.0,23.8,Claim,Chain
+BMW,CE 02,2025,,,,N/A,Belt
+BMW,CE 04,2025,,,,N/A,Belt
+BMW,F 900 R,2025,895,13,23.8,Claim,Chain
 BMW,F 900 XR,2025,895,15.5,23.8,Claim,Chain
 BMW,F 900 GS,2025,895,14.5,22.7,Claim,Chain
-BMW,F 900 GS Adventure,2025,895,23.0,22.7,Claim,Chain
+BMW,F 900 GS Adventure,2025,895,23,22.7,Claim,Chain
 BMW,S 1000 R,2025,999,16.5,16.1,Claim,Chain
 BMW,S 1000 RR,2025,999,16.5,15.6,Claim,Chain
-BMW,S 1000 XR,2025,999,20.0,16.1,Claim,Chain
+BMW,S 1000 XR,2025,999,20,16.1,Claim,Chain
 BMW,M 1000 R,2025,999,16.5,15.6,Claim,Chain
 BMW,M 1000 RR,2025,999,16.5,15.4,Claim,Chain
-BMW,M 1000 XR,2025,999,20.0,15.4,Claim,Chain
-BMW,R 12,2025,1170,14.0,19.6,Claim,Shaft
-BMW,R 12 nineT,2025,1170,16.0,19.6,Claim,Shaft
-BMW,R 1250 RT,2025,1254,25.0,21.0,Claim,Shaft
-BMW,R 1300 GS,2025,1300,19.0,20.8,Claim,Shaft
-BMW,R 1300 GS Adventure,2025,1300,30.0,20.4,Claim,Shaft
-BMW,R 1300 RT,2025,1300,25.0,20.8,Claim,Shaft
-BMW,R 18,2025,1802,16.0,17.8,Claim,Shaft
-BMW,R 18 Classic,2025,1802,16.0,17.8,Claim,Shaft
-BMW,R 18 Roctane,2025,1802,16.0,17.8,Claim,Shaft
-BMW,R 18 B,2025,1802,24.0,17.2,Claim,Shaft
-BMW,R 18 Transcontinental,2025,1802,24.0,17.2,Claim,Shaft
+BMW,M 1000 XR,2025,999,20,15.4,Claim,Chain
+BMW,R 12,2025,1170,14,19.6,Claim,Shaft
+BMW,R 12 nineT,2025,1170,16,19.6,Claim,Shaft
+BMW,R 12 G/S,2026,1170,16,19.6,Estimate-LowConfidence,Shaft
+BMW,R 12 S,2026,1170,16,19.6,Estimate-LowConfidence,Shaft
+BMW,R 1250 RT,2025,1254,25,21,Estimate-LowConfidence,Shaft
+BMW,R 1300 GS,2025,1300,19,20.8,Claim,Shaft
+BMW,R 1300 GS Adventure,2025,1300,30,20.4,Claim,Shaft
+BMW,R 1300 RT,2025,1300,25,20.8,Claim,Shaft
+BMW,R 18,2025,1802,16,17.8,Claim,Shaft
+BMW,R 18 Classic,2025,1802,16,17.8,Claim,Shaft
+BMW,R 18 Roctane,2025,1802,16,17.8,Claim,Shaft
+BMW,R 18 B,2025,1802,24,17.2,Claim,Shaft
+BMW,R 18 Transcontinental,2025,1802,24,17.2,Claim,Shaft
 BMW,K 1600 GT,2025,1649,26.5,16.9,Claim,Shaft
 BMW,K 1600 GTL,2025,1649,26.5,16.9,Claim,Shaft
-BMW,K 1600 B,2025,1649,26.5,16.9,Claim,Shaft
 BMW,K 1600 Grand America,2025,1649,26.5,16.9,Claim,Shaft
 Triumph,Speed 400,2025,398,13,28.5,Claim,Chain
 Triumph,Scrambler 400 X,2025,398,13,28.5,Claim,Chain
-Triumph,TF 250-X,2025,249.9,7.0,25.0,Estimate-LowConfidence,Chain
 Triumph,Trident 660,2025,660,14,21.7,Claim,Chain
+Triumph,Tracker 400,2026,398,13,28.5,Estimate-LowConfidence,Chain
+Triumph,Scrambler 400 XC,2025,398,13,28.5,Estimate-LowConfidence,Chain
 Triumph,Daytona 660,2025,660,14,20.4,Claim,Chain
 Triumph,Tiger Sport 660,2025,660,17.2,22.2,Claim,Chain
-Triumph,Street Triple 765 R,2025,765,15,18.8,Claim,Chain
+Triumph,Street Triple 765,2025,765,15,18.8,Estimate-LowConfidence,Chain
 Triumph,Street Triple 765 RS,2025,765,15,18.8,Claim,Chain
+Triumph,Street Triple 765 RX,2026,765,15,18.8,Estimate-LowConfidence,Chain
 Triumph,Speed Twin 900,2025,900,12,24.4,Claim,Chain
 Triumph,Scrambler 900,2025,900,12,23.3,Claim,Chain
-Triumph,Bonneville T100,2025,900,14.5,24.4,Claim,Chain
+Triumph,Bonneville T100,2025,900,14.5,24.4,Estimate-LowConfidence,Chain
 Triumph,Bonneville T120,2025,1200,14.5,21.2,Claim,Chain
 Triumph,Bonneville T120 Black,2025,1200,14.5,21.2,Claim,Chain
 Triumph,Bonneville Bobber,2025,1200,12,21.7,Claim,Chain
 Triumph,Bonneville Speedmaster,2025,1200,12,21.7,Claim,Chain
 Triumph,Speed Twin 1200,2025,1200,14.5,19.6,Claim,Chain
+Triumph,Speed Twin 1200 RS,2025,1200,14.5,19.6,Estimate-LowConfidence,Chain
 Triumph,Scrambler 1200 X,2025,1200,15,21.2,Claim,Chain
 Triumph,Scrambler 1200 XE,2025,1200,15,21.2,Claim,Chain
 Triumph,Speed Triple 1200 RS,2025,1160,15.5,15.8,Claim,Chain
-Triumph,Speed Triple 1200 RR,2025,1160,15.5,15.8,Claim,Chain
-Triumph,Tiger 850 Sport,2025,888,20,19.2,Claim,Chain
+Triumph,Tiger 850 Sport,2025,888,20,19.2,Estimate-LowConfidence,Chain
 Triumph,Tiger 900 GT Pro,2025,888,20,21.2,Claim,Chain
 Triumph,Tiger 900 Rally Pro,2025,888,20,21.2,Claim,Chain
-Triumph,Tiger 1200 GT Pro,2025,1160,20,19.6,Claim,Shaft
-Triumph,Tiger 1200 GT Explorer,2025,1160,30,19.6,Claim,Shaft
-Triumph,Tiger 1200 Rally Pro,2025,1160,20,19.6,Claim,Shaft
-Triumph,Tiger 1200 Rally Explorer,2025,1160,30,19.6,Claim,Shaft
+Triumph,Tiger 1200 Rally Pro,2025,1160,20,19.6,Estimate-LowConfidence,Shaft
+Triumph,Tiger 1200 Rally Explorer,2025,1160,30,19.6,Estimate-LowConfidence,Shaft
 Triumph,Rocket 3 Storm R,2025,2458,18,15.1,Claim,Shaft
 Triumph,Rocket 3 Storm GT,2025,2458,18,15.1,Claim,Shaft
 Harley-Davidson,Nightster,2026,975,11.7,18.2,Claim,Belt
 Harley-Davidson,Nightster Special,2026,975,11.7,18.2,Claim,Belt
 Harley-Davidson,Sportster S,2026,1252,11.8,19.6,Claim,Belt
-Harley-Davidson,Street Bob 114,2026,1868,13.2,18.2,Claim,Belt
-Harley-Davidson,Fat Bob 114,2026,1868,13.6,18.2,Claim,Belt
+Harley-Davidson,Street Bob,2026,1923,13.2,18.2,Claim,Belt
 Harley-Davidson,Low Rider S,2026,1923,18.9,18.2,Claim,Belt
 Harley-Davidson,Low Rider ST,2026,1923,18.9,18.2,Claim,Belt
-Harley-Davidson,Fat Boy 114,2026,1868,18.9,18.2,Claim,Belt
-Harley-Davidson,Heritage Classic 114,2026,1868,18.9,18.2,Claim,Belt
-Harley-Davidson,Breakout 117,2026,1923,18.9,18.2,Claim,Belt
-Harley-Davidson,Road King Special,2026,1868,22.7,16.4,Claim,Belt
+Harley-Davidson,Fat Boy,2026,1923,18.9,18.2,Claim,Belt
+Harley-Davidson,Heritage Classic,2026,1923,18.9,18.2,Claim,Belt
+Harley-Davidson,Breakout,2026,1923,18.9,18.2,Claim,Belt
 Harley-Davidson,Street Glide,2026,1923,22.7,16.7,Claim,Belt
 Harley-Davidson,Road Glide,2026,1923,22.7,16.7,Claim,Belt
-Harley-Davidson,Ultra Limited,2026,1868,22.7,15.9,Claim,Belt
-Harley-Davidson,Road Glide Limited,2026,1868,22.7,15.9,Claim,Belt
+Harley-Davidson,Street Glide Limited,2026,1923,22.7,15.9,Claim,Belt
+Harley-Davidson,Road Glide Limited,2026,1923,22.7,15.9,Claim,Belt
 Harley-Davidson,Pan America 1250 Special,2026,1252,21.2,18.2,Claim,Chain
-Harley-Davidson,CVO Street Glide,2026,1977,22.7,16.7,Claim,Belt
-Harley-Davidson,CVO Road Glide,2026,1977,22.7,16.7,Claim,Belt
+Harley-Davidson,Pan America 1250 ST,2026,1252,21.2,18.2,Estimate-LowConfidence,Chain
+Harley-Davidson,CVO Street Glide ST,2026,1977,22.7,16.7,Estimate-LowConfidence,Belt
 Harley-Davidson,CVO Road Glide ST,2026,1977,22.7,16.7,Claim,Belt
-Harley-Davidson,CVO Pan America,2026,1252,21.2,18.2,Claim,Chain
+Suzuki,Smash Fi 115 "Plus ABS",2026,113,3.7,66.7,Claim,Chain
+Ducati,Desmo450 MX,2025,449.6,7.2,,N/A,Chain
+KTM,1390 Super Adventure S EVO,2025,1350,23,17.5,Estimate-LowConfidence,Chain
