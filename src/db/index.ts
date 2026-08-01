@@ -202,7 +202,15 @@ export async function addBike(input: {
 
   await db.transaction('rw', db.bikes, db.config, async () => {
     await db.bikes.add(bike);
-    await db.config.update(CONFIG_KEY, { activeBikeId: id });
+    const existingConfig = await db.config.get(CONFIG_KEY);
+    await db.config.put({
+      fuelPricePerLitre: 37.5,
+      defaultProfile: 'urban',
+      bilingualThai: true,
+      ...existingConfig,
+      activeBikeId: id,
+      key: CONFIG_KEY,
+    });
   });
   return id;
 }

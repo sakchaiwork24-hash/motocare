@@ -10,7 +10,18 @@ export function Header() {
 
   if (!activeBike) {
     return (
-      <header className="sticky top-0 z-10 bg-app border-b border-[rgba(51,65,85,.6)] min-h-[52px] pt-[env(safe-area-inset-top)]" />
+      <header className="sticky top-0 z-10 bg-app border-b border-[rgba(51,65,85,.6)] pt-[env(safe-area-inset-top)]">
+        <div className="p-2">
+          <button
+            onClick={openSwitcher}
+            className="w-full min-h-[52px] flex items-center justify-center gap-2 rounded-16 border border-border bg-surface px-3 py-2 hover:border-accent transition-colors"
+          >
+            <span className="font-display font-bold text-[13px] tracking-[.04em] uppercase text-accent">
+              Add your first bike
+            </span>
+          </button>
+        </div>
+      </header>
     );
   }
 

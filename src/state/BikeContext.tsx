@@ -27,7 +27,7 @@ const BikeContext = createContext<BikeContextValue | null>(null);
 
 export function BikeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
-    seedIfEmpty();
+    if (import.meta.env.DEV) seedIfEmpty();
   }, []);
 
   const bikes = useLiveQuery(() => db.bikes.toArray(), [], []) ?? [];
