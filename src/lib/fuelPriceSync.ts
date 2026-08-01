@@ -1,5 +1,4 @@
-// TODO: replace <owner>/<repo>/<branch> once this project's GitHub remote exists (set up separately) - e.g. https://raw.githubusercontent.com/someuser/motocare/main/public/fuel-price.json
-const FUEL_PRICE_JSON_URL = 'https://raw.githubusercontent.com/<owner>/<repo>/<branch>/public/fuel-price.json';
+const FUEL_PRICE_JSON_URL = 'https://raw.githubusercontent.com/sakchaiwork24-hash/motocare/main/public/fuel-price.json';
 
 export type FuelPriceSyncResult = { pricePerLitre: number; fetchedAt: string; fuelType: string };
 
