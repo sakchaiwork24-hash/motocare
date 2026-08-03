@@ -10,6 +10,11 @@ body,
   height: 100%;
 }
 
+.app-shell-height {
+  height: 100vh;
+  height: 100dvh;
+}
+
 body {
   background: theme('colors.page');
   color: theme('colors.ink.100');
