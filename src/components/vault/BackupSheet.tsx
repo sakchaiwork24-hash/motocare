@@ -4,6 +4,7 @@ import { Sheet } from '../Sheet';
 import { useToast } from '../../state/ToastContext';
 import { exportAllData, importData } from '../../lib/backup';
 import { BilingualLabel } from '../BilingualLabel';
+import { PrimaryButton } from '../PrimaryButton';
 
 type BackupSheetProps = {
   open: boolean;
@@ -60,23 +61,19 @@ export function BackupSheet({ open, onClose }: BackupSheetProps) {
           เพื่อป้องกันข้อมูลหายเมื่อล้างแคชเบราว์เซอร์หรือเปลี่ยนเครื่อง
         </div>
 
-        <button
-          onClick={handleExport}
-          disabled={busy}
-          className="w-full min-h-[48px] rounded-12 bg-accent2 text-[#000000] font-display font-bold text-[13px] tracking-[.06em] uppercase flex items-center justify-center gap-2 active:opacity-80 transition-opacity disabled:opacity-50"
-        >
-          <Download size={16} />
+        <PrimaryButton onClick={handleExport} disabled={busy} tone="accent2" icon={<Download size={16} />} className="w-full">
           ส่งออกข้อมูล · EXPORT
-        </button>
+        </PrimaryButton>
 
-        <button
+        <PrimaryButton
           onClick={() => fileInputRef.current?.click()}
           disabled={busy}
-          className="w-full min-h-[48px] rounded-12 border border-border bg-sunken text-ink-100 font-display font-semibold text-[13px] tracking-[.06em] uppercase flex items-center justify-center gap-2 active:opacity-80 transition-opacity disabled:opacity-50"
+          tone="outline"
+          icon={<Upload size={16} />}
+          className="w-full"
         >
-          <Upload size={16} />
           นำเข้าข้อมูล · IMPORT
-        </button>
+        </PrimaryButton>
         <input
           ref={fileInputRef}
           type="file"

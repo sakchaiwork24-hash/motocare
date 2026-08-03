@@ -49,15 +49,15 @@ export function ModsTab() {
   };
 
   return (
-    <div className='flex flex-col gap-3.5 w-full'>
+    <div className="flex flex-col gap-3.5 w-full">
       <FinancialOverview />
       <PipelineTabs active={pipeline} onChange={setPipeline} counts={counts} />
 
       <button
         onClick={() => setFormState({ open: true, editingMod: null })}
-        className='w-full flex items-center justify-center gap-2 bg-sunken hover:bg-border border border-border text-ink-100 font-display font-semibold text-[13px] tracking-wider uppercase py-3 rounded-12 transition-colors min-h-[48px]'
+        className="w-full flex items-center justify-center gap-2 bg-sunken hover:bg-border border border-border text-ink-100 font-display font-semibold text-[13px] tracking-wider uppercase py-3 rounded-12 transition-colors min-h-[48px]"
       >
-        <Plus className='w-4 h-4' />
+        <Plus className="w-4 h-4" />
         เพิ่มอะไหล่ · ADD PART
       </button>
 

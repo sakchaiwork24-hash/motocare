@@ -14,7 +14,7 @@ const STAGES: { id: ModStage; label: string; thai: string }[] = [
 
 export function PipelineTabs({ active, onChange, counts }: Props) {
   return (
-    <div className='flex gap-1 bg-sunken p-1 rounded-12'>
+    <div className="flex gap-1 bg-sunken p-1 rounded-12">
       {STAGES.map(s => (
         <button
           key={s.id}
@@ -22,7 +22,7 @@ export function PipelineTabs({ active, onChange, counts }: Props) {
           className={`flex-1 py-2 px-2 rounded-8 font-display text-[11px] tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 min-h-[40px] ${active === s.id ? 'bg-surface text-accent-light' : 'bg-transparent text-ink-500'}`}
         >
           {s.thai}
-          <span className='text-[10px] tabular-nums opacity-70'>{counts[s.id]}</span>
+          <span className="text-[10px] tabular-nums opacity-70">{counts[s.id]}</span>
         </button>
       ))}
     </div>

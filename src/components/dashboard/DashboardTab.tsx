@@ -3,11 +3,11 @@ import { QuickActions } from './QuickActions';
 import { HealthGrid } from './HealthGrid';
 import { RecentActivity } from './RecentActivity';
 
-type DashboardProps = {
+type DashboardTabProps = {
   onNavigate: (tab: 'cost' | 'maint') => void;
 };
 
-export function Dashboard({ onNavigate }: DashboardProps) {
+export function DashboardTab({ onNavigate }: DashboardTabProps) {
   return (
     <>
       <HeroCard />

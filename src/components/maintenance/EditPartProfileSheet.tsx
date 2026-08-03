@@ -6,6 +6,9 @@ import { updatePartProfile } from '../../db';
 import { PART_CATALOG } from '../../data/partCatalog';
 import type { Part } from '../../types';
 import { BilingualLabel } from '../BilingualLabel';
+import { Chip } from '../Chip';
+import { FormField } from '../FormField';
+import { PrimaryButton } from '../PrimaryButton';
 
 type EditPartProfileSheetProps = {
   part: Part | null;
@@ -76,28 +79,13 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
 
         <div className="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
           {catalogOptions.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => applyCatalogEntry(c.id)}
-              className={`whitespace-nowrap px-4 min-h-[36px] rounded-full font-display font-semibold text-[11px] tracking-wider uppercase transition-colors border ${
-                selectedCatalogId === c.id
-                  ? 'bg-[rgba(255,107,0,.13)] border-[rgba(255,107,0,.5)] text-accent-light'
-                  : 'bg-sunken border-border text-ink-400'
-              }`}
-            >
+            <Chip key={c.id} active={selectedCatalogId === c.id} onClick={() => applyCatalogEntry(c.id)}>
               {c.label}
-            </button>
+            </Chip>
           ))}
-          <button
-            onClick={() => setSelectedCatalogId(null)}
-            className={`whitespace-nowrap px-4 min-h-[36px] rounded-full font-display font-semibold text-[11px] tracking-wider uppercase transition-colors border ${
-              selectedCatalogId === null
-                ? 'bg-[rgba(255,107,0,.13)] border-[rgba(255,107,0,.5)] text-accent-light'
-                : 'bg-sunken border-border text-ink-400'
-            }`}
-          >
+          <Chip active={selectedCatalogId === null} onClick={() => setSelectedCatalogId(null)}>
             กำหนดเอง
-          </button>
+          </Chip>
         </div>
 
         {selectedNote && (
@@ -105,51 +93,30 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
         )}
 
         <div className="flex flex-col gap-3.5 mt-1">
-          <div className="flex flex-col gap-1.5">
-            <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-              ชื่ออะไหล่
-            </label>
-            <input
-              type="text"
-              value={labelInput}
-              onChange={(e) => setLabelInput(e.target.value)}
-              className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent"
-            />
-          </div>
+          <FormField label="ชื่ออะไหล่" value={labelInput} onChange={setLabelInput} />
 
           <div className="flex gap-3">
-            <div className="flex-1 flex flex-col gap-1.5">
-              <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                ระยะ (กม.)
-              </label>
-              <input
-                type="number"
-                value={intervalInput}
-                onChange={(e) => { setIntervalInput(e.target.value); setSelectedCatalogId(null); }}
-                className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent"
-              />
-            </div>
-            <div className="flex-1 flex flex-col gap-1.5">
-              <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                วัน (ไม่บังคับ)
-              </label>
-              <input
-                type="number"
-                value={timeIntervalInput}
-                onChange={(e) => { setTimeIntervalInput(e.target.value); setSelectedCatalogId(null); }}
-                placeholder="นับกม.อย่างเดียว"
-                className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent placeholder:text-ink-500"
-              />
-            </div>
+            <FormField
+              className="flex-1"
+              label="ระยะ (กม.)"
+              type="number"
+              value={intervalInput}
+              onChange={(v) => { setIntervalInput(v); setSelectedCatalogId(null); }}
+            />
+            <FormField
+              className="flex-1"
+              label="วัน (ไม่บังคับ)"
+              type="number"
+              value={timeIntervalInput}
+              onChange={(v) => { setTimeIntervalInput(v); setSelectedCatalogId(null); }}
+              placeholder="นับกม.อย่างเดียว"
+            />
           </div>
         </div>
 
-        <button
-          onClick={handleSave}
-          className="w-full mt-2 mb-2 min-h-[48px] rounded-12 bg-accent text-[#000000] font-display font-bold text-[13px] tracking-[.06em] uppercase flex items-center justify-center active:opacity-80 transition-opacity"
-        >
+        <PrimaryButton onClick={handleSave} className="w-full mt-2 mb-2">
           บันทึกกำหนด · SAVE
-        </button>
+        </PrimaryButton>
       </div>
     </Sheet>
   );

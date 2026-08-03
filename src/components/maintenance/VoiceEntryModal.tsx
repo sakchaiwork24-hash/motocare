@@ -5,7 +5,13 @@ import { useToast } from '../../state/ToastContext';
 import { recordService } from '../../db';
 import { parseVoiceEntry } from '../../lib/voiceParse';
 import type { PartKey } from '../../types';
+import { Chip } from '../Chip';
+import { FormField } from '../FormField';
+import { PrimaryButton } from '../PrimaryButton';
 
+// Intentionally a centered dialog (like a phone's voice-assist prompt), not a bottom
+// <Sheet> like every other overlay in this app — voice entry needs to grab full attention
+// mid-listening, which a bottom sheet's peek-and-dismiss affordance works against.
 type VoiceEntryModalProps = {
   open: boolean;
   onClose: () => void;
@@ -211,58 +217,22 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
 
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {(Object.keys(PART_LABELS) as PartKey[]).map((key) => (
-                  <button
-                    key={key}
-                    onClick={() => setPartKey(key)}
-                    className={`whitespace-nowrap px-3 min-h-[36px] rounded-full font-display font-semibold text-[11px] uppercase border ${
-                      partKey === key
-                        ? 'bg-[rgba(6,182,212,.15)] border-accent2 text-accent2-light'
-                        : 'bg-sunken border-border text-ink-400'
-                    }`}
-                  >
+                  <Chip key={key} active={partKey === key} onClick={() => setPartKey(key)} tone="accent2" size="sm">
                     {PART_LABELS[key]}
-                  </button>
+                  </Chip>
                 ))}
               </div>
 
               <div className="flex gap-3">
-                <div className="flex-1 flex flex-col gap-1.5">
-                  <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">เลขไมล์</label>
-                  <input
-                    type="number"
-                    value={odoInput}
-                    onChange={(e) => setOdoInput(e.target.value)}
-                    className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent2"
-                  />
-                </div>
-                <div className="flex-1 flex flex-col gap-1.5">
-                  <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">ค่าใช้จ่าย (฿)</label>
-                  <input
-                    type="number"
-                    value={costInput}
-                    onChange={(e) => setCostInput(e.target.value)}
-                    className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent2"
-                  />
-                </div>
+                <FormField className="flex-1" label="เลขไมล์" type="number" value={odoInput} onChange={setOdoInput} accent="accent2" />
+                <FormField className="flex-1" label="ค่าใช้จ่าย (฿)" type="number" value={costInput} onChange={setCostInput} accent="accent2" />
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">ร้าน</label>
-                <input
-                  type="text"
-                  value={shopInput}
-                  onChange={(e) => setShopInput(e.target.value)}
-                  placeholder="ทำเองที่บ้าน"
-                  className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent2 placeholder:text-ink-500"
-                />
-              </div>
+              <FormField label="ร้าน" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" accent="accent2" />
 
-              <button
-                onClick={handleSave}
-                className="w-full min-h-[48px] rounded-12 bg-good text-[#0F172A] font-display font-bold text-[13px] tracking-[.06em] uppercase"
-              >
+              <PrimaryButton onClick={handleSave} tone="good" className="w-full">
                 บันทึก · SAVE
-              </button>
+              </PrimaryButton>
             </div>
           )}
         </div>

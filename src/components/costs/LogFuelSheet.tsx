@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
 import { Sheet } from '../Sheet';
 import { recordFuelLog } from '../../db';
 import { useToast } from '../../state/ToastContext';
@@ -7,30 +6,38 @@ import { scanFuelReceipt } from '../../lib/ocr';
 import { consumption } from '../../lib/wear';
 import { ScanLine } from 'lucide-react';
 import { BilingualLabel } from '../BilingualLabel';
+import { FormField } from '../FormField';
+import { PrimaryButton } from '../PrimaryButton';
+import type { Bike } from '../../types';
 
-export function LogFuelSheet() {
-  const { activeBike, logFuelSheet, closeLogFuelSheet } = useBikes();
+type LogFuelSheetProps = {
+  open: boolean;
+  onClose: () => void;
+  bike: Bike | undefined;
+};
+
+export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [scanState, setScanState] = useState<'idle' | 'scanning' | 'matched'>('idle');
-  
+
   const [litersInput, setLitersInput] = useState('');
   const [thbInput, setThbInput] = useState('');
   const [odoInput, setOdoInput] = useState('');
   const [stationInput, setStationInput] = useState('');
 
   useEffect(() => {
-    if (logFuelSheet.open) {
-      setOdoInput(activeBike ? activeBike.odo.toString() : '');
+    if (open) {
+      setOdoInput(bike ? bike.odo.toString() : '');
       setLitersInput('');
       setThbInput('');
       setStationInput('');
       setScanState('idle');
     }
-  }, [logFuelSheet.open, activeBike]);
+  }, [open, bike]);
 
-  if (!activeBike) return null;
+  if (!bike) return null;
 
   const handlePick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,9 +49,9 @@ export function LogFuelSheet() {
       const res = await scanFuelReceipt(file);
       if (res.liters) setLitersInput(res.liters.toString());
       if (res.thb) setThbInput(res.thb.toString());
-      if (res.odo && res.odo > activeBike.odo) setOdoInput(res.odo.toString());
+      if (res.odo && res.odo > bike.odo) setOdoInput(res.odo.toString());
       if (res.station) setStationInput(res.station);
-      
+
       setScanState('matched');
     } catch (err) {
       showToast('อ่านใบเสร็จไม่ได้ — กรอกเองแทน');
@@ -67,35 +74,35 @@ export function LogFuelSheet() {
       return;
     }
 
-    const hasPriorLog = activeBike.fuelLogs.length > 0;
-    const prevOdo = activeBike.fuelLogs[0]?.odo ?? odo;
+    const hasPriorLog = bike.fuelLogs.length > 0;
+    const prevOdo = bike.fuelLogs[0]?.odo ?? odo;
     const kmpl = hasPriorLog && odo > prevOdo
       ? Number(consumption(odo, prevOdo, liters).toFixed(1))
-      : activeBike.kmpl;
+      : bike.kmpl;
 
     try {
-      await recordFuelLog(activeBike.id, { liters, thb, odo, station });
+      await recordFuelLog(bike.id, { liters, thb, odo, station });
     } catch (err) {
       console.error('recordFuelLog failed', err);
       showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
       return;
     }
-    closeLogFuelSheet();
+    onClose();
     showToast(`บันทึกน้ำมันแล้ว · เลขไมล์ ${odo.toLocaleString()} กม. · ${kmpl} km/L`);
   };
 
   // Live consumption calculation
   const currentOdo = parseInt(odoInput, 10) || 0;
   const currentLiters = parseFloat(litersInput) || 0;
-  const hasPriorFuelLog = activeBike.fuelLogs.length > 0;
-  const prevOdo = activeBike.fuelLogs[0]?.odo ?? currentOdo;
+  const hasPriorFuelLog = bike.fuelLogs.length > 0;
+  const prevOdo = bike.fuelLogs[0]?.odo ?? currentOdo;
   let consStr = '—';
   let consColor = 'text-ink-400';
 
   if (hasPriorFuelLog && currentOdo > prevOdo && currentLiters > 0) {
     const cons = consumption(currentOdo, prevOdo, currentLiters);
     consStr = cons.toFixed(1) + ' km/L';
-    consColor = cons >= activeBike.kmpl ? 'text-good' : 'text-soon';
+    consColor = cons >= bike.kmpl ? 'text-good' : 'text-soon';
   }
 
   let scanStyles = 'border-border text-ink-400';
@@ -112,7 +119,7 @@ export function LogFuelSheet() {
   }
 
   return (
-    <Sheet open={logFuelSheet.open} onClose={closeLogFuelSheet}>
+    <Sheet open={open} onClose={onClose}>
       <div className="p-5 flex flex-col gap-5">
         <BilingualLabel en="LOG FUEL" thai="เติมน้ำมัน" primaryClassName="text-ink-100 !text-[15px]" secondaryClassName="text-ink-400 !text-[11px]" />
 
@@ -148,44 +155,12 @@ export function LogFuelSheet() {
 
         <div className="flex flex-col gap-3.5 mt-2">
           <div className="flex gap-3">
-            <div className="flex-1 flex flex-col gap-1.5">
-              <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                จำนวนลิตร
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                value={litersInput}
-                onChange={e => setLitersInput(e.target.value)}
-                className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent"
-              />
-            </div>
-            <div className="flex-1 flex flex-col gap-1.5">
-              <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                ยอดเงิน (บาท)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                value={thbInput}
-                onChange={e => setThbInput(e.target.value)}
-                className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent"
-              />
-            </div>
+            <FormField className="flex-1" label="จำนวนลิตร" type="number" step="0.01" value={litersInput} onChange={setLitersInput} />
+            <FormField className="flex-1" label="ยอดเงิน (บาท)" type="number" step="0.01" value={thbInput} onChange={setThbInput} />
           </div>
-          
+
           <div className="flex gap-3">
-            <div className="flex-1 flex flex-col gap-1.5">
-              <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                เลขไมล์ (กม.)
-              </label>
-              <input
-                type="number"
-                value={odoInput}
-                onChange={e => setOdoInput(e.target.value)}
-                className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent"
-              />
-            </div>
+            <FormField className="flex-1" label="เลขไมล์ (กม.)" type="number" value={odoInput} onChange={setOdoInput} />
             <div className="flex-1 flex flex-col gap-1.5 justify-center">
               <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
                 อัตราสิ้นเปลือง
@@ -196,26 +171,12 @@ export function LogFuelSheet() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-              ปั๊มน้ำมัน (ไม่บังคับ)
-            </label>
-            <input
-              type="text"
-              value={stationInput}
-              onChange={e => setStationInput(e.target.value)}
-              placeholder="เช่น ปตท, เชลล์"
-              className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent placeholder:text-ink-500"
-            />
-          </div>
+          <FormField label="ปั๊มน้ำมัน (ไม่บังคับ)" value={stationInput} onChange={setStationInput} placeholder="เช่น ปตท, เชลล์" />
         </div>
 
-        <button
-          onClick={handleSave}
-          className="w-full mt-2 min-h-[48px] rounded-12 bg-accent text-[#000000] font-display font-bold text-[13px] tracking-[.06em] uppercase flex items-center justify-center active:opacity-80 transition-opacity"
-        >
+        <PrimaryButton onClick={handleSave} className="w-full mt-2">
           บันทึกรายการ · SAVE
-        </button>
+        </PrimaryButton>
 
         <div className="text-center font-sans text-[10px] text-ink-500 mt-1 mb-2">
           บันทึกในเครื่องนี้เท่านั้น ไม่มีคลาวด์แบ็คอัพ · keep this browser/phone as your record

@@ -6,6 +6,8 @@ import { useToast } from '../../state/ToastContext';
 import { shortDate } from '../../lib/format';
 import { MOD_CATEGORY_META } from '../../lib/modCategories';
 import { exportPassportPdf } from '../../lib/passportPdf';
+import { StatTile } from '../StatTile';
+import { PrimaryButton } from '../PrimaryButton';
 
 type ResalePassportSheetProps = {
   open: boolean;
@@ -81,13 +83,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
 
           <div className="grid grid-cols-2 gap-2.5">
             {stats.map((s) => (
-              <div key={s.k} className="bg-surface border border-border rounded-14 p-3">
-                <div className="font-display font-semibold text-[8.5px] tracking-[.1em] text-ink-500 uppercase">
-                  {s.k}
-                </div>
-                <div className="font-display font-bold text-[15px] text-ink-50 mt-1 tabular-nums">{s.v}</div>
-                <div className="font-sans text-[9px] text-ink-500 mt-0.5">{s.sub}</div>
-              </div>
+              <StatTile key={s.k} label={s.k} value={s.v} sub={s.sub} size="sm" />
             ))}
           </div>
 
@@ -141,14 +137,9 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
           )}
         </div>
 
-        <button
-          onClick={handleExport}
-          disabled={exporting}
-          className="w-full min-h-[48px] rounded-12 bg-accent2 text-[#000000] font-display font-bold text-[13px] tracking-[.06em] uppercase flex items-center justify-center gap-2 active:opacity-80 transition-opacity disabled:opacity-50"
-        >
-          <Download size={16} />
+        <PrimaryButton onClick={handleExport} disabled={exporting} tone="accent2" icon={<Download size={16} />} className="w-full">
           {exporting ? 'กำลังสร้าง…' : 'ส่งออก PDF พาสปอร์ต'}
-        </button>
+        </PrimaryButton>
       </div>
     </Sheet>
   );
