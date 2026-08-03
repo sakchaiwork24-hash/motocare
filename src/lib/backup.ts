@@ -48,13 +48,21 @@ function isValidPart(p: unknown): boolean {
 function isValidFuelLog(f: unknown): boolean {
   if (!isRecord(f)) return false;
   return typeof f.date === 'string' && typeof f.liters === 'number' &&
-    typeof f.thb === 'number' && typeof f.odo === 'number';
+    typeof f.thb === 'number' && typeof f.odo === 'number' &&
+    (f.id === undefined || typeof f.id === 'string');
 }
 
 function isValidService(s: unknown): boolean {
   if (!isRecord(s)) return false;
   return typeof s.date === 'string' && typeof s.odo === 'number' && typeof s.cost === 'number' &&
-    (s.receiptBlob === undefined || isDataUrl(s.receiptBlob));
+    (s.receiptBlob === undefined || isDataUrl(s.receiptBlob)) &&
+    (s.id === undefined || typeof s.id === 'string');
+}
+
+function isValidTripLog(t: unknown): boolean {
+  if (!isRecord(t)) return false;
+  return typeof t.date === 'string' && typeof t.km === 'number' && typeof t.cost === 'number' &&
+    (t.id === undefined || typeof t.id === 'string');
 }
 
 function isValidMod(m: unknown): boolean {
@@ -81,7 +89,8 @@ function isValidSerializedBike(b: unknown): b is SerializedBike {
     Array.isArray(b.fuelLogs) && b.fuelLogs.every(isValidFuelLog) &&
     Array.isArray(b.services) && b.services.every(isValidService) &&
     Array.isArray(b.mods) && b.mods.every(isValidMod) &&
-    Array.isArray(b.docs) && b.docs.every(isValidSerializedDoc)
+    Array.isArray(b.docs) && b.docs.every(isValidSerializedDoc) &&
+    (b.trips === undefined || (Array.isArray(b.trips) && b.trips.every(isValidTripLog)))
   );
 }
 
@@ -128,23 +137,30 @@ async function serializeBike(bike: Bike): Promise<SerializedBike> {
 }
 
 async function deserializeBike(bike: SerializedBike): Promise<Bike> {
-  const { photoBlob, docs, services, ...rest } = bike;
+  const { photoBlob, docs, services, fuelLogs, trips, ...rest } = bike;
   const deserializedDocs: Doc[] = await Promise.all(
     docs.map(async (doc) => {
       const { scanBlob, ...docRest } = doc;
       return scanBlob ? { ...docRest, scanBlob: await dataUrlToBlob(scanBlob) } : { ...docRest };
     })
   );
+  // `id` backfill below: backups exported before Service/FuelLog/TripLog had an id field
+  // otherwise wouldn't have one to restore — assign a fresh one on import in that case.
   const deserializedServices: Service[] = await Promise.all(
     services.map(async (service) => {
       const { receiptBlob, ...serviceRest } = service;
-      return receiptBlob ? { ...serviceRest, receiptBlob: await dataUrlToBlob(receiptBlob) } : { ...serviceRest };
+      const withId = { ...serviceRest, id: serviceRest.id ?? crypto.randomUUID() };
+      return receiptBlob ? { ...withId, receiptBlob: await dataUrlToBlob(receiptBlob) } : withId;
     })
   );
+  const deserializedFuelLogs = fuelLogs.map((log) => ({ ...log, id: log.id ?? crypto.randomUUID() }));
+  const deserializedTrips = trips?.map((trip) => ({ ...trip, id: trip.id ?? crypto.randomUUID() }));
   return {
     ...rest,
     docs: deserializedDocs,
     services: deserializedServices,
+    fuelLogs: deserializedFuelLogs,
+    ...(deserializedTrips ? { trips: deserializedTrips } : {}),
     ...(photoBlob ? { photoBlob: await dataUrlToBlob(photoBlob) } : {}),
   };
 }

@@ -6,10 +6,14 @@ import { BilingualLabel } from '../BilingualLabel';
 import { HistoryFilterBar } from '../HistoryFilterBar';
 import { filterByDateAndText, type DateRangeOption } from '../../lib/historyFilter';
 import { ReceiptViewerSheet } from './ReceiptViewerSheet';
+import { RowActions } from '../RowActions';
+import { deleteService } from '../../db';
+import { useToast } from '../../state/ToastContext';
 import type { Service } from '../../types';
 
 export function ServiceHistoryList() {
-  const { activeBike } = useBikes();
+  const { activeBike, openServiceSheetForEdit } = useBikes();
+  const { showToast } = useToast();
   const [query, setQuery] = useState('');
   const [range, setRange] = useState<DateRangeOption>('all');
   const [viewingService, setViewingService] = useState<Service | null>(null);
@@ -22,6 +26,17 @@ export function ServiceHistoryList() {
     dateField: 'date',
     textFields: ['shop', 'what'],
   });
+
+  const handleDelete = async (service: Service) => {
+    if (!window.confirm(`ลบรายการ "${service.what}" ใช่ไหม?`)) return;
+    try {
+      await deleteService(activeBike.id, service.id);
+      showToast('ลบรายการซ่อมแล้ว');
+    } catch (err) {
+      console.error('deleteService failed', err);
+      showToast('ลบไม่สำเร็จ ลองใหม่อีกครั้ง');
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -50,42 +65,41 @@ export function ServiceHistoryList() {
             ไม่พบรายการที่ตรงกับตัวกรอง
           </div>
         )}
-        {filteredServices.map((s, i) => {
-          const rowClassName = `min-h-[56px] w-full flex items-center gap-3 px-3 py-2.5 text-left ${
-            i < filteredServices.length - 1 ? 'border-b border-[rgba(51,65,85,.5)]' : ''
-          }`;
-          const rowContent = (
-            <>
-              <div className="w-[34px] h-[34px] rounded-11 flex items-center justify-center shrink-0 bg-[rgba(255,107,0,.13)] text-accent-light">
-                <Settings size={16} />
-              </div>
-
-              <div className="flex-1 flex flex-col justify-center min-w-0">
-                <div className="font-sans font-medium text-[14px] text-ink-100 truncate flex items-center gap-1.5">
-                  {s.what}
-                  {s.receiptBlob && <Camera size={12} className="text-ink-400 shrink-0" />}
-                </div>
-                <div className="font-sans text-[11px] text-ink-400 truncate">
-                  {shortDate(s.date)} · {s.shop} · {s.odo.toLocaleString()} km
-                </div>
-              </div>
-
-              <div className="font-display font-bold text-[14px] text-ink-100 shrink-0">
-                {s.cost ? `฿${s.cost.toLocaleString()}` : 'ฟรี'}
-              </div>
-            </>
-          );
-
-          return s.receiptBlob ? (
-            <button key={`${s.odo}-${s.date}`} onClick={() => setViewingService(s)} className={rowClassName}>
-              {rowContent}
-            </button>
-          ) : (
-            <div key={`${s.odo}-${s.date}`} className={rowClassName}>
-              {rowContent}
+        {filteredServices.map((s, i) => (
+          <div
+            key={s.id}
+            className={`min-h-[56px] flex items-center gap-2 px-3 py-2.5 ${
+              i < filteredServices.length - 1 ? 'border-b border-[rgba(51,65,85,.5)]' : ''
+            }`}
+          >
+            <div className="w-[34px] h-[34px] rounded-11 flex items-center justify-center shrink-0 bg-[rgba(255,107,0,.13)] text-accent-light">
+              <Settings size={16} />
             </div>
-          );
-        })}
+
+            <div className="flex-1 flex flex-col justify-center min-w-0">
+              <div className="font-sans font-medium text-[14px] text-ink-100 truncate">{s.what}</div>
+              <div className="font-sans text-[11px] text-ink-400 truncate">
+                {shortDate(s.date)} · {s.shop} · {s.odo.toLocaleString()} km
+              </div>
+            </div>
+
+            <div className="font-display font-bold text-[14px] text-ink-100 shrink-0">
+              {s.cost ? `฿${s.cost.toLocaleString()}` : 'ฟรี'}
+            </div>
+
+            {s.receiptBlob && (
+              <button
+                onClick={() => setViewingService(s)}
+                className="w-8 h-8 flex items-center justify-center text-ink-400 shrink-0"
+                aria-label="View receipt"
+              >
+                <Camera size={14} />
+              </button>
+            )}
+
+            <RowActions onEdit={() => openServiceSheetForEdit(s)} onDelete={() => handleDelete(s)} />
+          </div>
+        ))}
       </div>
 
       <ReceiptViewerSheet service={viewingService} onClose={() => setViewingService(null)} />

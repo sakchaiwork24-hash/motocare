@@ -29,6 +29,7 @@ export type Mod = {
 };
 
 export type FuelLog = {
+  id: string;
   date: string; // ISO date
   station: string;
   liters: number;
@@ -43,6 +44,7 @@ export type MonthlySpend = {
 };
 
 export type Service = {
+  id: string;
   date: string; // ISO date
   odo: number;
   what: string;
@@ -52,6 +54,7 @@ export type Service = {
 };
 
 export type TripLog = {
+  id: string;
   date: string; // ISO date
   label: string; // matched preset name, or a generic "กำหนดเอง" for a custom distance
   km: number;

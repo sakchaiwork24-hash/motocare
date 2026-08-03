@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { CONFIG_KEY, RIDER_KEY, db, seedIfEmpty, updateConfig } from '../db';
-import type { Bike, Config, Rider } from '../types';
+import type { Bike, Config, Rider, Service, FuelLog } from '../types';
 import { useToast } from './ToastContext';
 
 type BikeContextValue = {
@@ -14,11 +14,13 @@ type BikeContextValue = {
   switcherOpen: boolean;
   openSwitcher: () => void;
   closeSwitcher: () => void;
-  serviceSheet: { open: boolean; partKey?: string };
+  serviceSheet: { open: boolean; partKey?: string; editing?: Service };
   openServiceSheet: (partKey?: string) => void;
+  openServiceSheetForEdit: (service: Service) => void;
   closeServiceSheet: () => void;
-  logFuelSheet: { open: boolean };
+  logFuelSheet: { open: boolean; editing?: FuelLog };
   openLogFuelSheet: () => void;
+  openLogFuelSheetForEdit: (log: FuelLog) => void;
   closeLogFuelSheet: () => void;
   backupSheetOpen: boolean;
   openBackupSheet: () => void;
@@ -40,8 +42,8 @@ export function BikeProvider({ children }: { children: ReactNode }) {
   const config = useLiveQuery(() => db.config.get(CONFIG_KEY), []);
   const rider = useLiveQuery(() => db.rider.get(RIDER_KEY), []);
   const [switcherOpen, setSwitcherOpen] = useState(false);
-  const [serviceSheet, setServiceSheet] = useState<{ open: boolean; partKey?: string }>({ open: false });
-  const [logFuelSheet, setLogFuelSheet] = useState<{ open: boolean }>({ open: false });
+  const [serviceSheet, setServiceSheet] = useState<{ open: boolean; partKey?: string; editing?: Service }>({ open: false });
+  const [logFuelSheet, setLogFuelSheet] = useState<{ open: boolean; editing?: FuelLog }>({ open: false });
   const [backupSheetOpen, setBackupSheetOpen] = useState(false);
   const [flashTrip, setFlashTrip] = useState(false);
   const flashTripTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -60,9 +62,11 @@ export function BikeProvider({ children }: { children: ReactNode }) {
   const closeSwitcher = useCallback(() => setSwitcherOpen(false), []);
   
   const openServiceSheet = useCallback((partKey?: string) => setServiceSheet({ open: true, partKey }), []);
+  const openServiceSheetForEdit = useCallback((service: Service) => setServiceSheet({ open: true, editing: service }), []);
   const closeServiceSheet = useCallback(() => setServiceSheet((prev) => ({ ...prev, open: false })), []);
 
   const openLogFuelSheet = useCallback(() => setLogFuelSheet({ open: true }), []);
+  const openLogFuelSheetForEdit = useCallback((log: FuelLog) => setLogFuelSheet({ open: true, editing: log }), []);
   const closeLogFuelSheet = useCallback(() => setLogFuelSheet({ open: false }), []);
 
   const openBackupSheet = useCallback(() => setBackupSheetOpen(true), []);
@@ -79,8 +83,8 @@ export function BikeProvider({ children }: { children: ReactNode }) {
       value={{
         bikes, activeBike, activeId, switchBike, config, rider,
         switcherOpen, openSwitcher, closeSwitcher,
-        serviceSheet, openServiceSheet, closeServiceSheet,
-        logFuelSheet, openLogFuelSheet, closeLogFuelSheet,
+        serviceSheet, openServiceSheet, openServiceSheetForEdit, closeServiceSheet,
+        logFuelSheet, openLogFuelSheet, openLogFuelSheetForEdit, closeLogFuelSheet,
         backupSheetOpen, openBackupSheet, closeBackupSheet,
         flashTrip, triggerTripFlash
       }}

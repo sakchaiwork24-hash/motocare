@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Sheet } from '../Sheet';
-import { recordFuelLog } from '../../db';
+import { recordFuelLog, updateFuelLog } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import { scanFuelReceipt } from '../../lib/ocr';
 import { consumption } from '../../lib/wear';
@@ -8,15 +8,16 @@ import { ScanLine } from 'lucide-react';
 import { BilingualLabel } from '../BilingualLabel';
 import { FormField } from '../FormField';
 import { PrimaryButton } from '../PrimaryButton';
-import type { Bike } from '../../types';
+import type { Bike, FuelLog } from '../../types';
 
 type LogFuelSheetProps = {
   open: boolean;
   onClose: () => void;
   bike: Bike | undefined;
+  editing?: FuelLog;
 };
 
-export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
+export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps) {
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -28,14 +29,20 @@ export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
   const [stationInput, setStationInput] = useState('');
 
   useEffect(() => {
-    if (open) {
+    if (!open) return;
+    if (editing) {
+      setLitersInput(editing.liters.toString());
+      setThbInput(editing.thb.toString());
+      setOdoInput(editing.odo.toString());
+      setStationInput(editing.station);
+    } else {
       setOdoInput(bike ? bike.odo.toString() : '');
       setLitersInput('');
       setThbInput('');
       setStationInput('');
-      setScanState('idle');
     }
-  }, [open, bike]);
+    setScanState('idle');
+  }, [open, editing, bike]);
 
   if (!bike) return null;
 
@@ -71,6 +78,19 @@ export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
     }
     if (liters <= 0 || thb < 0 || odo < 0) {
       showToast('จำนวนลิตรต้องมากกว่า 0 และยอดเงิน/เลขไมล์ต้องไม่ติดลบ');
+      return;
+    }
+
+    if (editing) {
+      try {
+        await updateFuelLog(bike.id, editing.id, { date: editing.date, station, liters, thb, odo });
+      } catch (err) {
+        console.error('updateFuelLog failed', err);
+        showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
+        return;
+      }
+      onClose();
+      showToast('แก้ไขรายการเติมน้ำมันแล้ว');
       return;
     }
 
@@ -121,7 +141,12 @@ export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
   return (
     <Sheet open={open} onClose={onClose}>
       <div className="p-5 flex flex-col gap-5">
-        <BilingualLabel en="LOG FUEL" thai="เติมน้ำมัน" primaryClassName="text-ink-100 !text-[15px]" secondaryClassName="text-ink-400 !text-[11px]" />
+        <BilingualLabel
+          en={editing ? 'EDIT FUEL LOG' : 'LOG FUEL'}
+          thai={editing ? 'แก้ไขการเติมน้ำมัน' : 'เติมน้ำมัน'}
+          primaryClassName="text-ink-100 !text-[15px]"
+          secondaryClassName="text-ink-400 !text-[11px]"
+        />
 
         <div className={`relative h-[120px] rounded-16 border-2 border-dashed flex flex-col items-center justify-center gap-2 overflow-hidden bg-sunken transition-colors ${scanStyles}`}>
           {scanState === 'scanning' && (
@@ -175,7 +200,7 @@ export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
         </div>
 
         <PrimaryButton onClick={handleSave} className="w-full mt-2">
-          บันทึกรายการ · SAVE
+          {editing ? 'บันทึกการแก้ไข · SAVE' : 'บันทึกรายการ · SAVE'}
         </PrimaryButton>
 
         <div className="text-center font-sans text-[10px] text-ink-500 mt-1 mb-2">

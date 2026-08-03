@@ -6,9 +6,14 @@ import { consumption, isValidKmpl } from '../../lib/wear';
 import { BilingualLabel } from '../BilingualLabel';
 import { HistoryFilterBar } from '../HistoryFilterBar';
 import { filterByDateAndText, type DateRangeOption } from '../../lib/historyFilter';
+import { RowActions } from '../RowActions';
+import { deleteFuelLog } from '../../db';
+import { useToast } from '../../state/ToastContext';
+import type { FuelLog } from '../../types';
 
 export function FuelLogList() {
-  const { activeBike, openLogFuelSheet } = useBikes();
+  const { activeBike, openLogFuelSheet, openLogFuelSheetForEdit } = useBikes();
+  const { showToast } = useToast();
   const [query, setQuery] = useState('');
   const [range, setRange] = useState<DateRangeOption>('all');
 
@@ -20,6 +25,17 @@ export function FuelLogList() {
     dateField: 'date',
     textFields: ['station'],
   });
+
+  const handleDelete = async (log: FuelLog) => {
+    if (!window.confirm(`ลบรายการเติมน้ำมันที่ ${log.station} ใช่ไหม?`)) return;
+    try {
+      await deleteFuelLog(activeBike.id, log.id);
+      showToast('ลบรายการเติมน้ำมันแล้ว');
+    } catch (err) {
+      console.error('deleteFuelLog failed', err);
+      showToast('ลบไม่สำเร็จ ลองใหม่อีกครั้ง');
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -70,8 +86,8 @@ export function FuelLogList() {
 
           return (
             <div
-              key={`${log.odo}-${log.date}`}
-              className={`min-h-[56px] flex items-center gap-3 px-3 py-2.5 ${
+              key={log.id}
+              className={`min-h-[56px] flex items-center gap-2 px-3 py-2.5 ${
                 i < filteredLogs.length - 1 ? 'border-b border-[rgba(51,65,85,.5)]' : ''
               }`}
             >
@@ -96,6 +112,8 @@ export function FuelLogList() {
                   {consStr}
                 </div>
               </div>
+
+              <RowActions onEdit={() => openLogFuelSheetForEdit(log)} onDelete={() => handleDelete(log)} />
             </div>
           );
         })}

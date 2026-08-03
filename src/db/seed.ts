@@ -61,19 +61,19 @@ export const seedBikes: Bike[] = [
       { id: 'm6', name: 'USB-C Charger + Phone Mount', cat: 'UTILITY', price: 1290, stage: 'wishlist', stock: 'No stock part removed', trigger: '', meta: 'Saved 21 Jul 2026' },
     ],
     fuelLogs: [
-      { date: '2026-07-28', station: 'PTT Station · Rama IX', liters: 8.42, thb: 315, odo: 6800 },
-      { date: '2026-07-21', station: 'Bangchak · Ladprao 71', liters: 7.9, thb: 296, odo: 6562 },
-      { date: '2026-07-14', station: 'PT · Rangsit Klong 3', liters: 8.1, thb: 304, odo: 6330 },
+      { id: 'zf1', date: '2026-07-28', station: 'PTT Station · Rama IX', liters: 8.42, thb: 315, odo: 6800 },
+      { id: 'zf2', date: '2026-07-21', station: 'Bangchak · Ladprao 71', liters: 7.9, thb: 296, odo: 6562 },
+      { id: 'zf3', date: '2026-07-14', station: 'PT · Rangsit Klong 3', liters: 8.1, thb: 304, odo: 6330 },
     ],
     monthly: [
       { m: 'FEB', thb: 980 }, { m: 'MAR', thb: 1150 }, { m: 'APR', thb: 1040 },
       { m: 'MAY', thb: 1290 }, { m: 'JUN', thb: 1120 }, { m: 'JUL', thb: 1240 },
     ],
     services: [
-      { date: '2026-07-19', odo: 6450, what: 'Chain lube & tension adjust', shop: 'Zontes Bangkok · Rama IX', cost: 150 },
-      { date: '2026-04-14', odo: 4000, what: 'Engine oil + filter (Motul 7100)', shop: 'Zontes Bangkok · Rama IX', cost: 890 },
-      { date: '2026-02-02', odo: 3000, what: 'Air filter + valve clearance check', shop: 'Zontes Bangkok · Rama IX', cost: 1240 },
-      { date: '2025-12-08', odo: 1000, what: 'First service (1,000 km)', shop: 'Zontes Bangkok · Rama IX', cost: 0 },
+      { id: 'zs1', date: '2026-07-19', odo: 6450, what: 'Chain lube & tension adjust', shop: 'Zontes Bangkok · Rama IX', cost: 150 },
+      { id: 'zs2', date: '2026-04-14', odo: 4000, what: 'Engine oil + filter (Motul 7100)', shop: 'Zontes Bangkok · Rama IX', cost: 890 },
+      { id: 'zs3', date: '2026-02-02', odo: 3000, what: 'Air filter + valve clearance check', shop: 'Zontes Bangkok · Rama IX', cost: 1240 },
+      { id: 'zs4', date: '2025-12-08', odo: 1000, what: 'First service (1,000 km)', shop: 'Zontes Bangkok · Rama IX', cost: 0 },
     ],
     docs: [
       { id: 'tax', name: 'Road Tax Sticker', thai: 'ป้ายวงกลม', expiry: '2026-08-22', issuer: 'กรมการขนส่งทางบก', icon: '#ic-cal' },
@@ -113,19 +113,19 @@ export const seedBikes: Bike[] = [
       { id: 'w3', name: 'Racing Boy Rear Shock', cat: 'HANDLING', price: 2900, stage: 'wishlist', stock: 'Stock shock stays on shelf', trigger: 'Stiffer rate — check rear tyre wear every 3,000 km', meta: 'Saved 12 Jul 2026' },
     ],
     fuelLogs: [
-      { date: '2026-07-29', station: 'Susco · Petchkasem', liters: 3.8, thb: 135, odo: 42150 },
-      { date: '2026-07-23', station: 'PTT · Bang Wa', liters: 3.6, thb: 128, odo: 41968 },
-      { date: '2026-07-16', station: 'Esso · Thonburi', liters: 3.9, thb: 139, odo: 41782 },
+      { id: 'wf1', date: '2026-07-29', station: 'Susco · Petchkasem', liters: 3.8, thb: 135, odo: 42150 },
+      { id: 'wf2', date: '2026-07-23', station: 'PTT · Bang Wa', liters: 3.6, thb: 128, odo: 41968 },
+      { id: 'wf3', date: '2026-07-16', station: 'Esso · Thonburi', liters: 3.9, thb: 139, odo: 41782 },
     ],
     monthly: [
       { m: 'FEB', thb: 540 }, { m: 'MAR', thb: 610 }, { m: 'APR', thb: 580 },
       { m: 'MAY', thb: 640 }, { m: 'JUN', thb: 600 }, { m: 'JUL', thb: 655 },
     ],
     services: [
-      { date: '2026-07-12', odo: 41900, what: 'Engine oil (Honda 10W-30)', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 320 },
-      { date: '2026-02-02', odo: 36000, what: 'Air filter + spark plug', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 410 },
-      { date: '2025-09-09', odo: 33000, what: 'Rear brake shoes', shop: 'Honda Bigwing · Petchkasem', cost: 520 },
-      { date: '2025-02-04', odo: 28000, what: 'Chain & sprocket set', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 1150 },
+      { id: 'ws1', date: '2026-07-12', odo: 41900, what: 'Engine oil (Honda 10W-30)', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 320 },
+      { id: 'ws2', date: '2026-02-02', odo: 36000, what: 'Air filter + spark plug', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 410 },
+      { id: 'ws3', date: '2025-09-09', odo: 33000, what: 'Rear brake shoes', shop: 'Honda Bigwing · Petchkasem', cost: 520 },
+      { id: 'ws4', date: '2025-02-04', odo: 28000, what: 'Chain & sprocket set', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 1150 },
     ],
     docs: [
       { id: 'tax', name: 'Road Tax Sticker', thai: 'ป้ายวงกลม', expiry: '2026-10-04', issuer: 'กรมการขนส่งทางบก', icon: '#ic-cal' },
@@ -164,18 +164,18 @@ export const seedBikes: Bike[] = [
       { id: 'v3', name: 'Brown Leather Saddle Cover', cat: 'STYLE', price: 1450, stage: 'wishlist', stock: 'Original saddle stays fitted', trigger: '', meta: 'Saved 25 Jul 2026' },
     ],
     fuelLogs: [
-      { date: '2026-07-27', station: 'Shell · Sathorn', liters: 6.2, thb: 238, odo: 12430 },
-      { date: '2026-07-18', station: 'PTT · Silom', liters: 5.9, thb: 226, odo: 12175 },
-      { date: '2026-07-08', station: 'Caltex · Rama IV', liters: 6.4, thb: 245, odo: 11930 },
+      { id: 'vf1', date: '2026-07-27', station: 'Shell · Sathorn', liters: 6.2, thb: 238, odo: 12430 },
+      { id: 'vf2', date: '2026-07-18', station: 'PTT · Silom', liters: 5.9, thb: 226, odo: 12175 },
+      { id: 'vf3', date: '2026-07-08', station: 'Caltex · Rama IV', liters: 6.4, thb: 245, odo: 11930 },
     ],
     monthly: [
       { m: 'FEB', thb: 720 }, { m: 'MAR', thb: 690 }, { m: 'APR', thb: 810 },
       { m: 'MAY', thb: 760 }, { m: 'JUN', thb: 700 }, { m: 'JUL', thb: 709 },
     ],
     services: [
-      { date: '2026-05-19', odo: 10500, what: 'Engine oil + gear oil', shop: 'Vespa Sathorn', cost: 1450 },
-      { date: '2025-08-11', odo: 5000, what: 'Drive belt, rollers, air filter', shop: 'Vespa Sathorn', cost: 3900 },
-      { date: '2025-03-02', odo: 2000, what: 'Second service', shop: 'Vespa Sathorn', cost: 850 },
+      { id: 'vs1', date: '2026-05-19', odo: 10500, what: 'Engine oil + gear oil', shop: 'Vespa Sathorn', cost: 1450 },
+      { id: 'vs2', date: '2025-08-11', odo: 5000, what: 'Drive belt, rollers, air filter', shop: 'Vespa Sathorn', cost: 3900 },
+      { id: 'vs3', date: '2025-03-02', odo: 2000, what: 'Second service', shop: 'Vespa Sathorn', cost: 850 },
     ],
     docs: [
       { id: 'tax', name: 'Road Tax Sticker', thai: 'ป้ายวงกลม', expiry: '2027-01-18', issuer: 'กรมการขนส่งทางบก', icon: '#ic-cal' },

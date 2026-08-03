@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { Bike, Config, Rider, Mod, Part, RidingProfile, TripLog } from '../types';
+import type { Bike, Config, Rider, Mod, Part, RidingProfile, TripLog, Service, FuelLog } from '../types';
 import { seedBikes, seedConfig, seedRider } from './seed';
 import { consumption, isValidKmpl } from '../lib/wear';
 
@@ -72,6 +72,7 @@ export async function recordService(
     );
     const services = [
       {
+        id: crypto.randomUUID(),
         date: today, odo: entry.odo, what: label, shop: entry.shop || 'Self-serviced at home', cost: entry.cost,
         ...(entry.receiptBlob ? { receiptBlob: entry.receiptBlob } : {}),
       },
@@ -117,7 +118,7 @@ export async function recordFuelLog(
       : null;
     const kmpl = computedKmpl !== null && isValidKmpl(computedKmpl) ? computedKmpl : bike.kmpl;
     const fuelLogs = [
-      { date: today, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
+      { id: crypto.randomUUID(), date: today, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
       ...bike.fuelLogs,
     ];
     const monthly = rollMonthlySpend(bike.monthly, entry.thb, now);
@@ -127,13 +128,13 @@ export async function recordFuelLog(
 
 export async function recordTrip(
   bikeId: string,
-  entry: Omit<TripLog, 'date'>
+  entry: Omit<TripLog, 'date' | 'id'>
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
     if (!bike) throw new Error('Bike not found');
     const today = new Date().toISOString().slice(0, 10);
-    const trips = [{ date: today, ...entry }, ...(bike.trips ?? [])];
+    const trips = [{ id: crypto.randomUUID(), date: today, ...entry }, ...(bike.trips ?? [])];
     await db.bikes.update(bikeId, { trips });
   });
 }
@@ -255,4 +256,49 @@ export async function updateDocScan(bikeId: string, docId: string, blob: Blob): 
     const docs = bike.docs.map((d) => (d.id === docId ? { ...d, scanBlob: blob } : d));
     await db.bikes.update(bikeId, { docs });
   });
+}
+
+/**
+ * Shared "find bike, replace/remove one item in one of its list fields" shape used by the
+ * update/delete mutators below for services, fuelLogs, and trips — `updater` returning `null`
+ * deletes the item, otherwise the returned value replaces it in place.
+ */
+async function patchBikeList<T extends { id: string }>(
+  bikeId: string,
+  key: 'services' | 'fuelLogs' | 'trips',
+  itemId: string,
+  updater: (item: T) => T | null
+): Promise<void> {
+  await db.transaction('rw', db.bikes, async () => {
+    const bike = await db.bikes.get(bikeId);
+    if (!bike) throw new Error('Bike not found');
+    const list = (bike[key] as T[] | undefined) ?? [];
+    const index = list.findIndex((item) => item.id === itemId);
+    if (index < 0) throw new Error('Record not found');
+    const updated = updater(list[index]);
+    const newList = updated === null
+      ? list.filter((_, i) => i !== index)
+      : list.map((item, i) => (i === index ? updated : item));
+    await db.bikes.update(bikeId, { [key]: newList } as Partial<Bike>);
+  });
+}
+
+export async function updateService(bikeId: string, serviceId: string, patch: Omit<Service, 'id'>): Promise<void> {
+  await patchBikeList<Service>(bikeId, 'services', serviceId, (item) => ({ ...patch, id: item.id }));
+}
+
+export async function deleteService(bikeId: string, serviceId: string): Promise<void> {
+  await patchBikeList<Service>(bikeId, 'services', serviceId, () => null);
+}
+
+export async function updateFuelLog(bikeId: string, fuelLogId: string, patch: Omit<FuelLog, 'id'>): Promise<void> {
+  await patchBikeList<FuelLog>(bikeId, 'fuelLogs', fuelLogId, (item) => ({ ...patch, id: item.id }));
+}
+
+export async function deleteFuelLog(bikeId: string, fuelLogId: string): Promise<void> {
+  await patchBikeList<FuelLog>(bikeId, 'fuelLogs', fuelLogId, () => null);
+}
+
+export async function deleteTrip(bikeId: string, tripId: string): Promise<void> {
+  await patchBikeList<TripLog>(bikeId, 'trips', tripId, () => null);
 }

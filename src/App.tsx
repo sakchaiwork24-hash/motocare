@@ -53,8 +53,9 @@ function AppBody() {
         onClose={closeServiceSheet}
         bike={activeBike}
         initialPartKey={serviceSheet.partKey}
+        editing={serviceSheet.editing}
       />
-      <LogFuelSheet open={logFuelSheet.open} onClose={closeLogFuelSheet} bike={activeBike} />
+      <LogFuelSheet open={logFuelSheet.open} onClose={closeLogFuelSheet} bike={activeBike} editing={logFuelSheet.editing} />
       <BackupSheet open={backupSheetOpen} onClose={closeBackupSheet} />
       <InstallBanner suppressed={needRefresh} />
       <UpdateBanner needRefresh={needRefresh} applyUpdate={applyUpdate} />
