@@ -155,15 +155,15 @@ export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
 
         <div className="flex flex-col gap-3.5 mt-2">
           <div className="flex gap-3">
-            <FormField className="flex-1" label="จำนวนลิตร" type="number" step="0.01" value={litersInput} onChange={setLitersInput} />
-            <FormField className="flex-1" label="ยอดเงิน (บาท)" type="number" step="0.01" value={thbInput} onChange={setThbInput} />
+            <FormField className="flex-1" label="จำนวนลิตร" labelEn="LITERS" type="number" step="0.01" value={litersInput} onChange={setLitersInput} />
+            <FormField className="flex-1" label="ยอดเงิน (บาท)" labelEn="AMOUNT (THB)" type="number" step="0.01" value={thbInput} onChange={setThbInput} />
           </div>
 
           <div className="flex gap-3">
-            <FormField className="flex-1" label="เลขไมล์ (กม.)" type="number" value={odoInput} onChange={setOdoInput} />
+            <FormField className="flex-1" label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" value={odoInput} onChange={setOdoInput} />
             <div className="flex-1 flex flex-col gap-1.5 justify-center">
               <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                อัตราสิ้นเปลือง
+                อัตราสิ้นเปลือง <span className="opacity-70">· CONSUMPTION</span>
               </label>
               <div className={`font-display font-bold text-[16px] ${consColor}`}>
                 {consStr}
@@ -171,7 +171,7 @@ export function LogFuelSheet({ open, onClose, bike }: LogFuelSheetProps) {
             </div>
           </div>
 
-          <FormField label="ปั๊มน้ำมัน (ไม่บังคับ)" value={stationInput} onChange={setStationInput} placeholder="เช่น ปตท, เชลล์" />
+          <FormField label="ปั๊มน้ำมัน (ไม่บังคับ)" labelEn="STATION (OPTIONAL)" value={stationInput} onChange={setStationInput} placeholder="เช่น ปตท, เชลล์" />
         </div>
 
         <PrimaryButton onClick={handleSave} className="w-full mt-2">

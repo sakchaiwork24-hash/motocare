@@ -85,10 +85,11 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey }: ServiceShe
 
         <div className="flex flex-col gap-3.5 mt-1">
           <div className="flex gap-3">
-            <FormField className="flex-1" label="เลขไมล์ (กม.)" type="number" value={odoInput} onChange={setOdoInput} />
+            <FormField className="flex-1" label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" value={odoInput} onChange={setOdoInput} />
             <FormField
               className="flex-1"
               label="ค่าใช้จ่าย (บาท)"
+              labelEn="COST (THB)"
               type="number"
               value={costInput}
               onChange={setCostInput}
@@ -96,7 +97,7 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey }: ServiceShe
             />
           </div>
 
-          <FormField label="ร้าน / อู่" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" />
+          <FormField label="ร้าน / อู่" labelEn="SHOP" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" />
         </div>
 
         <PrimaryButton onClick={handleSave} className="w-full mt-2 mb-2">

@@ -1,5 +1,6 @@
 type FormFieldProps = {
   label: string;
+  labelEn?: string;
   type?: string;
   value: string;
   onChange: (value: string) => void;
@@ -11,6 +12,7 @@ type FormFieldProps = {
 
 export function FormField({
   label,
+  labelEn,
   type = 'text',
   value,
   onChange,
@@ -23,6 +25,7 @@ export function FormField({
     <div className={`flex flex-col gap-1.5 ${className}`}>
       <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
         {label}
+        {labelEn && <span className="opacity-70"> · {labelEn}</span>}
       </label>
       <input
         type={type}

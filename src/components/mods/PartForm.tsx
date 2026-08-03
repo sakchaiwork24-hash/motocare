@@ -98,7 +98,7 @@ export function PartForm({ open, onClose, editingMod }: Props) {
           secondaryClassName="text-ink-400 !text-[11px]"
         />
 
-        <FormField label="ชื่ออะไหล่" value={name} onChange={setName} />
+        <FormField label="ชื่ออะไหล่" labelEn="PART NAME" value={name} onChange={setName} />
 
         <div className="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
           {CATEGORIES.map((c) => {
@@ -112,11 +112,11 @@ export function PartForm({ open, onClose, editingMod }: Props) {
         </div>
 
         <div className="flex gap-3">
-          <FormField className="flex-1" label="ราคา (บาท)" type="number" value={price} onChange={setPrice} />
-          <FormField className="flex-1" label="จุดเก็บอะไหล่เดิม" value={stock} onChange={setStock} />
+          <FormField className="flex-1" label="ราคา (บาท)" labelEn="PRICE (THB)" type="number" value={price} onChange={setPrice} />
+          <FormField className="flex-1" label="จุดเก็บอะไหล่เดิม" labelEn="STOCK PART LOCATION" value={stock} onChange={setStock} />
         </div>
 
-        <FormField label="เงื่อนไขที่ต้องเช็ค (ไม่บังคับ)" value={trigger} onChange={setTrigger} placeholder="ไม่บังคับ" />
+        <FormField label="เงื่อนไขที่ต้องเช็ค (ไม่บังคับ)" labelEn="CHECK CONDITION (OPTIONAL)" value={trigger} onChange={setTrigger} placeholder="ไม่บังคับ" />
 
         <PrimaryButton onClick={handleSave} className="w-full mt-2 mb-2">
           บันทึกอะไหล่ · SAVE

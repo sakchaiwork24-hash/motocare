@@ -29,13 +29,13 @@ export function AddBikeStep3Specs({
   return (
     <div className="flex flex-col gap-3.5">
       <div className="flex gap-3">
-        <FormField className="flex-1" label="อัตราสิ้นเปลือง (กม./ล.)" type="number" value={kmpl} onChange={setKmpl} />
-        <FormField className="flex-1" label="ถังน้ำมัน (ล.)" type="number" value={tank} onChange={setTank} />
+        <FormField className="flex-1" label="อัตราสิ้นเปลือง (กม./ล.)" labelEn="CONSUMPTION (KM/L)" type="number" value={kmpl} onChange={setKmpl} />
+        <FormField className="flex-1" label="ถังน้ำมัน (ล.)" labelEn="TANK (L)" type="number" value={tank} onChange={setTank} />
       </div>
 
       <div className="flex flex-col gap-1.5">
         <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-          ระบบขับเคลื่อน
+          ระบบขับเคลื่อน <span className="opacity-70">· DRIVE TYPE</span>
         </label>
         <div className="flex gap-2">
           {DRIVE_OPTIONS.map((d) => (
@@ -56,7 +56,7 @@ export function AddBikeStep3Specs({
 
       <div className="flex flex-col gap-1.5">
         <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-          รูปแบบการขับขี่
+          รูปแบบการขับขี่ <span className="opacity-70">· RIDING PROFILE</span>
         </label>
         <div className="flex gap-2">
           {(Object.entries(PROFILE_META) as [RidingProfile, typeof PROFILE_META[RidingProfile]][]).map(([key, meta]) => (

@@ -224,11 +224,11 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
               </div>
 
               <div className="flex gap-3">
-                <FormField className="flex-1" label="เลขไมล์" type="number" value={odoInput} onChange={setOdoInput} accent="accent2" />
-                <FormField className="flex-1" label="ค่าใช้จ่าย (฿)" type="number" value={costInput} onChange={setCostInput} accent="accent2" />
+                <FormField className="flex-1" label="เลขไมล์" labelEn="ODOMETER" type="number" value={odoInput} onChange={setOdoInput} accent="accent2" />
+                <FormField className="flex-1" label="ค่าใช้จ่าย (฿)" labelEn="COST" type="number" value={costInput} onChange={setCostInput} accent="accent2" />
               </div>
 
-              <FormField label="ร้าน" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" accent="accent2" />
+              <FormField label="ร้าน" labelEn="SHOP" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" accent="accent2" />
 
               <PrimaryButton onClick={handleSave} tone="good" className="w-full">
                 บันทึก · SAVE

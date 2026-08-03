@@ -23,19 +23,19 @@ export function AddBikeStep2Basics({
 }: AddBikeStep2BasicsProps) {
   return (
     <div className="flex flex-col gap-3.5">
-      <FormField label="ชื่อเล่นรถ" value={nick} onChange={setNick} placeholder="เช่น Gray Shadow" />
+      <FormField label="ชื่อเล่นรถ" labelEn="NICKNAME" value={nick} onChange={setNick} placeholder="เช่น Gray Shadow" />
 
       <div className="flex gap-3">
-        <FormField className="flex-1" label="ยี่ห้อ" value={brand} onChange={setBrand} />
-        <FormField className="flex-1" label="รุ่น" value={model} onChange={setModel} />
+        <FormField className="flex-1" label="ยี่ห้อ" labelEn="BRAND" value={brand} onChange={setBrand} />
+        <FormField className="flex-1" label="รุ่น" labelEn="MODEL" value={model} onChange={setModel} />
       </div>
 
       <div className="flex gap-3">
-        <FormField className="flex-1" label="ปี" type="number" value={year} onChange={setYear} />
-        <FormField className="flex-1" label="ทะเบียน" value={plate} onChange={setPlate} placeholder="ไม่บังคับ" />
+        <FormField className="flex-1" label="ปี" labelEn="YEAR" type="number" value={year} onChange={setYear} />
+        <FormField className="flex-1" label="ทะเบียน" labelEn="PLATE" value={plate} onChange={setPlate} placeholder="ไม่บังคับ" />
       </div>
 
-      <FormField label="เลขไมล์ (กม.)" type="number" value={odo} onChange={setOdo} />
+      <FormField label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" value={odo} onChange={setOdo} />
 
       <div className="flex gap-2 mt-1">
         <PrimaryButton onClick={onBack} tone="outline" className="flex-1">

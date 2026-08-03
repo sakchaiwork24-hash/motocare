@@ -73,7 +73,7 @@ export function FuelPriceSheet({ open, onClose }: FuelPriceSheetProps) {
         <BilingualLabel en="FUEL PRICE" thai="ราคาน้ำมัน" primaryClassName="text-ink-100 !text-[15px]" secondaryClassName="text-ink-400 !text-[11px]" />
 
         <div className="flex flex-col gap-3.5 mt-2">
-          <FormField label="ราคาต่อลิตร (บาท)" type="number" step="0.01" value={priceInput} onChange={setPriceInput} />
+          <FormField label="ราคาต่อลิตร (บาท)" labelEn="PRICE PER LITRE (THB)" type="number" step="0.01" value={priceInput} onChange={setPriceInput} />
 
           <div className="font-sans text-[11px] text-ink-400">
             {config.fuelPriceSyncedAt

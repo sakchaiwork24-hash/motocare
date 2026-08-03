@@ -93,12 +93,13 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
         )}
 
         <div className="flex flex-col gap-3.5 mt-1">
-          <FormField label="ชื่ออะไหล่" value={labelInput} onChange={setLabelInput} />
+          <FormField label="ชื่ออะไหล่" labelEn="PART NAME" value={labelInput} onChange={setLabelInput} />
 
           <div className="flex gap-3">
             <FormField
               className="flex-1"
               label="ระยะ (กม.)"
+              labelEn="INTERVAL (KM)"
               type="number"
               value={intervalInput}
               onChange={(v) => { setIntervalInput(v); setSelectedCatalogId(null); }}
@@ -106,6 +107,7 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
             <FormField
               className="flex-1"
               label="วัน (ไม่บังคับ)"
+              labelEn="DAYS (OPTIONAL)"
               type="number"
               value={timeIntervalInput}
               onChange={(v) => { setTimeIntervalInput(v); setSelectedCatalogId(null); }}
