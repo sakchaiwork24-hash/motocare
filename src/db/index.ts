@@ -27,6 +27,32 @@ class MotoCareDb extends Dexie {
 export const db = new MotoCareDb();
 
 /**
+ * One-time repair for bikes saved before Service/FuelLog/TripLog had an `id` field: without one,
+ * React list keys collide and — more importantly — updateService/deleteService (and the fuel/trip
+ * equivalents) look up records by `id`, so every pre-existing entry without one would silently
+ * resolve to the same "first item with no id" match instead of the one the user actually tapped.
+ * Runs on every app start (cheap no-op once everything has an id); real users can have data from
+ * before this feature shipped, unlike `seedIfEmpty` which is dev-only.
+ */
+export async function backfillMissingIds(): Promise<void> {
+  await db.transaction('rw', db.bikes, async () => {
+    const bikes = await db.bikes.toArray();
+    for (const bike of bikes) {
+      const withId = <T extends { id?: string }>(item: T) => (item.id ? item : { ...item, id: crypto.randomUUID() });
+      const services = bike.services.map(withId);
+      const fuelLogs = bike.fuelLogs.map(withId);
+      const trips = bike.trips?.map(withId);
+      const changed = services.some((s, i) => s !== bike.services[i])
+        || fuelLogs.some((f, i) => f !== bike.fuelLogs[i])
+        || (trips && bike.trips && trips.some((t, i) => t !== bike.trips![i]));
+      if (changed) {
+        await db.bikes.update(bike.id, { services, fuelLogs, ...(trips ? { trips } : {}) });
+      }
+    }
+  });
+}
+
+/**
  * Populates the local-first store with the prototype fixture on first run. The empty-check and
  * the writes happen inside one transaction so two concurrent callers (React StrictMode's
  * double-effect-invoke in dev, or multiple tabs sharing the same IndexedDB) can't both see an

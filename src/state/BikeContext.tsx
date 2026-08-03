@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { CONFIG_KEY, RIDER_KEY, db, seedIfEmpty, updateConfig } from '../db';
+import { CONFIG_KEY, RIDER_KEY, db, seedIfEmpty, backfillMissingIds, updateConfig } from '../db';
 import type { Bike, Config, Rider, Service, FuelLog } from '../types';
 import { useToast } from './ToastContext';
 
@@ -36,6 +36,7 @@ export function BikeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (import.meta.env.DEV) seedIfEmpty();
+    backfillMissingIds().catch((err) => console.error('backfillMissingIds failed', err));
   }, []);
 
   const bikes = useLiveQuery(() => db.bikes.toArray(), [], []) ?? [];
