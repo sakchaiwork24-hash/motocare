@@ -60,7 +60,7 @@ export async function recordService(
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
-    if (!bike) return;
+    if (!bike) throw new Error('Bike not found');
     const today = new Date().toISOString().slice(0, 10);
     const newOdo = Math.max(bike.odo, entry.odo);
     const part = bike.parts.find(p => p.key === entry.partKey);
@@ -101,7 +101,7 @@ export async function recordFuelLog(
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
-    if (!bike) return;
+    if (!bike) throw new Error('Bike not found');
     const now = new Date();
     const today = now.toISOString().slice(0, 10);
     const hasPriorLog = bike.fuelLogs.length > 0;
@@ -123,7 +123,7 @@ export async function recordFuelLog(
 export async function advanceModStage(bikeId: string, modId: string): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
-    if (!bike) return;
+    if (!bike) throw new Error('Bike not found');
     const modIndex = bike.mods.findIndex(m => m.id === modId);
     if (modIndex < 0) return;
     const mod = bike.mods[modIndex];
@@ -143,7 +143,7 @@ export async function advanceModStage(bikeId: string, modId: string): Promise<vo
 export async function upsertMod(bikeId: string, mod: Mod): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
-    if (!bike) return;
+    if (!bike) throw new Error('Bike not found');
     const existingIndex = bike.mods.findIndex(m => m.id === mod.id);
     const newMods = [...bike.mods];
     if (existingIndex >= 0) {
@@ -169,7 +169,7 @@ export async function updatePartProfile(
   }
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
-    if (!bike) return;
+    if (!bike) throw new Error('Bike not found');
     const parts = bike.parts.map((p) =>
       p.key === partKey ? { ...p, ...patch } : p
     );
@@ -233,7 +233,7 @@ export async function addBike(input: {
 export async function updateDocScan(bikeId: string, docId: string, blob: Blob): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
-    if (!bike) return;
+    if (!bike) throw new Error('Bike not found');
     const docs = bike.docs.map((d) => (d.id === docId ? { ...d, scanBlob: blob } : d));
     await db.bikes.update(bikeId, { docs });
   });
