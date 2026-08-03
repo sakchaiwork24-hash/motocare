@@ -14,12 +14,23 @@
  * confirmed real Thailand retail pricing for 12 of the 18 rows: 250NK, 400NK, 650NK, 650MT,
  * 450MT, 450CL-C, 700CL-X, 450SR, 700MT, 675NK, 500SR Voom, 675SR-R, and 800NK (this corrects an
  * earlier pass that had marked 800NK as not yet sold in Thailand — real THB pricing across
- * multiple model years says otherwise). Still genuinely unconfirmed: 250SR (only Bangladesh/China
- * market pricing found) and the three 800MT variants (Touring/Explore/800MT-X — Australia-market
- * pricing plus anecdotal Thai rental-fleet sightings, not a direct Thailand retail listing). Note
- * this only confirms *market availability*, not the `kmpl`/tank figures themselves — no fuel-economy
- * source was found for any of these, so `kmplBasis` is unchanged pending a further pass. Always a
- * prefill starting point for Add Bike, never auto-applied without the user confirming/editing.
+ * multiple model years says otherwise). A dedicated follow-up pass (2026-08-04) specifically
+ * targeted the remaining 250SR + three 800MT variants and still could not confirm any of them:
+ * - 250SR: every hit is Bangladesh/China-market pricing or 2019-2023 "coming to Thailand soon"
+ *   speculation pieces; no Thai retailer or distributor listing found.
+ * - 800MT / 800MT-X: Thai motoring-press articles exist (bigbike.in.th's 2021 MT800 piece,
+ *   motocrossmag.co.th's 2025 800MT-X piece) but both explicitly say the official Thai launch/
+ *   price hadn't happened yet at time of writing — one shows only a speculative finance-table
+ *   estimate labeled "ราคาประมาณ" (not official), the other only converts the Chinese yuan price
+ *   with the author asking "when will the Thai distributor finally launch this officially" — the
+ *   opposite of confirmation. Genuinely unresolved, not just unresearched; revisit only if
+ *   `cfmotothailand.com` becomes reachable or a Thai retail listing surfaces directly.
+ *
+ * Still genuinely unconfirmed: 250SR and the three 800MT variants (Touring/Explore/800MT-X).
+ * This only confirms *market availability*, not the `kmpl`/tank figures themselves — no
+ * fuel-economy source was found for any of these, so `kmplBasis` is unchanged pending a further
+ * pass. Always a prefill starting point for Add Bike, never auto-applied without the user
+ * confirming/editing.
  *
  * Source data + full research/verification changelog: docs/research/thailand-bike-models-raw.csv
  */
