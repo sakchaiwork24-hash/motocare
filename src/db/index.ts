@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { Bike, Config, Rider, Mod, Part, RidingProfile } from '../types';
+import type { Bike, Config, Rider, Mod, Part, RidingProfile, TripLog } from '../types';
 import { seedBikes, seedConfig, seedRider } from './seed';
 import { consumption, isValidKmpl } from '../lib/wear';
 
@@ -122,6 +122,19 @@ export async function recordFuelLog(
   });
 }
 
+export async function recordTrip(
+  bikeId: string,
+  entry: Omit<TripLog, 'date'>
+): Promise<void> {
+  await db.transaction('rw', db.bikes, async () => {
+    const bike = await db.bikes.get(bikeId);
+    if (!bike) throw new Error('Bike not found');
+    const today = new Date().toISOString().slice(0, 10);
+    const trips = [{ date: today, ...entry }, ...(bike.trips ?? [])];
+    await db.bikes.update(bikeId, { trips });
+  });
+}
+
 export async function advanceModStage(bikeId: string, modId: string): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
@@ -213,7 +226,7 @@ export async function addBike(input: {
     id, nick: input.nick, brand: input.brand, model: input.model, year: input.year,
     plate: input.plate, odo: input.odo, kmpl: input.kmpl, tank: input.tank, drive: input.drive,
     photoSize: '', profile: input.profile,
-    parts, mods: [], fuelLogs: [], monthly: [], services: [], docs: [], specs: [],
+    parts, mods: [], fuelLogs: [], monthly: [], services: [], docs: [], specs: [], trips: [],
   };
 
   await db.transaction('rw', db.bikes, db.config, async () => {

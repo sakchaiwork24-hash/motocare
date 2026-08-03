@@ -1,13 +1,25 @@
+import { useState } from 'react';
 import { useBikes } from '../../state/BikeContext';
 import { Fuel } from 'lucide-react';
 import { shortDate } from '../../lib/format';
 import { consumption, isValidKmpl } from '../../lib/wear';
 import { BilingualLabel } from '../BilingualLabel';
+import { HistoryFilterBar } from '../HistoryFilterBar';
+import { filterByDateAndText, type DateRangeOption } from '../../lib/historyFilter';
 
 export function FuelLogList() {
   const { activeBike, openLogFuelSheet } = useBikes();
+  const [query, setQuery] = useState('');
+  const [range, setRange] = useState<DateRangeOption>('all');
 
   if (!activeBike) return null;
+
+  const filteredLogs = filterByDateAndText(activeBike.fuelLogs, {
+    query,
+    range,
+    dateField: 'date',
+    textFields: ['station'],
+  });
 
   return (
     <div className="flex flex-col gap-2">
@@ -21,15 +33,31 @@ export function FuelLogList() {
         </button>
       </div>
 
+      {activeBike.fuelLogs.length > 0 && (
+        <HistoryFilterBar
+          query={query}
+          onQueryChange={setQuery}
+          range={range}
+          onRangeChange={setRange}
+          placeholder="ค้นหาปั๊มน้ำมัน..."
+        />
+      )}
+
       <div className="bg-surface border border-border rounded-18 overflow-hidden">
         {activeBike.fuelLogs.length === 0 && (
           <div className="p-4 text-center font-sans text-[13px] text-ink-400">
             ยังไม่มีบันทึกการเติมน้ำมัน
           </div>
         )}
-        {activeBike.fuelLogs.map((log, i) => {
-          const isOldest = i === activeBike.fuelLogs.length - 1;
-          const prevOdo = !isOldest ? activeBike.fuelLogs[i + 1].odo : 0;
+        {activeBike.fuelLogs.length > 0 && filteredLogs.length === 0 && (
+          <div className="p-4 text-center font-sans text-[13px] text-ink-400">
+            ไม่พบรายการที่ตรงกับตัวกรอง
+          </div>
+        )}
+        {filteredLogs.map((log, i) => {
+          const originalIndex = activeBike.fuelLogs.indexOf(log);
+          const isOldest = originalIndex === activeBike.fuelLogs.length - 1;
+          const prevOdo = !isOldest ? activeBike.fuelLogs[originalIndex + 1].odo : 0;
           let consStr = '—';
           let isGood = false;
           if (!isOldest) {
@@ -44,7 +72,7 @@ export function FuelLogList() {
             <div
               key={`${log.odo}-${log.date}`}
               className={`min-h-[56px] flex items-center gap-3 px-3 py-2.5 ${
-                i < activeBike.fuelLogs.length - 1 ? 'border-b border-[rgba(51,65,85,.5)]' : ''
+                i < filteredLogs.length - 1 ? 'border-b border-[rgba(51,65,85,.5)]' : ''
               }`}
             >
               <div className="w-[34px] h-[34px] rounded-11 flex items-center justify-center shrink-0 bg-[rgba(255,107,0,.13)] text-accent-light">

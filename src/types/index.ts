@@ -50,6 +50,14 @@ export type Service = {
   cost: number;
 };
 
+export type TripLog = {
+  date: string; // ISO date
+  label: string; // matched preset name, or a generic "กำหนดเอง" for a custom distance
+  km: number;
+  liters: number;
+  cost: number;
+};
+
 export type DocId = 'tax' | 'prb' | 'vol' | 'lic';
 
 export type Doc = {
@@ -83,6 +91,7 @@ export type Bike = {
   services: Service[];
   docs: Doc[];
   specs: [string, string][];
+  trips?: TripLog[]; // optional — bikes saved before this field existed simply have none yet
 };
 
 export type RiderContact = {

@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useBikes } from '../../state/BikeContext';
 import { tripEstimate } from '../../lib/wear';
+import { recordTrip } from '../../db';
+import { useToast } from '../../state/ToastContext';
+import { PrimaryButton } from '../PrimaryButton';
 
 export function TripEstimator() {
   const { activeBike, config, flashTrip } = useBikes();
+  const { showToast } = useToast();
   const [kmInput, setKmInput] = useState('147');
+  const [saving, setSaving] = useState(false);
 
   if (!activeBike || !config) return null;
 
@@ -22,6 +27,25 @@ export function TripEstimator() {
 
   const km = parseFloat(kmInput) || 0;
   const { liters, cost, stops } = tripEstimate(km, activeBike, config.fuelPricePerLitre);
+  const matchedPreset = presets.find(([, k]) => k === km);
+
+  const handleSaveTrip = async () => {
+    setSaving(true);
+    try {
+      await recordTrip(activeBike.id, {
+        label: matchedPreset ? matchedPreset[0] : 'กำหนดเอง',
+        km,
+        liters,
+        cost,
+      });
+      showToast(`บันทึกทริป ${km.toLocaleString()} กม. แล้ว`);
+    } catch (err) {
+      console.error('recordTrip failed', err);
+      showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className={`bg-surface border rounded-16 p-4 transition-colors duration-300 ${flashTrip ? 'border-[#22D3EE]' : 'border-border'}`}>
@@ -88,10 +112,14 @@ export function TripEstimator() {
       </div>
 
       {km > 0 && (
-        <div className="font-sans text-[10px] text-ink-500 text-center">
+        <div className="font-sans text-[10px] text-ink-500 text-center mb-3">
           ไป-กลับ {Math.round(km * 2).toLocaleString()} กม. ≈ ฿{Math.round(cost * 2).toLocaleString()} · เพิ่มเลขไมล์อีก {Math.round(km * 2).toLocaleString()} กม. ทำให้รอบเปลี่ยนน้ำมันเครื่องครั้งถัดไปใกล้เข้ามาอีก {Math.round(km * 2).toLocaleString()} กม.
         </div>
       )}
+
+      <PrimaryButton onClick={handleSaveTrip} disabled={km <= 0 || saving} tone="accent2" className="w-full">
+        บันทึกทริปนี้ · SAVE TRIP
+      </PrimaryButton>
     </div>
   );
 }

@@ -85,6 +85,7 @@ export const seedBikes: Bike[] = [
       ['Engine oil', '1.8 L · 10W-40'], ['Tyre pressure', '29 / 33 PSI'], ['Spark plug', 'NGK CR8E'],
       ['Chain slack', '25–30 mm'], ['Coolant', '1.1 L · Long life'], ['Fuel', 'Gasohol 95 · 13.5 L'],
     ],
+    trips: [],
   },
   {
     id: 'wave',
@@ -135,6 +136,7 @@ export const seedBikes: Bike[] = [
       ['Engine oil', '0.8 L · 10W-30'], ['Tyre pressure', '25 / 29 PSI'], ['Spark plug', 'NGK CPR6EA-9'],
       ['Chain slack', '30–40 mm'], ['Cooling', 'Air cooled'], ['Fuel', 'Gasohol 91 · 4.0 L'],
     ],
+    trips: [],
   },
   {
     id: 'vespa',
@@ -185,5 +187,6 @@ export const seedBikes: Bike[] = [
       ['Engine oil', '1.0 L · 5W-40'], ['Tyre pressure', '26 / 33 PSI'], ['Spark plug', 'NGK CPR8EA-9'],
       ['Drive belt', '22 × 792 mm'], ['Gear oil', '0.13 L'], ['Fuel', 'Gasohol 95 · 8.0 L'],
     ],
+    trips: [],
   },
 ];
