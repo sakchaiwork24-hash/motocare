@@ -46,12 +46,14 @@ export async function seedIfEmpty(): Promise<void> {
 
 /** Patches one bike record (e.g. `{ photoBlob }` after a cover-photo pick). */
 export async function updateBike(id: string, patch: Partial<Bike>): Promise<void> {
-  await db.bikes.update(id, patch);
+  const count = await db.bikes.update(id, patch);
+  if (count === 0) throw new Error('Bike not found');
 }
 
 /** Patches the single config row (e.g. `{ activeBikeId }` on bike switch). */
 export async function updateConfig(patch: Partial<Config>): Promise<void> {
-  await db.config.update(CONFIG_KEY, patch);
+  const count = await db.config.update(CONFIG_KEY, patch);
+  if (count === 0) throw new Error('Config not found');
 }
 
 export async function recordService(
