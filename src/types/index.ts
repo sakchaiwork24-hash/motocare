@@ -48,6 +48,7 @@ export type Service = {
   what: string;
   shop: string;
   cost: number;
+  receiptBlob?: Blob; // real compressed receipt photo, absent until the user picks one
 };
 
 export type TripLog = {

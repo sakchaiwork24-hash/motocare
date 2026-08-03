@@ -1,10 +1,15 @@
 import { db, CONFIG_KEY, RIDER_KEY } from '../db';
-import type { Bike, Config, Rider, Doc } from '../types';
+import type { Bike, Config, Rider, Doc, Service } from '../types';
 
 const BACKUP_VERSION = 1;
 
 type SerializedDoc = Omit<Doc, 'scanBlob'> & { scanBlob?: string };
-type SerializedBike = Omit<Bike, 'photoBlob' | 'docs'> & { photoBlob?: string; docs: SerializedDoc[] };
+type SerializedService = Omit<Service, 'receiptBlob'> & { receiptBlob?: string };
+type SerializedBike = Omit<Bike, 'photoBlob' | 'docs' | 'services'> & {
+  photoBlob?: string;
+  docs: SerializedDoc[];
+  services: SerializedService[];
+};
 
 type BackupPayload = {
   version: number;
@@ -48,7 +53,8 @@ function isValidFuelLog(f: unknown): boolean {
 
 function isValidService(s: unknown): boolean {
   if (!isRecord(s)) return false;
-  return typeof s.date === 'string' && typeof s.odo === 'number' && typeof s.cost === 'number';
+  return typeof s.date === 'string' && typeof s.odo === 'number' && typeof s.cost === 'number' &&
+    (s.receiptBlob === undefined || isDataUrl(s.receiptBlob));
 }
 
 function isValidMod(m: unknown): boolean {
@@ -100,31 +106,45 @@ async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
 }
 
 async function serializeBike(bike: Bike): Promise<SerializedBike> {
-  const { photoBlob, docs, ...rest } = bike;
+  const { photoBlob, docs, services, ...rest } = bike;
   const serializedDocs: SerializedDoc[] = await Promise.all(
     docs.map(async (doc) => {
       const { scanBlob, ...docRest } = doc;
       return scanBlob ? { ...docRest, scanBlob: await blobToDataUrl(scanBlob) } : { ...docRest };
     })
   );
+  const serializedServices: SerializedService[] = await Promise.all(
+    services.map(async (service) => {
+      const { receiptBlob, ...serviceRest } = service;
+      return receiptBlob ? { ...serviceRest, receiptBlob: await blobToDataUrl(receiptBlob) } : { ...serviceRest };
+    })
+  );
   return {
     ...rest,
     docs: serializedDocs,
+    services: serializedServices,
     ...(photoBlob ? { photoBlob: await blobToDataUrl(photoBlob) } : {}),
   };
 }
 
 async function deserializeBike(bike: SerializedBike): Promise<Bike> {
-  const { photoBlob, docs, ...rest } = bike;
+  const { photoBlob, docs, services, ...rest } = bike;
   const deserializedDocs: Doc[] = await Promise.all(
     docs.map(async (doc) => {
       const { scanBlob, ...docRest } = doc;
       return scanBlob ? { ...docRest, scanBlob: await dataUrlToBlob(scanBlob) } : { ...docRest };
     })
   );
+  const deserializedServices: Service[] = await Promise.all(
+    services.map(async (service) => {
+      const { receiptBlob, ...serviceRest } = service;
+      return receiptBlob ? { ...serviceRest, receiptBlob: await dataUrlToBlob(receiptBlob) } : { ...serviceRest };
+    })
+  );
   return {
     ...rest,
     docs: deserializedDocs,
+    services: deserializedServices,
     ...(photoBlob ? { photoBlob: await dataUrlToBlob(photoBlob) } : {}),
   };
 }

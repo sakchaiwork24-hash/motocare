@@ -58,7 +58,7 @@ export async function updateConfig(patch: Partial<Config>): Promise<void> {
 
 export async function recordService(
   bikeId: string,
-  entry: { partKey: string; odo: number; cost: number; shop: string }
+  entry: { partKey: string; odo: number; cost: number; shop: string; receiptBlob?: Blob }
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
@@ -71,7 +71,10 @@ export async function recordService(
       p.key === entry.partKey ? { ...p, lastOdo: Math.max(p.lastOdo, entry.odo), lastDate: today } : p
     );
     const services = [
-      { date: today, odo: entry.odo, what: label, shop: entry.shop || 'Self-serviced at home', cost: entry.cost },
+      {
+        date: today, odo: entry.odo, what: label, shop: entry.shop || 'Self-serviced at home', cost: entry.cost,
+        ...(entry.receiptBlob ? { receiptBlob: entry.receiptBlob } : {}),
+      },
       ...bike.services,
     ];
     await db.bikes.update(bikeId, { odo: newOdo, parts, services });

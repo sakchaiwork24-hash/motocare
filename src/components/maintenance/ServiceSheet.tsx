@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Camera } from 'lucide-react';
+import imageCompression from 'browser-image-compression';
 import { Sheet } from '../Sheet';
 import { recordService } from '../../db';
 import { useToast } from '../../state/ToastContext';
@@ -17,11 +19,15 @@ type ServiceSheetProps = {
 
 export function ServiceSheet({ open, onClose, bike, initialPartKey }: ServiceSheetProps) {
   const { showToast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedPart, setSelectedPart] = useState<string>('oil');
   const [odoInput, setOdoInput] = useState('');
   const [costInput, setCostInput] = useState('');
   const [shopInput, setShopInput] = useState('');
+  const [receiptBlob, setReceiptBlob] = useState<Blob | undefined>(undefined);
+  const [receiptUrl, setReceiptUrl] = useState<string | undefined>(undefined);
+  const [compressing, setCompressing] = useState(false);
 
   useEffect(() => {
     if (open && initialPartKey) {
@@ -29,12 +35,44 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey }: ServiceShe
       setOdoInput(bike ? bike.odo.toString() : '');
       setCostInput('');
       setShopInput('');
+      setReceiptBlob(undefined);
     }
   }, [open, initialPartKey, bike]);
 
+  useEffect(() => {
+    if (!receiptBlob) {
+      setReceiptUrl(undefined);
+      return;
+    }
+    const url = URL.createObjectURL(receiptBlob);
+    setReceiptUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [receiptBlob]);
+
   if (!bike) return null;
 
+  const handlePickReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setCompressing(true);
+    try {
+      const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1600 });
+      setReceiptBlob(compressed);
+    } catch (err) {
+      console.error('receipt photo compression failed', err);
+      showToast('แนบรูปไม่สำเร็จ ลองใหม่อีกครั้ง');
+    } finally {
+      setCompressing(false);
+    }
+  };
+
   const handleSave = async () => {
+    if (compressing) {
+      showToast('รอบีบอัดรูปให้เสร็จก่อน');
+      return;
+    }
+
     const odo = parseInt(odoInput, 10);
     const cost = costInput ? parseInt(costInput, 10) : 0;
 
@@ -57,6 +95,7 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey }: ServiceShe
         odo,
         cost,
         shop: shopInput,
+        receiptBlob,
       });
     } catch (err) {
       console.error('recordService failed', err);
@@ -98,9 +137,27 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey }: ServiceShe
           </div>
 
           <FormField label="ร้าน / อู่" labelEn="SHOP" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" />
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="relative h-[90px] rounded-14 border border-border bg-sunken overflow-hidden text-left"
+          >
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePickReceipt} className="hidden" />
+            {receiptUrl ? (
+              <img src={receiptUrl} alt="Receipt" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center gap-2 text-ink-500">
+                <Camera size={18} />
+                <span className="font-sans text-[12px]">
+                  {compressing ? 'กำลังบีบอัด…' : 'แนบรูปใบเสร็จ (ไม่บังคับ) · ATTACH RECEIPT'}
+                </span>
+              </div>
+            )}
+          </button>
         </div>
 
-        <PrimaryButton onClick={handleSave} className="w-full mt-2 mb-2">
+        <PrimaryButton onClick={handleSave} disabled={compressing} className="w-full mt-2 mb-2">
           บันทึกและรีเซ็ตระยะ · SAVE
         </PrimaryButton>
       </div>

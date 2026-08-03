@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { FileCheck, Download } from 'lucide-react';
+import { FileCheck, Download, Camera } from 'lucide-react';
 import { Sheet } from '../Sheet';
 import { useBikes } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
@@ -31,11 +31,12 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
   const maintTotal = activeBike.services.reduce((a, s) => a + s.cost, 0);
   const installedMods = activeBike.mods.filter((m) => m.stage === 'installed');
   const modsTotal = installedMods.reduce((a, m) => a + m.price, 0);
+  const receiptCount = activeBike.services.filter((s) => s.receiptBlob).length;
 
   const stats = [
     { k: 'เลขไมล์', v: `${activeBike.odo.toLocaleString()} km`, sub: 'ยืนยันจากบันทึกเติมน้ำมัน' },
     { k: 'อัตราสิ้นเปลือง', v: `${activeBike.kmpl.toFixed(1)} km/L`, sub: 'ไม่มีความผิดปกติ' },
-    { k: 'ค่าซ่อมบำรุง', v: `฿${maintTotal.toLocaleString()}`, sub: 'แนบใบเสร็จครบ' },
+    { k: 'ค่าซ่อมบำรุง', v: `฿${maintTotal.toLocaleString()}`, sub: `แนบใบเสร็จ ${receiptCount}/${activeBike.services.length}` },
     { k: 'อะไหล่แต่งที่ติดตั้ง', v: `฿${modsTotal.toLocaleString()}`, sub: 'เก็บอะไหล่เดิมไว้ครบ' },
   ];
 
@@ -76,7 +77,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
                 ยืนยันแล้ว {activeBike.services.length} รายการ
               </div>
               <div className="font-sans text-[9.5px] text-ink-400 mt-0.5">
-                ถ่ายรูปใบเสร็จพร้อมวันที่ · ประวัติครบ
+                แนบรูปใบเสร็จแล้ว {receiptCount} จาก {activeBike.services.length} รายการ
               </div>
             </div>
           </div>
@@ -96,7 +97,10 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
                 <div key={i} className="flex items-center gap-2 bg-surface border border-border rounded-12 p-2.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-good shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <div className="font-sans font-medium text-[12px] text-ink-100 truncate">{s.what}</div>
+                    <div className="font-sans font-medium text-[12px] text-ink-100 truncate flex items-center gap-1.5">
+                      {s.what}
+                      {s.receiptBlob && <Camera size={11} className="text-ink-400 shrink-0" />}
+                    </div>
                     <div className="font-sans text-[10px] text-ink-400">
                       {shortDate(s.date)} · {s.odo.toLocaleString()} km · {s.shop}
                     </div>
