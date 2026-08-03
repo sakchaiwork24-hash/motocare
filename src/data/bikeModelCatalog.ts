@@ -7,9 +7,19 @@
  * live/manufacturer database (this app has no backend). Specs and especially `kmpl` are
  * frequently *estimates* (see `kmplBasis`), not guaranteed figures. Confidence varies by brand —
  * see the CSV changelog for which brands had strong official-site ground truth vs. thinner
- * secondary-source coverage (CFMoto in particular still has 17 of 18 rows unconfirmed either way
- * — its Thailand distributor site could not be reached in either pass). Always a prefill starting
- * point for Add Bike, never auto-applied without the user confirming/editing.
+ * secondary-source coverage. CFMoto update (2026-08-03): `cfmotothailand.com` itself still can't
+ * be reached (a real TLS/cert issue on their end, confirmed across three research passes now, not
+ * a transient block) — but cross-referencing Thai price-list aggregators (fasterwheeler.com,
+ * checkraka.com) and the confirmed official Thai distributor (Dynamic Motor (Thailand) Co., Ltd.)
+ * confirmed real Thailand retail pricing for 12 of the 18 rows: 250NK, 400NK, 650NK, 650MT,
+ * 450MT, 450CL-C, 700CL-X, 450SR, 700MT, 675NK, 500SR Voom, 675SR-R, and 800NK (this corrects an
+ * earlier pass that had marked 800NK as not yet sold in Thailand — real THB pricing across
+ * multiple model years says otherwise). Still genuinely unconfirmed: 250SR (only Bangladesh/China
+ * market pricing found) and the three 800MT variants (Touring/Explore/800MT-X — Australia-market
+ * pricing plus anecdotal Thai rental-fleet sightings, not a direct Thailand retail listing). Note
+ * this only confirms *market availability*, not the `kmpl`/tank figures themselves — no fuel-economy
+ * source was found for any of these, so `kmplBasis` is unchanged pending a further pass. Always a
+ * prefill starting point for Add Bike, never auto-applied without the user confirming/editing.
  *
  * Source data + full research/verification changelog: docs/research/thailand-bike-models-raw.csv
  */
