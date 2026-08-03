@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react';
-import { Download, Upload, TriangleAlert } from 'lucide-react';
+import { Download, Upload, TriangleAlert, FileSpreadsheet } from 'lucide-react';
 import { Sheet } from '../Sheet';
 import { useToast } from '../../state/ToastContext';
+import { useBikes } from '../../state/BikeContext';
 import { exportAllData, importData } from '../../lib/backup';
+import { exportBikeHistoryCsv } from '../../lib/csvExport';
 import { updateConfig } from '../../db';
 import { BilingualLabel } from '../BilingualLabel';
 import { PrimaryButton } from '../PrimaryButton';
@@ -14,6 +16,7 @@ type BackupSheetProps = {
 
 export function BackupSheet({ open, onClose }: BackupSheetProps) {
   const { showToast } = useToast();
+  const { activeBike } = useBikes();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
 
@@ -32,6 +35,22 @@ export function BackupSheet({ open, onClose }: BackupSheetProps) {
       showToast('ส่งออกไม่สำเร็จ ลองใหม่อีกครั้ง');
     } finally {
       setBusy(false);
+    }
+  };
+
+  const handleExportCsv = () => {
+    if (!activeBike) return;
+    const hasHistory = activeBike.services.length > 0 || activeBike.fuelLogs.length > 0 || (activeBike.trips?.length ?? 0) > 0;
+    if (!hasHistory) {
+      showToast('ยังไม่มีประวัติให้ส่งออก');
+      return;
+    }
+    try {
+      exportBikeHistoryCsv(activeBike);
+      showToast('ส่งออก CSV แล้ว · ประวัติซ่อม/เติมน้ำมัน/ทริป');
+    } catch (err) {
+      console.error('exportBikeHistoryCsv failed', err);
+      showToast('ส่งออก CSV ไม่สำเร็จ ลองใหม่อีกครั้ง');
     }
   };
 
@@ -85,6 +104,10 @@ export function BackupSheet({ open, onClose }: BackupSheetProps) {
           onChange={handlePick}
           className="hidden"
         />
+
+        <PrimaryButton onClick={handleExportCsv} disabled={busy || !activeBike} tone="outline" icon={<FileSpreadsheet size={16} />} className="w-full">
+          ส่งออกประวัติเป็น CSV · EXPORT CSV
+        </PrimaryButton>
 
         <div className="flex items-start gap-2 bg-[rgba(244,63,94,.1)] border border-urgent/35 rounded-12 p-3">
           <TriangleAlert size={16} className="text-urgent shrink-0 mt-0.5" />
