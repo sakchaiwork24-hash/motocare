@@ -14,11 +14,14 @@ import { LogFuelSheet } from './components/costs/LogFuelSheet';
 import { ModsTab } from './components/mods/ModsTab';
 import { VaultTab } from './components/vault/VaultTab';
 import { InstallBanner } from './components/InstallBanner';
+import { UpdateBanner } from './components/UpdateBanner';
+import { useSWUpdate } from './state/swUpdate';
 
 export type TabType = 'dash' | 'maint' | 'mods' | 'cost' | 'vault';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('dash');
+  const { needRefresh, applyUpdate } = useSWUpdate();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -32,28 +35,23 @@ function App() {
   };
 
   return (
-    <BikeProvider>
-      <ToastProvider>
+    <ToastProvider>
+      <BikeProvider>
         <AppShell>
           <Header />
           <main className="flex-1 overflow-y-auto p-[14px] pb-[22px] flex flex-col gap-[14px]">
             {renderContent()}
-            {/* Placeholder blocks to enable scrolling */}
-            {activeTab !== 'dash' && activeTab !== 'maint' && activeTab !== 'mods' && activeTab !== 'cost' && activeTab !== 'vault' && Array.from({ length: 15 }).map((_, i) => (
-               <div key={i} className="min-h-[76px] bg-surface border border-border rounded-16 p-4 text-ink-400 font-sans flex items-center justify-center">
-                 Scroll placeholder {i + 1}
-               </div>
-            ))}
           </main>
           <BottomNav activeTab={activeTab} onChange={setActiveTab} />
           <GarageSwitcher />
           <ServiceSheet />
           <LogFuelSheet />
-          <InstallBanner />
+          <InstallBanner suppressed={needRefresh} />
+          <UpdateBanner needRefresh={needRefresh} applyUpdate={applyUpdate} />
           <Toast />
         </AppShell>
-      </ToastProvider>
-    </BikeProvider>
+      </BikeProvider>
+    </ToastProvider>
   );
 }
 

@@ -4,6 +4,7 @@ import { Ring } from '../Ring';
 import { Package } from 'lucide-react';
 import { useMemo } from 'react';
 import { PART_ICON_MAP } from '../../lib/icons';
+import { BilingualLabel } from '../BilingualLabel';
 
 type HealthGridProps = {
   onGoToService: () => void;
@@ -29,14 +30,12 @@ export function HealthGrid({ onGoToService }: HealthGridProps) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-end px-1">
-        <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase">
-          BIKE HEALTH
-        </h2>
+        <BilingualLabel en="BIKE HEALTH" thai="สุขภาพรถ" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
         <button
           onClick={onGoToService}
           className="font-display font-semibold text-[13px] tracking-[.06em] text-accent2-light uppercase flex items-center gap-1"
         >
-          DETAILS ›
+          รายละเอียด ›
         </button>
       </div>
 
@@ -61,8 +60,8 @@ export function HealthGrid({ onGoToService }: HealthGridProps) {
                 </div>
                 <div className="font-sans text-[11px] text-ink-400 mt-1">
                   {w.triggeredBy === 'time' && w.remDays !== undefined
-                    ? (w.remDays <= 0 ? `overdue ${Math.abs(w.remDays)} days` : `${w.remDays} days left`)
-                    : (w.rem < 0 ? `overdue ${Math.abs(w.rem).toLocaleString()} km` : `${w.rem.toLocaleString()} km left`)}
+                    ? (w.remDays <= 0 ? `เกินกำหนด ${Math.abs(w.remDays)} วัน` : `เหลือ ${w.remDays} วัน`)
+                    : (w.rem < 0 ? `เกินกำหนด ${Math.abs(w.rem).toLocaleString()} กม.` : `เหลือ ${w.rem.toLocaleString()} กม.`)}
                 </div>
               </div>
             </div>

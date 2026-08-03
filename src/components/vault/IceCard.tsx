@@ -19,9 +19,9 @@ export function IceCard({ onFullScreen }: IceCardProps) {
           </div>
           <div>
             <div className="font-display font-bold text-[13px] tracking-[.04em] text-ice-card uppercase">
-              ICE · EMERGENCY
+              ข้อมูลฉุกเฉิน
             </div>
-            <div className="font-sans text-[10px] text-ice-muted">ข้อมูลฉุกเฉิน · แสดงให้กู้ภัย</div>
+            <div className="font-sans text-[10px] text-ice-muted">ICE · EMERGENCY · แสดงให้กู้ภัย</div>
           </div>
         </div>
         <button
@@ -30,7 +30,7 @@ export function IceCard({ onFullScreen }: IceCardProps) {
         >
           <Maximize2 size={13} className="text-ice-surface" />
           <span className="font-display font-bold text-[10px] tracking-[.08em] text-ice-surface">
-            FULL SCREEN
+            เต็มจอ
           </span>
         </button>
       </div>
@@ -38,11 +38,11 @@ export function IceCard({ onFullScreen }: IceCardProps) {
       <div className="flex gap-3 mb-3">
         <div className="w-[62px] h-[62px] rounded-16 bg-[rgba(255,241,242,.1)] border border-ice-muted/40 flex flex-col items-center justify-center shrink-0">
           <span className="font-display font-bold text-[24px] leading-none text-ice-card">{rider.blood}</span>
-          <span className="font-display font-semibold text-[7.5px] tracking-[.1em] text-ice-muted mt-0.5">BLOOD</span>
+          <span className="font-display font-semibold text-[7.5px] tracking-[.1em] text-ice-muted mt-0.5">กรุ๊ปเลือด</span>
         </div>
         <div className="min-w-0">
           <div className="font-display font-semibold text-[8.5px] tracking-[.12em] text-ice-muted uppercase">
-            ALLERGIES · แพ้ยา
+            แพ้ยา · ALLERGIES
           </div>
           <div className="font-sans font-medium text-[12px] text-ice-card mt-1">{rider.allergies}</div>
           <div className="font-sans text-[9.5px] text-ice-muted mt-1">{rider.notes}</div>
@@ -64,7 +64,7 @@ export function IceCard({ onFullScreen }: IceCardProps) {
               className="min-w-[70px] min-h-[44px] flex items-center justify-center gap-1 bg-urgent rounded-11 px-2 shrink-0"
             >
               <Phone size={13} className="text-ice-surface" />
-              <span className="font-display font-bold text-[10px] tracking-[.06em] text-ice-surface">CALL</span>
+              <span className="font-display font-bold text-[10px] tracking-[.06em] text-ice-surface">โทร</span>
             </a>
           </div>
         ))}
@@ -72,11 +72,11 @@ export function IceCard({ onFullScreen }: IceCardProps) {
 
       <div className="flex justify-between pt-2.5 border-t border-ice-muted/20">
         <div>
-          <div className="font-display font-semibold text-[8px] tracking-[.12em] text-ice-muted uppercase">Insurer</div>
+          <div className="font-display font-semibold text-[8px] tracking-[.12em] text-ice-muted uppercase">บริษัทประกัน</div>
           <div className="font-sans font-medium text-[10.5px] text-ice-card mt-0.5">{rider.insurer}</div>
         </div>
         <div className="text-right">
-          <div className="font-display font-semibold text-[8px] tracking-[.12em] text-ice-muted uppercase">Policy</div>
+          <div className="font-display font-semibold text-[8px] tracking-[.12em] text-ice-muted uppercase">เลขกรมธรรม์</div>
           <div className="font-display font-semibold text-[10.5px] text-ice-card mt-0.5">{rider.policy}</div>
         </div>
       </div>

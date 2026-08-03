@@ -1,5 +1,6 @@
-import { Gauge, Settings, Package, BarChart3, ShieldCheck } from 'lucide-react';
+import { Gauge, Settings, Wrench, BarChart3, ShieldCheck } from 'lucide-react';
 import type { TabType } from '../../App';
+import { BilingualLabel } from '../BilingualLabel';
 
 type BottomNavProps = {
   activeTab: TabType;
@@ -7,17 +8,17 @@ type BottomNavProps = {
 };
 
 const TABS = [
-  { id: 'dash', label: 'GARAGE', icon: Gauge },
-  { id: 'maint', label: 'SERVICE', icon: Settings },
-  { id: 'mods', label: 'MODS', icon: Package },
-  { id: 'cost', label: 'COSTS', icon: BarChart3 },
-  { id: 'vault', label: 'VAULT', icon: ShieldCheck },
+  { id: 'dash', label: 'GARAGE', thai: 'โรงรถ', icon: Gauge },
+  { id: 'maint', label: 'SERVICE', thai: 'ซ่อมบำรุง', icon: Settings },
+  { id: 'mods', label: 'MODS', thai: 'แต่งรถ', icon: Wrench },
+  { id: 'cost', label: 'COSTS', thai: 'ค่าใช้จ่าย', icon: BarChart3 },
+  { id: 'vault', label: 'VAULT', thai: 'เอกสาร', icon: ShieldCheck },
 ] as const;
 
 export function BottomNav({ activeTab, onChange }: BottomNavProps) {
   return (
     <nav className="flex-none bg-sunken border-t border-surface flex pb-[env(safe-area-inset-bottom)]">
-      {TABS.map(({ id, label, icon: Icon }) => {
+      {TABS.map(({ id, label, thai, icon: Icon }) => {
         const isActive = activeTab === id;
         return (
           <button
@@ -28,18 +29,18 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
             {isActive && (
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-accent transition-all duration-200" />
             )}
-            <Icon 
-              size={21} 
+            <Icon
+              size={21}
               strokeWidth={isActive ? 2.5 : 2}
-              className={`mb-1 transition-colors duration-200 ${isActive ? 'text-accent' : 'text-ink-400'}`} 
+              className={`mb-1 transition-colors duration-200 ${isActive ? 'text-accent' : 'text-ink-400'}`}
             />
-            <span 
-              className={`font-display font-semibold text-[8.5px] tracking-[.09em] transition-colors duration-200 ${
-                isActive ? 'text-accent' : 'text-ink-400'
-              }`}
-            >
-              {label}
-            </span>
+            <BilingualLabel
+              en={label}
+              thai={thai}
+              variant="compact"
+              primaryClassName={`transition-colors duration-200 ${isActive ? 'text-accent' : 'text-ink-400'}`}
+              secondaryClassName={`transition-colors duration-200 ${isActive ? 'text-accent' : 'text-ink-400'}`}
+            />
           </button>
         );
       })}

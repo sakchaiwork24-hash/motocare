@@ -39,6 +39,7 @@ export type FuelLog = {
 export type MonthlySpend = {
   m: string; // 3-letter month label, e.g. "JUL"
   thb: number;
+  y?: number; // full year; absent on legacy/seed entries, always set by rollMonthlySpend
 };
 
 export type Service = {
@@ -110,14 +111,5 @@ export type Config = {
   defaultProfile: RidingProfile; // used when a new bike is added
   bilingualThai: boolean;
   activeBikeId: string;
-};
-
-export type SyncOp = 'create' | 'update' | 'delete';
-
-export type SyncQueueEntry = {
-  id?: number; // Dexie auto-increment primary key
-  table: string;
-  op: SyncOp;
-  payload: unknown;
-  timestamp: number;
+  installPromptDismissedAt?: string; // ISO date; re-shown after RESHOW_COOLDOWN_DAYS
 };

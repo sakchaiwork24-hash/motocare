@@ -1,14 +1,19 @@
 import { useBikes } from '../../state/BikeContext';
 import { updateBike } from '../../db';
 import { PROFILE_META } from '../../lib/profiles';
+import { useToast } from '../../state/ToastContext';
 import type { RidingProfile } from '../../types';
 
 export function ProfileChips() {
   const { activeBike } = useBikes();
+  const { showToast } = useToast();
   if (!activeBike) return null;
 
   const selectProfile = (key: RidingProfile) => {
-    void updateBike(activeBike.id, { profile: key });
+    updateBike(activeBike.id, { profile: key }).catch((err) => {
+      console.error('updateBike failed', err);
+      showToast('เปลี่ยนโปรไฟล์ไม่สำเร็จ ลองใหม่อีกครั้ง');
+    });
   };
 
   return (

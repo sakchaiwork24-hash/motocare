@@ -2,6 +2,7 @@ import { useBikes } from '../../state/BikeContext';
 import { Fuel, Settings } from 'lucide-react';
 import { useMemo } from 'react';
 import { shortDate } from '../../lib/format';
+import { BilingualLabel } from '../BilingualLabel';
 
 type ActivityRow = {
   id: string;
@@ -43,9 +44,9 @@ export function RecentActivity() {
 
   return (
     <div className="flex flex-col gap-2 mt-2">
-      <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase px-1 mb-1">
-        RECENT ACTIVITY
-      </h2>
+      <div className="px-1 mb-1">
+        <BilingualLabel en="RECENT ACTIVITY" thai="กิจกรรมล่าสุด" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+      </div>
 
       <div className="bg-surface border border-border rounded-18 overflow-hidden">
         {activities.map((act, i) => (

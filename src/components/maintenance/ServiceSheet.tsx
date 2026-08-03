@@ -3,6 +3,7 @@ import { useBikes } from '../../state/BikeContext';
 import { Sheet } from '../Sheet';
 import { recordService } from '../../db';
 import { useToast } from '../../state/ToastContext';
+import { BilingualLabel } from '../BilingualLabel';
 
 export function ServiceSheet() {
   const { activeBike, serviceSheet, closeServiceSheet } = useBikes();
@@ -25,28 +26,45 @@ export function ServiceSheet() {
   if (!activeBike) return null;
 
   const handleSave = async () => {
-    const odo = parseInt(odoInput) || activeBike.odo;
-    const cost = parseInt(costInput) || 0;
-    
-    await recordService(activeBike.id, {
-      partKey: selectedPart,
-      odo,
-      cost,
-      shop: shopInput
-    });
-    
+    const odo = parseInt(odoInput, 10);
+    const cost = costInput ? parseInt(costInput, 10) : 0;
+
+    if (isNaN(odo)) {
+      showToast('กรุณากรอกเลขไมล์ให้ถูกต้อง');
+      return;
+    }
+    if (odo < activeBike.odo) {
+      showToast(`เลขไมล์ต้องไม่น้อยกว่า ${activeBike.odo.toLocaleString()} กม.`);
+      return;
+    }
+    if (isNaN(cost) || cost < 0) {
+      showToast('ค่าใช้จ่ายต้องไม่ติดลบ');
+      return;
+    }
+
+    try {
+      await recordService(activeBike.id, {
+        partKey: selectedPart,
+        odo,
+        cost,
+        shop: shopInput
+      });
+    } catch (err) {
+      console.error('recordService failed', err);
+      showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
+      return;
+    }
+
     closeServiceSheet();
     
-    const partLabel = activeBike.parts.find(p => p.key === selectedPart)?.label ?? selectedPart;
-    showToast(`${partLabel} logged at ${odo.toLocaleString()} km · counter reset`);
+    const partThai = activeBike.parts.find(p => p.key === selectedPart)?.thai ?? selectedPart;
+    showToast(`บันทึก ${partThai} ที่ ${odo.toLocaleString()} กม. แล้ว · counter reset`);
   };
 
   return (
     <Sheet open={serviceSheet.open} onClose={closeServiceSheet}>
       <div className="p-5 flex flex-col gap-5">
-        <h2 className="font-display font-semibold text-[15px] tracking-wide text-ink-100 uppercase">
-          RECORD SERVICE
-        </h2>
+        <BilingualLabel en="RECORD SERVICE" thai="บันทึกการซ่อม" primaryClassName="text-ink-100 !text-[15px]" secondaryClassName="text-ink-400 !text-[11px]" />
         
         <div className="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
           {activeBike.parts.map(p => {
@@ -61,7 +79,7 @@ export function ServiceSheet() {
                     : 'bg-sunken border-border text-ink-400'
                 }`}
               >
-                {p.label}
+                {p.thai}
               </button>
             );
           })}
@@ -71,7 +89,7 @@ export function ServiceSheet() {
           <div className="flex gap-3">
             <div className="flex-1 flex flex-col gap-1.5">
               <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                ODOMETER (KM)
+                เลขไมล์ (กม.)
               </label>
               <input
                 type="number"
@@ -82,13 +100,13 @@ export function ServiceSheet() {
             </div>
             <div className="flex-1 flex flex-col gap-1.5">
               <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-                COST (THB)
+                ค่าใช้จ่าย (บาท)
               </label>
               <input
                 type="number"
                 value={costInput}
                 onChange={e => setCostInput(e.target.value)}
-                placeholder="Optional"
+                placeholder="ไม่บังคับ"
                 className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent placeholder:text-ink-500"
               />
             </div>
@@ -96,13 +114,13 @@ export function ServiceSheet() {
           
           <div className="flex flex-col gap-1.5">
             <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
-              SHOP / GARAGE
+              ร้าน / อู่
             </label>
             <input
               type="text"
               value={shopInput}
               onChange={e => setShopInput(e.target.value)}
-              placeholder="Self-serviced at home"
+              placeholder="ทำเองที่บ้าน"
               className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent placeholder:text-ink-500"
             />
           </div>
@@ -112,7 +130,7 @@ export function ServiceSheet() {
           onClick={handleSave}
           className="w-full mt-2 mb-2 min-h-[48px] rounded-12 bg-accent text-[#000000] font-display font-bold text-[13px] tracking-[.06em] uppercase flex items-center justify-center active:opacity-80 transition-opacity"
         >
-          SAVE & RESET COUNTER
+          บันทึกและรีเซ็ตระยะ · SAVE
         </button>
       </div>
     </Sheet>

@@ -6,10 +6,10 @@ type Props = {
   counts: Record<ModStage, number>;
 };
 
-const STAGES: { id: ModStage; label: string }[] = [
-  { id: 'wishlist', label: 'WISHLIST' },
-  { id: 'ordered', label: 'ORDERED' },
-  { id: 'installed', label: 'INSTALLED' },
+const STAGES: { id: ModStage; label: string; thai: string }[] = [
+  { id: 'wishlist', label: 'WISHLIST', thai: 'อยากได้' },
+  { id: 'ordered', label: 'ORDERED', thai: 'สั่งแล้ว' },
+  { id: 'installed', label: 'INSTALLED', thai: 'ติดตั้งแล้ว' },
 ];
 
 export function PipelineTabs({ active, onChange, counts }: Props) {
@@ -21,7 +21,7 @@ export function PipelineTabs({ active, onChange, counts }: Props) {
           onClick={() => onChange(s.id)}
           className={`flex-1 py-2 px-2 rounded-8 font-display text-[11px] tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 min-h-[40px] ${active === s.id ? 'bg-surface text-accent-light' : 'bg-transparent text-ink-500'}`}
         >
-          {s.label}
+          {s.thai}
           <span className='text-[10px] tabular-nums opacity-70'>{counts[s.id]}</span>
         </button>
       ))}

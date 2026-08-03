@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { CONFIG_KEY, RIDER_KEY, db, seedIfEmpty, updateConfig } from '../db';
 import type { Bike, Config, Rider } from '../types';
+import { useToast } from './ToastContext';
 
 type BikeContextValue = {
   bikes: Bike[];
@@ -26,6 +27,8 @@ type BikeContextValue = {
 const BikeContext = createContext<BikeContextValue | null>(null);
 
 export function BikeProvider({ children }: { children: ReactNode }) {
+  const { showToast } = useToast();
+
   useEffect(() => {
     if (import.meta.env.DEV) seedIfEmpty();
   }, []);
@@ -43,8 +46,11 @@ export function BikeProvider({ children }: { children: ReactNode }) {
   const activeBike = bikes.find((b) => b.id === activeId) ?? bikes[0];
 
   const switchBike = useCallback((id: string) => {
-    void updateConfig({ activeBikeId: id });
-  }, []);
+    updateConfig({ activeBikeId: id }).catch((err) => {
+      console.error('switchBike failed', err);
+      showToast('สลับรถไม่สำเร็จ ลองใหม่อีกครั้ง');
+    });
+  }, [showToast]);
 
   const openSwitcher = useCallback(() => setSwitcherOpen(true), []);
   const closeSwitcher = useCallback(() => setSwitcherOpen(false), []);

@@ -6,6 +6,7 @@ import { PART_ICON_MAP } from '../../lib/icons';
 import type { Part, RidingProfile, Bike } from '../../types';
 import { wear, WearResult } from '../../lib/wear';
 import { Package, Settings2 } from 'lucide-react';
+import { PROFILE_META } from '../../lib/profiles';
 
 type WearCardProps = {
   part: Part;
@@ -44,13 +45,13 @@ export function WearCard({ part, bike, profile, onEditSchedule }: WearCardProps)
     ? Math.abs(w.remDays!)
     : w.rem <= 0 ? -w.rem : w.rem;
   const remLabel = isTimeTriggered
-    ? (w.remDays! <= 0 ? 'days overdue · age-based' : 'days remaining · age-based')
-    : (w.rem <= 0 ? 'km past due · ' : 'km remaining · ') + profile + ' profile';
+    ? (w.remDays! <= 0 ? 'วันเกินกำหนด · ตามอายุ' : 'วันคงเหลือ · ตามอายุ')
+    : (w.rem <= 0 ? 'กม.เกินกำหนด · ' : 'กม.คงเหลือ · ') + PROFILE_META[profile].thai;
 
   const intervalSuffix = part.timeIntervalDays
-    ? `every ${w.iv.toLocaleString()} km or ${part.timeIntervalDays} days`
-    : `every ${w.iv.toLocaleString()} km`;
-  const lastLine = `Last: ${partLastDate(part.lastDate)}${part.lastOdo ? ' @ ' + part.lastOdo.toLocaleString() + ' km' : ''} · ${intervalSuffix}`;
+    ? `ทุก ${w.iv.toLocaleString()} กม. หรือ ${part.timeIntervalDays} วัน`
+    : `ทุก ${w.iv.toLocaleString()} กม.`;
+  const lastLine = `ล่าสุด: ${partLastDate(part.lastDate)}${part.lastOdo ? ' @ ' + part.lastOdo.toLocaleString() + ' กม.' : ''} · ${intervalSuffix}`;
 
   return (
     <div className="bg-surface border border-border rounded-16 p-4 flex flex-col gap-3">
@@ -94,7 +95,7 @@ export function WearCard({ part, bike, profile, onEditSchedule }: WearCardProps)
           onClick={() => openServiceSheet(part.key)}
           className="flex-1 min-h-[44px] rounded-12 border border-border bg-sunken flex items-center justify-center font-display font-semibold text-[12px] tracking-[.06em] text-ink-100 uppercase transition-colors active:bg-border"
         >
-          LOG REPLACEMENT
+          บันทึกเปลี่ยน · LOG
         </button>
         <button
           onClick={() => onEditSchedule(part)}

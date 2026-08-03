@@ -3,6 +3,7 @@ import { ChevronDown, CircleDot, Droplet } from 'lucide-react';
 import { StripeTile } from '../StripeTile';
 import { useBikes } from '../../state/BikeContext';
 import { SyncBadge } from './SyncBadge';
+import { BilingualLabel } from '../BilingualLabel';
 
 export function Header() {
   const { activeBike, openSwitcher } = useBikes();
@@ -16,9 +17,13 @@ export function Header() {
             onClick={openSwitcher}
             className="w-full min-h-[52px] flex items-center justify-center gap-2 rounded-16 border border-border bg-surface px-3 py-2 hover:border-accent transition-colors"
           >
-            <span className="font-display font-bold text-[13px] tracking-[.04em] uppercase text-accent">
-              Add your first bike
-            </span>
+            <BilingualLabel
+              en="Add your first bike"
+              thai="เพิ่มรถคันแรกของคุณ"
+              className="items-center"
+              primaryClassName="text-accent"
+              secondaryClassName="text-accent"
+            />
           </button>
         </div>
       </header>
@@ -77,7 +82,7 @@ export function Header() {
           onClick={() => setSpecsOpen((v) => !v)}
           className="ml-auto shrink-0 font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 px-2 py-1.5"
         >
-          SPECS
+          สเปค · SPECS
         </button>
       </div>
 

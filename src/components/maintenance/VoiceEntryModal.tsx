@@ -14,11 +14,11 @@ type VoiceEntryModalProps = {
 type Phase = 'idle' | 'listening' | 'parsed' | 'manual';
 
 const PART_LABELS: Record<PartKey, string> = {
-  oil: 'Engine Oil',
-  brake: 'Brake Pads',
-  chain: 'Chain',
-  tyre: 'Tyres',
-  air: 'Air Filter',
+  oil: 'น้ำมันเครื่อง',
+  brake: 'ผ้าเบรก',
+  chain: 'โซ่',
+  tyre: 'ยาง',
+  air: 'ไส้กรองอากาศ',
 };
 
 // TypeScript's bundled DOM lib doesn't declare the Web Speech API as a reachable global
@@ -107,7 +107,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
       setTranscript(finalText + interim);
     };
     recognition.onerror = () => {
-      showToast('Voice recognition unavailable — enter the details manually');
+      showToast('ใช้เสียงไม่ได้ — กรอกรายละเอียดเองแทน');
       setPhase('manual');
     };
     recognition.onend = () => {
@@ -127,14 +127,30 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
 
   const handleSave = async () => {
     const odo = parseInt(odoInput, 10);
-    const cost = parseInt(costInput, 10) || 0;
-    if (!odo) {
-      showToast('Enter the odometer reading first');
+    const cost = costInput ? parseInt(costInput, 10) : 0;
+
+    if (isNaN(odo)) {
+      showToast('กรุณากรอกเลขไมล์ให้ถูกต้อง');
       return;
     }
-    await recordService(activeBike.id, { partKey, odo, cost, shop: shopInput });
+    if (odo < activeBike.odo) {
+      showToast(`เลขไมล์ต้องไม่น้อยกว่า ${activeBike.odo.toLocaleString()} กม.`);
+      return;
+    }
+    if (isNaN(cost) || cost < 0) {
+      showToast('ค่าใช้จ่ายต้องไม่ติดลบ');
+      return;
+    }
+
+    try {
+      await recordService(activeBike.id, { partKey, odo, cost, shop: shopInput });
+    } catch (err) {
+      console.error('recordService failed', err);
+      showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
+      return;
+    }
     onClose();
-    showToast(`${PART_LABELS[partKey]} logged by voice · counter reset`);
+    showToast(`บันทึก ${PART_LABELS[partKey]} ด้วยเสียงแล้ว · counter reset`);
   };
 
   return (
@@ -163,17 +179,17 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
                 </button>
               </div>
               <div className="font-display font-bold text-[13px] tracking-[.04em] text-ink-100 uppercase">
-                {phase === 'listening' ? 'LISTENING… พูดได้เลย' : 'VOICE ENTRY'}
+                {phase === 'listening' ? 'กำลังฟัง… พูดได้เลย' : 'บันทึกด้วยเสียง'}
               </div>
               <div className="font-sans text-[11px] text-ink-400 text-center min-h-[16px]">
-                {phase === 'listening' ? (transcript || 'ฟังอยู่...') : 'Tap the mic and say what you did'}
+                {phase === 'listening' ? (transcript || 'ฟังอยู่...') : 'แตะไมค์แล้วพูดว่าทำอะไรไป'}
               </div>
               {phase === 'idle' && (
                 <button
                   onClick={startListening}
                   className="w-full min-h-[48px] mt-1 rounded-12 bg-accent2 text-[#000000] font-display font-bold text-[12px] tracking-[.06em] uppercase"
                 >
-                  START SPEAKING
+                  เริ่มพูด
                 </button>
               )}
               {phase === 'idle' && (
@@ -181,7 +197,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
                   onClick={() => setPhase('manual')}
                   className="flex items-center gap-1.5 text-ink-400 font-sans text-[11px] mt-1"
                 >
-                  <Keyboard size={13} /> type it instead
+                  <Keyboard size={13} /> พิมพ์แทน
                 </button>
               )}
             </>
@@ -190,7 +206,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
           {(phase === 'parsed' || phase === 'manual') && (
             <div className="w-full flex flex-col gap-3.5">
               <div className="font-display font-bold text-[13px] tracking-[.04em] text-good uppercase text-center">
-                {phase === 'parsed' ? 'PARSED' : 'ENTER MANUALLY'}
+                {phase === 'parsed' ? 'แปลงข้อความแล้ว' : 'กรอกเอง'}
               </div>
 
               <div className="flex gap-2 overflow-x-auto pb-1">
@@ -211,7 +227,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
 
               <div className="flex gap-3">
                 <div className="flex-1 flex flex-col gap-1.5">
-                  <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">Odometer</label>
+                  <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">เลขไมล์</label>
                   <input
                     type="number"
                     value={odoInput}
@@ -220,7 +236,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
                   />
                 </div>
                 <div className="flex-1 flex flex-col gap-1.5">
-                  <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">Cost (฿)</label>
+                  <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">ค่าใช้จ่าย (฿)</label>
                   <input
                     type="number"
                     value={costInput}
@@ -231,12 +247,12 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">Shop</label>
+                <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">ร้าน</label>
                 <input
                   type="text"
                   value={shopInput}
                   onChange={(e) => setShopInput(e.target.value)}
-                  placeholder="Self-serviced at home"
+                  placeholder="ทำเองที่บ้าน"
                   className="w-full bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-sans text-[15px] text-ink-100 outline-none focus:border-accent2 placeholder:text-ink-500"
                 />
               </div>
@@ -245,7 +261,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
                 onClick={handleSave}
                 className="w-full min-h-[48px] rounded-12 bg-good text-[#0F172A] font-display font-bold text-[13px] tracking-[.06em] uppercase"
               >
-                SAVE ENTRY
+                บันทึก · SAVE
               </button>
             </div>
           )}

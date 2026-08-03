@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['fonts/**/*', 'icons/**/*'],
       manifest: {
         name: 'MotoCare',

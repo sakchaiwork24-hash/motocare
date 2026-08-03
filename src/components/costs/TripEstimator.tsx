@@ -14,10 +14,10 @@ export function TripEstimator() {
   };
 
   const presets = [
-    ['Pattaya', 147],
-    ['Khao Yai', 190],
-    ['Hua Hin', 199],
-    ['Commute · daily', 34]
+    ['พัทยา', 147],
+    ['เขาใหญ่', 190],
+    ['หัวหิน', 199],
+    ['ไป-กลับที่ทำงาน', 34]
   ] as const;
 
   const km = parseFloat(kmInput) || 0;
@@ -26,10 +26,10 @@ export function TripEstimator() {
   return (
     <div className={`bg-surface border rounded-16 p-4 transition-colors duration-300 ${flashTrip ? 'border-[#22D3EE]' : 'border-border'}`}>
       <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase">
-        TRIP ESTIMATOR
+        คำนวณค่าใช้จ่ายทริป
       </h2>
       <div className="font-sans text-[11px] text-ink-400 mt-1 mb-4">
-        Based on {activeBike.nick} · {activeBike.kmpl.toFixed(1)} km/L · gasohol 95 at ฿{config.fuelPricePerLitre}/L
+        คำนวณจาก {activeBike.nick} · {activeBike.kmpl.toFixed(1)} km/L · แก๊สโซฮอล 95 ฿{config.fuelPricePerLitre}/L
       </div>
 
       <div className="flex gap-3 mb-4">
@@ -41,7 +41,7 @@ export function TripEstimator() {
           className="flex-1 bg-sunken border border-border rounded-12 px-3 min-h-[44px] font-display font-bold text-[20px] text-ink-100 outline-none focus:border-accent2 tabular-nums"
         />
         <div className="flex items-center font-display font-bold text-[20px] text-ink-400 px-2">
-          KM
+          กม.
         </div>
       </div>
 
@@ -60,7 +60,7 @@ export function TripEstimator() {
       <div className="grid grid-cols-3 gap-2 bg-sunken border border-border rounded-12 p-3 mb-3">
         <div className="flex flex-col">
           <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-500 uppercase mb-1">
-            FUEL NEEDED
+            น้ำมันที่ต้องใช้
           </div>
           <div className="font-display font-bold text-[16px] text-ink-100">
             {liters.toFixed(2)} L
@@ -68,7 +68,7 @@ export function TripEstimator() {
         </div>
         <div className="flex flex-col">
           <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-500 uppercase mb-1">
-            EST. COST
+            ค่าใช้จ่ายโดยประมาณ
           </div>
           <div className="font-display font-bold text-[16px] text-accent">
             ฿{Math.round(cost).toLocaleString()}
@@ -76,20 +76,20 @@ export function TripEstimator() {
         </div>
         <div className="flex flex-col text-right">
           <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-500 uppercase mb-1">
-            REFUEL STOPS
+            จุดเติมน้ำมัน
           </div>
           <div className="font-display font-bold text-[16px] text-accent2">
             {stops}
           </div>
           <div className="font-sans text-[9px] text-ink-400">
-            tank {activeBike.tank}L
+            ถังละ {activeBike.tank}L
           </div>
         </div>
       </div>
 
       {km > 0 && (
         <div className="font-sans text-[10px] text-ink-500 text-center">
-          Round trip {Math.round(km * 2).toLocaleString()} km ≈ ฿{Math.round(cost * 2).toLocaleString()} · adds {Math.round(km * 2).toLocaleString()} km to the odometer, pulling the next oil change {Math.round(km * 2).toLocaleString()} km closer.
+          ไป-กลับ {Math.round(km * 2).toLocaleString()} กม. ≈ ฿{Math.round(cost * 2).toLocaleString()} · เพิ่มเลขไมล์อีก {Math.round(km * 2).toLocaleString()} กม. ทำให้รอบเปลี่ยนน้ำมันเครื่องครั้งถัดไปใกล้เข้ามาอีก {Math.round(km * 2).toLocaleString()} กม.
         </div>
       )}
     </div>

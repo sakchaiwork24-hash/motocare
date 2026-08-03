@@ -30,10 +30,10 @@ export function QuickActions({ onGoToCosts }: QuickActionsProps) {
         <ScanLine size={20} className="text-[#FF8A33]" />
         <div>
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-[#FF8A33] uppercase">
-            LOG FUEL
+            เติมน้ำมัน
           </div>
           <div className="font-sans text-[9.5px] text-[#FF8A33] opacity-80">
-            OCR scan
+            LOG FUEL · OCR
           </div>
         </div>
       </button>
@@ -45,10 +45,10 @@ export function QuickActions({ onGoToCosts }: QuickActionsProps) {
         <Settings size={20} className="text-ink-200" />
         <div>
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-200 uppercase">
-            SERVICE
+            บันทึกซ่อม
           </div>
           <div className="font-sans text-[9.5px] text-ink-400">
-            record job
+            SERVICE
           </div>
         </div>
       </button>
@@ -60,10 +60,10 @@ export function QuickActions({ onGoToCosts }: QuickActionsProps) {
         <BarChart3 size={20} className="text-[#22D3EE]" />
         <div>
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-[#22D3EE] uppercase">
-            TRIP CALC
+            คำนวณทริป
           </div>
           <div className="font-sans text-[9.5px] text-[#22D3EE] opacity-80">
-            fuel + cost
+            TRIP CALC
           </div>
         </div>
       </button>

@@ -4,12 +4,14 @@ import { healthScore, healthStatus } from '../../lib/wear';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { updateBike } from '../../db';
+import { useToast } from '../../state/ToastContext';
 
 const STATUS_TEXT_CLASS = { good: 'text-good', soon: 'text-soon', urgent: 'text-urgent' } as const;
 const STATUS_DOT_CLASS = { good: 'bg-good', soon: 'bg-soon', urgent: 'bg-urgent' } as const;
 
 export function HeroCard() {
   const { activeBike } = useBikes();
+  const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [compressing, setCompressing] = useState(false);
 
@@ -40,6 +42,9 @@ export function HeroCard() {
     try {
       const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1200 });
       await updateBike(activeBike.id, { photoBlob: compressed });
+    } catch (err) {
+      console.error('cover photo update failed', err);
+      showToast('อัปโหลดรูปไม่สำเร็จ ลองใหม่อีกครั้ง');
     } finally {
       setCompressing(false);
     }
@@ -77,7 +82,7 @@ export function HeroCard() {
             <div className="absolute inset-0 flex items-center justify-center flex-col gap-2 opacity-60 text-ink-400">
               <Camera size={32} />
               <span className="font-mono text-xs">
-                {compressing ? 'compressing…' : 'tap to add bike cover photo'}
+                {compressing ? 'กำลังบีบอัด…' : 'แตะเพื่อเพิ่มรูปปกรถ · tap to add cover photo'}
               </span>
             </div>
           </div>
@@ -94,7 +99,7 @@ export function HeroCard() {
           <div className="absolute top-3 left-3 bg-[rgba(2,6,15,.72)] rounded-lg px-2 py-1 flex items-center gap-1">
             <Check size={12} className="text-good" />
             <span className="font-display font-semibold text-[9.5px] tracking-[.06em] text-ink-50 uppercase">
-              COMPRESSED · {compressedKb} KB
+              บีบอัดแล้ว · {compressedKb} KB
             </span>
           </div>
         )}
@@ -118,7 +123,7 @@ export function HeroCard() {
       <div className="flex justify-between items-end p-3 pt-0">
         <div>
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-500 uppercase mb-1">
-            ODOMETER
+            เลขไมล์ · ODOMETER
           </div>
           <div className="flex items-baseline gap-1">
             <span className="font-display font-bold text-[32px] tabular-nums text-ink-50 leading-none">
@@ -129,7 +134,7 @@ export function HeroCard() {
         </div>
         <div className="text-right pb-1">
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-500 uppercase mb-1 flex items-center justify-end gap-1">
-            HEALTH <div className={`w-2 h-2 rounded-full ${STATUS_DOT_CLASS[status]}`} />
+            สุขภาพ · HEALTH <div className={`w-2 h-2 rounded-full ${STATUS_DOT_CLASS[status]}`} />
           </div>
           <div className={`font-display font-bold text-[24px] ${STATUS_TEXT_CLASS[status]} leading-none tabular-nums`}>
             {score}%

@@ -80,6 +80,20 @@ describe('wear', () => {
     expect(result.status).toBe('urgent');
   });
 
+  it('the long-interval "<400km left" distance clause still forces urgent even when time wins the displayed pct (regression for the triggeredBy-gating bug)', () => {
+    // iv=2500 (>2000), rem=390 (<400) -> distance-urgent on its own terms. Time's pct (15%) is
+    // lower than distance's pct (16%) so time "wins" and is what's reported/displayed, and 15%
+    // is deliberately kept >= 14 so this case can't pass merely via the generic `pct < 14` rule —
+    // it only passes if the distance-specific clause is evaluated independently of triggeredBy.
+    const lastDate = new Date(NOW.getTime() - 170 * 86_400_000).toISOString().slice(0, 10);
+    const nearlyDueOil = { ...part('oil'), lastOdo: 4690, interval: 2500, lastDate, timeIntervalDays: 200 };
+    const result = wear(nearlyDueOil, { ...zontes, odo: 6800 }, 'mixed', NOW);
+    expect(result.rem).toBe(390);
+    expect(result.triggeredBy).toBe('time');
+    expect(result.pct).toBe(15);
+    expect(result.status).toBe('urgent');
+  });
+
   it('skips the time trigger gracefully when lastDate is the "New from dealer" sentinel', () => {
     const neverReplacedTyre = part('tyre'); // lastDate: 'New from dealer', has timeIntervalDays: 1825
     const result = wear(neverReplacedTyre, zontes, 'urban', NOW);

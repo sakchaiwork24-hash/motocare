@@ -29,12 +29,19 @@ export function ModsTab() {
     const mod = mods.find(m => m.id === modId);
     if (!mod) return;
     if (mod.stage === 'installed') {
-      showToast(`Receipt for ${mod.name} opened from vault`);
+      showToast(`เปิดใบเสร็จของ ${mod.name} จากคลังเอกสารแล้ว`);
       return;
     }
     const nextStage: ModStage = mod.stage === 'wishlist' ? 'ordered' : 'installed';
-    await advanceModStage(activeBike.id, modId);
-    showToast(`${mod.name} moved to ${nextStage}`);
+    const nextStageThai = nextStage === 'ordered' ? 'สั่งแล้ว' : 'ติดตั้งแล้ว';
+    try {
+      await advanceModStage(activeBike.id, modId);
+    } catch (err) {
+      console.error('advanceModStage failed', err);
+      showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
+      return;
+    }
+    showToast(`ย้าย ${mod.name} ไปสถานะ${nextStageThai}แล้ว`);
   };
 
   const onEdit = (mod: Mod) => {
@@ -51,7 +58,7 @@ export function ModsTab() {
         className='w-full flex items-center justify-center gap-2 bg-sunken hover:bg-border border border-border text-ink-100 font-display font-semibold text-[13px] tracking-wider uppercase py-3 rounded-12 transition-colors min-h-[48px]'
       >
         <Plus className='w-4 h-4' />
-        ADD PART
+        เพิ่มอะไหล่ · ADD PART
       </button>
 
       <PartCardList

@@ -15,7 +15,7 @@ export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
     <div className="absolute inset-0 z-[80] bg-ice-surface p-5 flex flex-col gap-3.5 overflow-y-auto animate-mcFade">
       <div className="flex items-center justify-between">
         <div className="font-display font-bold text-[12px] tracking-[.2em] text-ice-muted uppercase">
-          IN CASE OF EMERGENCY
+          กรณีฉุกเฉิน · IN CASE OF EMERGENCY
         </div>
         <button
           onClick={onClose}
@@ -33,13 +33,13 @@ export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
       <div className="flex gap-2.5">
         <div className="flex-1 bg-ice-card rounded-18 p-3.5">
           <div className="font-display font-semibold text-[9px] tracking-[.14em] text-ice-ink uppercase">
-            BLOOD TYPE
+            กรุ๊ปเลือด
           </div>
           <div className="font-display font-bold text-[40px] leading-none text-ice-ink mt-1.5">{rider.blood}</div>
         </div>
         <div className="flex-[1.3] bg-[rgba(255,241,242,.1)] border border-ice-muted/40 rounded-18 p-3.5">
           <div className="font-display font-semibold text-[9px] tracking-[.14em] text-ice-muted uppercase">
-            ALLERGIES
+            แพ้ยา
           </div>
           <div className="font-sans font-semibold text-[14px] text-ice-card mt-1.5 leading-tight">
             {rider.allergies}
@@ -69,25 +69,25 @@ export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
         <div className="flex justify-between gap-2.5">
           <div>
             <div className="font-display font-semibold text-[8.5px] tracking-[.12em] text-ice-muted uppercase">
-              INSURANCE
+              ประกันภัย
             </div>
             <div className="font-sans font-semibold text-[12px] text-ice-card mt-1">{rider.insurer}</div>
             <div className="font-sans text-[10px] text-ice-muted2">{rider.cls}</div>
           </div>
           <div className="text-right">
             <div className="font-display font-semibold text-[8.5px] tracking-[.12em] text-ice-muted uppercase">
-              HOSPITAL
+              โรงพยาบาล
             </div>
             <div className="font-sans font-semibold text-[12px] text-ice-card mt-1">{rider.hospital}</div>
           </div>
         </div>
         <div className="font-display font-semibold text-[11px] text-ice-card mt-2.5 pt-2.5 border-t border-ice-muted/25">
-          POLICY {rider.policy}
+          กรมธรรม์เลขที่ {rider.policy}
         </div>
       </div>
 
       <div className="font-sans text-[9.5px] text-ice-muted text-center mt-1 mb-2">
-        Works offline · แสดงหน้านี้ให้เจ้าหน้าที่กู้ภัย 1669
+        ใช้ได้แม้ออฟไลน์ · แสดงหน้านี้ให้เจ้าหน้าที่กู้ภัย 1669
       </div>
     </div>
   );

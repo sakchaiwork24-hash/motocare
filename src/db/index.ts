@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { Bike, Config, Rider, SyncQueueEntry, Mod, Part, RidingProfile } from '../types';
+import type { Bike, Config, Rider, Mod, Part, RidingProfile } from '../types';
 import { seedBikes, seedConfig, seedRider } from './seed';
 import { consumption, isValidKmpl } from '../lib/wear';
 
@@ -13,7 +13,6 @@ class MotoCareDb extends Dexie {
   bikes!: EntityTable<Bike, 'id'>;
   config!: EntityTable<ConfigRow, 'key'>;
   rider!: EntityTable<RiderRow, 'key'>;
-  _syncQueue!: EntityTable<SyncQueueEntry, 'id'>;
 
   constructor() {
     super('motocare');
@@ -21,7 +20,6 @@ class MotoCareDb extends Dexie {
       bikes: 'id',
       config: 'key',
       rider: 'key',
-      _syncQueue: '++id, table, timestamp',
     });
   }
 }
@@ -56,15 +54,6 @@ export async function updateConfig(patch: Partial<Config>): Promise<void> {
   await db.config.update(CONFIG_KEY, patch);
 }
 
-/** Appends a mutation to the offline sync queue; a connectivity listener (Phase 2+) flushes it. */
-export async function queueMutation(
-  table: string,
-  op: SyncQueueEntry['op'],
-  payload: unknown,
-): Promise<void> {
-  await db._syncQueue.add({ table, op, payload, timestamp: Date.now() });
-}
-
 export async function recordService(
   bikeId: string,
   entry: { partKey: string; odo: number; cost: number; shop: string }
@@ -77,7 +66,7 @@ export async function recordService(
     const part = bike.parts.find(p => p.key === entry.partKey);
     const label = part?.label ?? '';
     const parts = bike.parts.map(p =>
-      p.key === entry.partKey ? { ...p, lastOdo: entry.odo, lastDate: today } : p
+      p.key === entry.partKey ? { ...p, lastOdo: Math.max(p.lastOdo, entry.odo), lastDate: today } : p
     );
     const services = [
       { date: today, odo: entry.odo, what: label, shop: entry.shop || 'Self-serviced at home', cost: entry.cost },
@@ -87,6 +76,25 @@ export async function recordService(
   });
 }
 
+const MONTHLY_WINDOW = 6;
+
+/** Rolls a fuel spend into the trailing 6-month window shown by StatGrid/MonthlyBars — bumps
+ * the current month's total if it's already the last entry, otherwise appends a new month and
+ * drops the oldest so the window never grows past MONTHLY_WINDOW. */
+function rollMonthlySpend(monthly: Bike['monthly'], thb: number, now: Date): Bike['monthly'] {
+  const label = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+  const year = now.getFullYear();
+  const last = monthly[monthly.length - 1];
+  // `last.y` is only set by this function (legacy/seed entries carry no year) — only bump the
+  // existing bucket when the year is known and actually matches, so a same-named month from a
+  // prior year (e.g. a 12-month gap between fuel logs) can't silently merge into a stale bucket.
+  if (last && last.m === label && last.y === year) {
+    return [...monthly.slice(0, -1), { m: label, thb: last.thb + thb, y: year }];
+  }
+  const next = [...monthly, { m: label, thb, y: year }];
+  return next.length > MONTHLY_WINDOW ? next.slice(next.length - MONTHLY_WINDOW) : next;
+}
+
 export async function recordFuelLog(
   bikeId: string,
   entry: { liters: number; thb: number; odo: number; station: string }
@@ -94,10 +102,12 @@ export async function recordFuelLog(
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
     if (!bike) return;
-    const today = new Date().toISOString().slice(0, 10);
-    const prevOdo = bike.fuelLogs[0]?.odo ?? 0;
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const hasPriorLog = bike.fuelLogs.length > 0;
+    const prevOdo = bike.fuelLogs[0]?.odo ?? entry.odo;
     const newOdo = Math.max(bike.odo, entry.odo);
-    const computedKmpl = entry.odo > prevOdo
+    const computedKmpl = hasPriorLog && entry.odo > prevOdo
       ? Number(consumption(entry.odo, prevOdo, entry.liters).toFixed(1))
       : null;
     const kmpl = computedKmpl !== null && isValidKmpl(computedKmpl) ? computedKmpl : bike.kmpl;
@@ -105,7 +115,8 @@ export async function recordFuelLog(
       { date: today, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
       ...bike.fuelLogs,
     ];
-    await db.bikes.update(bikeId, { odo: newOdo, kmpl, fuelLogs });
+    const monthly = rollMonthlySpend(bike.monthly, entry.thb, now);
+    await db.bikes.update(bikeId, { odo: newOdo, kmpl, fuelLogs, monthly });
   });
 }
 
@@ -153,6 +164,9 @@ export async function updatePartProfile(
   partKey: string,
   patch: { label: string; thai: string; interval: number; timeIntervalDays?: number },
 ): Promise<void> {
+  if (patch.interval <= 0 || (patch.timeIntervalDays !== undefined && patch.timeIntervalDays <= 0)) {
+    throw new Error('Interval must be positive');
+  }
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
     if (!bike) return;

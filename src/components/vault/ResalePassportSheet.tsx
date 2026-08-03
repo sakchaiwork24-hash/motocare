@@ -31,10 +31,10 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
   const modsTotal = installedMods.reduce((a, m) => a + m.price, 0);
 
   const stats = [
-    { k: 'ODOMETER', v: `${activeBike.odo.toLocaleString()} km`, sub: 'verified by fuel logs' },
-    { k: 'AVG CONSUMPTION', v: `${activeBike.kmpl.toFixed(1)} km/L`, sub: 'no sudden drops' },
-    { k: 'MAINTENANCE SPEND', v: `฿${maintTotal.toLocaleString()}`, sub: 'all receipts attached' },
-    { k: 'MODS INSTALLED', v: `฿${modsTotal.toLocaleString()}`, sub: 'stock parts kept' },
+    { k: 'เลขไมล์', v: `${activeBike.odo.toLocaleString()} km`, sub: 'ยืนยันจากบันทึกเติมน้ำมัน' },
+    { k: 'อัตราสิ้นเปลือง', v: `${activeBike.kmpl.toFixed(1)} km/L`, sub: 'ไม่มีความผิดปกติ' },
+    { k: 'ค่าซ่อมบำรุง', v: `฿${maintTotal.toLocaleString()}`, sub: 'แนบใบเสร็จครบ' },
+    { k: 'อะไหล่แต่งที่ติดตั้ง', v: `฿${modsTotal.toLocaleString()}`, sub: 'เก็บอะไหล่เดิมไว้ครบ' },
   ];
 
   const handleExport = async () => {
@@ -42,7 +42,10 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
     setExporting(true);
     try {
       await exportPassportPdf(contentRef.current, `${activeBike.nick}-resale-passport.pdf`);
-      showToast('Vehicle passport PDF ready to share');
+      showToast('พาสปอร์ตรถพร้อมแชร์แล้ว');
+    } catch (err) {
+      console.error('exportPassportPdf failed', err);
+      showToast('สร้าง PDF ไม่สำเร็จ ลองใหม่อีกครั้ง');
     } finally {
       setExporting(false);
     }
@@ -54,7 +57,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
         <div ref={contentRef} className="flex flex-col gap-4 bg-app p-4 rounded-16">
           <div>
             <div className="font-display font-semibold text-[9px] tracking-[.2em] text-accent2-light uppercase">
-              MOTOCARE VEHICLE PASSPORT
+              พาสปอร์ตรถ · MOTOCARE PASSPORT
             </div>
             <div className="font-display font-bold text-[17px] text-ink-50 mt-1">
               {activeBike.nick} — {activeBike.brand} {activeBike.model}
@@ -68,10 +71,10 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
             <FileCheck size={20} className="text-good shrink-0" />
             <div>
               <div className="font-display font-bold text-[12.5px] text-good">
-                {activeBike.services.length} SERVICES VERIFIED
+                ยืนยันแล้ว {activeBike.services.length} รายการ
               </div>
               <div className="font-sans text-[9.5px] text-ink-400 mt-0.5">
-                Receipts photographed & timestamped · ประวัติครบ
+                ถ่ายรูปใบเสร็จพร้อมวันที่ · ประวัติครบ
               </div>
             </div>
           </div>
@@ -90,7 +93,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
 
           <div>
             <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-500 uppercase mb-2">
-              SERVICE HISTORY
+              ประวัติการซ่อม
             </div>
             <div className="flex flex-col gap-1.5">
               {activeBike.services.map((s, i) => (
@@ -103,7 +106,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
                     </div>
                   </div>
                   <div className="font-display font-semibold text-[11px] text-ink-200 shrink-0">
-                    {s.cost ? `฿${s.cost.toLocaleString()}` : 'free'}
+                    {s.cost ? `฿${s.cost.toLocaleString()}` : 'ไม่มีค่าใช้จ่าย'}
                   </div>
                 </div>
               ))}
@@ -113,7 +116,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
           {installedMods.length > 0 && (
             <div>
               <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-500 uppercase mb-2">
-                MODS INSTALLED
+                อะไหล่แต่งที่ติดตั้ง
               </div>
               <div className="flex flex-col gap-1.5">
                 {installedMods.map((m) => (
@@ -122,7 +125,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
                       className="font-display font-semibold text-[8px] tracking-[.08em] uppercase px-1.5 py-0.5 rounded-6 shrink-0"
                       style={{ color: MOD_CATEGORY_META[m.cat].fg, backgroundColor: MOD_CATEGORY_META[m.cat].bg }}
                     >
-                      {m.cat}
+                      {MOD_CATEGORY_META[m.cat].thai}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-sans font-medium text-[12px] text-ink-100 truncate">{m.name}</div>
@@ -144,7 +147,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
           className="w-full min-h-[48px] rounded-12 bg-accent2 text-[#000000] font-display font-bold text-[13px] tracking-[.06em] uppercase flex items-center justify-center gap-2 active:opacity-80 transition-opacity disabled:opacity-50"
         >
           <Download size={16} />
-          {exporting ? 'GENERATING…' : 'EXPORT PDF PASSPORT'}
+          {exporting ? 'กำลังสร้าง…' : 'ส่งออก PDF พาสปอร์ต'}
         </button>
       </div>
     </Sheet>

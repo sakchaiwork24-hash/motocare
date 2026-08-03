@@ -11,7 +11,7 @@ type Props = {
 
 export function PartCard({ mod, onAdvance, onEdit }: Props) {
   const catMeta = MOD_CATEGORY_META[mod.cat];
-  const buttonLabel = mod.stage === 'wishlist' ? 'MARK ORDERED' : mod.stage === 'ordered' ? 'MARK INSTALLED' : 'VIEW RECEIPT';
+  const buttonLabel = mod.stage === 'wishlist' ? 'สั่งซื้อแล้ว · MARK ORDERED' : mod.stage === 'ordered' ? 'ติดตั้งแล้ว · MARK INSTALLED' : 'ดูใบเสร็จ · VIEW RECEIPT';
   const isInstalled = mod.stage === 'installed';
 
   return (
@@ -30,7 +30,7 @@ export function PartCard({ mod, onAdvance, onEdit }: Props) {
             className='font-display text-[10px] tracking-widest uppercase px-1.5 py-0.5 rounded-4 w-fit'
             style={{ color: catMeta.fg, backgroundColor: catMeta.bg }}
           >
-            {mod.cat}
+            {catMeta.thai}
           </span>
           <h4 className='font-sans font-medium text-ink-100 text-base'>{mod.name}</h4>
           <span className='font-display text-ink-300 tabular-nums text-sm'>{mod.price.toLocaleString()} THB</span>
@@ -47,7 +47,7 @@ export function PartCard({ mod, onAdvance, onEdit }: Props) {
       <div className='flex items-start gap-2 bg-sunken text-ink-300 p-2.5 rounded-8'>
         <Package className='w-4 h-4 mt-0.5 shrink-0' />
         <div className='flex flex-col'>
-          <span className='font-display text-[10px] tracking-widest uppercase mb-0.5'>ORIGINAL STOCK PART</span>
+          <span className='font-display text-[10px] tracking-widest uppercase mb-0.5'>อะไหล่เดิม · STOCK PART</span>
           <span className='font-sans text-xs leading-relaxed text-ink-200'>{mod.stock}</span>
         </div>
       </div>

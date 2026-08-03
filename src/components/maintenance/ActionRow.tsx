@@ -18,10 +18,10 @@ export function ActionRow() {
         </div>
         <div className="text-left flex-1 min-w-0">
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-[#22D3EE] uppercase">
-            VOICE ENTRY
+            พูดแทนพิมพ์
           </div>
           <div className="font-sans text-[9px] text-[#22D3EE] opacity-80 truncate">
-            พูดแทนพิมพ์ · TH/EN
+            VOICE ENTRY · TH/EN
           </div>
         </div>
       </button>
@@ -35,10 +35,10 @@ export function ActionRow() {
         </div>
         <div className="text-left flex-1 min-w-0">
           <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-200 uppercase">
-            SCAN RECEIPT
+            สแกนใบเสร็จ
           </div>
           <div className="font-sans text-[9px] text-ink-400 truncate">
-            OCR · อ่านใบเสร็จ
+            SCAN RECEIPT · OCR
           </div>
         </div>
       </button>

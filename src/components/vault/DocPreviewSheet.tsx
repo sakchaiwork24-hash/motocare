@@ -57,6 +57,9 @@ export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
     try {
       const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1600 });
       await updateDocScan(activeBike.id, doc.id, compressed);
+    } catch (err) {
+      console.error('updateDocScan failed', err);
+      showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
     } finally {
       setCompressing(false);
     }
@@ -66,15 +69,15 @@ export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
     const reminderDate = new Date(doc.expiry);
     reminderDate.setDate(reminderDate.getDate() - 30);
     const ics = buildReminderIcs({
-      title: `Renew ${doc.name} (${doc.thai})`,
+      title: `ต่ออายุ ${doc.thai} (${doc.name})`,
       date: reminderDate.toISOString().slice(0, 10),
     });
     downloadIcs(`${doc.id}-renewal-reminder.ics`, ics);
 
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-      new Notification('Reminder saved', { body: `${doc.name} renewal reminder added to your calendar` });
+      new Notification('บันทึกการแจ้งเตือนแล้ว', { body: `เพิ่มการแจ้งเตือนต่ออายุ ${doc.thai} ในปฏิทินแล้ว` });
     }
-    showToast(`Reminder set · 30 days before ${doc.name} expires`);
+    showToast(`ตั้งแจ้งเตือนแล้ว · 30 วันก่อน ${doc.thai} หมดอายุ`);
     onClose();
   };
 
@@ -100,13 +103,13 @@ export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-ink-500">
               <FileText size={26} />
               <span className="font-mono text-[9.5px]">
-                {compressing ? 'compressing…' : 'tap to add scanned document'}
+                {compressing ? 'กำลังบีบอัด…' : 'แตะเพื่อเพิ่มสแกนเอกสาร'}
               </span>
             </div>
           )}
           {compressedKb !== null && (
             <div className="absolute bottom-2.5 left-2.5 bg-[rgba(2,6,15,.7)] border border-border rounded-7 px-1.5 py-1">
-              <span className="font-mono text-[8.5px] text-ink-400">stored offline · {compressedKb} KB</span>
+              <span className="font-mono text-[8.5px] text-ink-400">เก็บในเครื่อง · {compressedKb} KB</span>
             </div>
           )}
         </button>
@@ -114,7 +117,7 @@ export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
         <div className={`flex items-center justify-between rounded-14 border p-3 ${STATUS_TINT[status]}`}>
           <div>
             <div className={`font-display font-semibold text-[8.5px] tracking-[.12em] uppercase ${STATUS_TEXT[status]}`}>
-              EXPIRES · หมดอายุ
+              หมดอายุ · EXPIRES
             </div>
             <div className="font-display font-bold text-[14px] text-ink-50 mt-1">{thaiDate(doc.expiry)}</div>
           </div>
@@ -127,7 +130,7 @@ export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
         >
           <CalendarClock size={16} className="text-accent2-light" />
           <span className="font-display font-bold text-[11.5px] tracking-[.08em] text-accent2-light">
-            SET RENEWAL REMINDER
+            ตั้งแจ้งเตือนต่ออายุ
           </span>
         </button>
       </div>

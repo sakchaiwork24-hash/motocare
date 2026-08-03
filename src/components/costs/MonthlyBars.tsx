@@ -38,12 +38,12 @@ export function MonthlyBars() {
   return (
     <div className="bg-surface border border-border rounded-16 p-4">
       <div className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase mb-4">
-        SPEND TREND
+        แนวโน้มค่าใช้จ่าย
       </div>
       <div className="flex justify-between items-end h-[100px] mt-2">
         {activeBike.monthly.map((m, i) => (
           <MonthlyBar
-            key={m.m}
+            key={`${m.y ?? ''}-${m.m}-${i}`}
             month={m}
             targetHeight={maxSpend > 0 ? Math.round((m.thb / maxSpend) * 76) + 8 : 4}
             isLatest={i === activeBike.monthly.length - 1}

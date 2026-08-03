@@ -16,52 +16,52 @@ export function StatGrid() {
     <div className="grid grid-cols-2 gap-[14px]">
       <div className="bg-surface border border-border rounded-16 p-3 flex flex-col justify-center">
         <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1">
-          AVG CONSUMPTION
+          อัตราสิ้นเปลือง
         </div>
         <div className="font-display font-bold text-[20px] tabular-nums text-ink-50">
           {activeBike.kmpl.toFixed(1)} km/L
         </div>
         <div className="font-sans text-[11px] text-ink-400 mt-0.5">
-          last 6 fill-ups
+          จากการเติมครั้งล่าสุด
         </div>
       </div>
 
-      <button 
+      <button
         onClick={() => setFuelPriceSheetOpen(true)}
         className="bg-surface border border-border rounded-16 p-3 flex flex-col justify-center text-left cursor-pointer active:opacity-80 transition-opacity"
       >
         <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1">
-          COST PER KM
+          ค่าใช้จ่ายต่อกม.
         </div>
         <div className="font-display font-bold text-[20px] tabular-nums text-ink-50">
           {costPerKm(config.fuelPricePerLitre, activeBike.kmpl).toFixed(2)} ฿/km
         </div>
         <div className="font-sans text-[11px] text-ink-400 mt-0.5">
-          gasohol at ฿{config.fuelPricePerLitre}
+          แก๊สโซฮอล ฿{config.fuelPricePerLitre}
         </div>
       </button>
 
       <div className="bg-surface border border-border rounded-16 p-3 flex flex-col justify-center">
         <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1">
-          FUEL · 6 MONTHS
+          ค่าน้ำมัน · 6 เดือน
         </div>
         <div className="font-display font-bold text-[20px] tabular-nums text-ink-50">
           ฿{fuelTotal.toLocaleString()}
         </div>
         <div className="font-sans text-[11px] text-ink-400 mt-0.5">
-          ≈ ฿{Math.round(fuelTotal / 6).toLocaleString()}/month
+          ≈ ฿{Math.round(fuelTotal / 6).toLocaleString()}/เดือน
         </div>
       </div>
 
       <div className="bg-surface border border-border rounded-16 p-3 flex flex-col justify-center">
         <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1">
-          MAINTENANCE
+          ค่าซ่อมบำรุง
         </div>
         <div className="font-display font-bold text-[20px] tabular-nums text-ink-50">
           ฿{maintTotal.toLocaleString()}
         </div>
         <div className="font-sans text-[11px] text-ink-400 mt-0.5">
-          {activeBike.services.length} logged services
+          บันทึกไว้ {activeBike.services.length} ครั้ง
         </div>
       </div>
       

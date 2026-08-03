@@ -6,9 +6,9 @@ import { ProfileChips } from './ProfileChips';
 import { useMemo } from 'react';
 
 const HEADLINES: Record<string, string> = {
-  good: 'Bike is in good shape',
-  soon: 'Service window opening',
-  urgent: 'Service needed now',
+  good: 'รถอยู่ในสภาพดี',
+  soon: 'ใกล้ถึงกำหนดตรวจ',
+  urgent: 'ต้องเข้าซ่อมด่วน',
 };
 
 export function Scoreboard() {
@@ -25,7 +25,7 @@ export function Scoreboard() {
 
   if (!activeBike || !scoreInfo) return null;
 
-  const note = PROFILE_META[activeBike.profile].note;
+  const note = PROFILE_META[activeBike.profile].noteThai;
 
   return (
     <div className="bg-surface border border-border rounded-16 p-4 flex flex-col items-center">
@@ -36,7 +36,7 @@ export function Scoreboard() {
               {scoreInfo.score}
             </span>
             <span className={`font-display font-semibold text-[8px] tracking-[.1em] mt-0.5 ${scoreInfo.colorClass}`}>
-              SCORE
+              คะแนน
             </span>
           </div>
         </Ring>

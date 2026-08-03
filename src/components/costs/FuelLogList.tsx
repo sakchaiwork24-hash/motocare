@@ -1,7 +1,8 @@
 import { useBikes } from '../../state/BikeContext';
 import { Fuel } from 'lucide-react';
 import { shortDate } from '../../lib/format';
-import { consumption } from '../../lib/wear';
+import { consumption, isValidKmpl } from '../../lib/wear';
+import { BilingualLabel } from '../BilingualLabel';
 
 export function FuelLogList() {
   const { activeBike, openLogFuelSheet } = useBikes();
@@ -11,21 +12,19 @@ export function FuelLogList() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1 mb-1">
-        <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase">
-          FUEL LOG
-        </h2>
+        <BilingualLabel en="FUEL LOG" thai="บันทึกการเติมน้ำมัน" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
         <button
           onClick={openLogFuelSheet}
           className="font-display font-bold text-[11px] tracking-[.06em] text-accent uppercase active:opacity-70 transition-opacity"
         >
-          + ADD ENTRY
+          + เพิ่มรายการ
         </button>
       </div>
 
       <div className="bg-surface border border-border rounded-18 overflow-hidden">
         {activeBike.fuelLogs.length === 0 && (
           <div className="p-4 text-center font-sans text-[13px] text-ink-400">
-            No fuel logs yet.
+            ยังไม่มีบันทึกการเติมน้ำมัน
           </div>
         )}
         {activeBike.fuelLogs.map((log, i) => {
@@ -35,8 +34,10 @@ export function FuelLogList() {
           let isGood = false;
           if (!isOldest) {
             const cons = consumption(log.odo, prevOdo, log.liters);
-            consStr = cons.toFixed(1) + ' km/L';
-            isGood = cons >= activeBike.kmpl;
+            if (isValidKmpl(cons)) {
+              consStr = cons.toFixed(1) + ' km/L';
+              isGood = cons >= activeBike.kmpl;
+            }
           }
 
           return (

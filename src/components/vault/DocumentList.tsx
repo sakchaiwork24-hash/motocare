@@ -3,6 +3,7 @@ import { docCountdown, thaiDate } from '../../lib/wear';
 import { docStatus, docDaysLabel } from '../../lib/vaultStatus';
 import { DOC_ICON_MAP } from '../../lib/icons';
 import { StripeTile } from '../StripeTile';
+import { BilingualLabel } from '../BilingualLabel';
 
 type DocumentListProps = {
   docs: Doc[];
@@ -15,9 +16,9 @@ const STATUS_TEXT = { good: 'text-good', soon: 'text-soon', urgent: 'text-urgent
 export function DocumentList({ docs, onOpen }: DocumentListProps) {
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase px-1">
-        DOCUMENTS
-      </h2>
+      <div className="px-1">
+        <BilingualLabel en="DOCUMENTS" thai="เอกสาร" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+      </div>
       <div className="flex flex-col gap-2">
         {docs.map((doc) => {
           const days = docCountdown(doc.expiry);

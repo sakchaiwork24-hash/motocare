@@ -28,9 +28,12 @@ export type WearResult = {
  * publishes a calendar-age limit for both, unlike brake/chain/air which are purely usage-driven)
  * and `part.lastDate` parses as a real date (the `'New from dealer'` sentinel is skipped — no
  * known last-replacement date to measure age from), a parallel time-based pct is computed and
- * whichever of the two pcts is lower wins — the actual "whichever comes first" rule. Status
- * reuses the same pct<14/pct<36 thresholds either way for one consistent urgency model; the
- * km-specific "long interval + <400 rem" clause only applies when distance is what's binding.
+ * whichever of the two pcts is lower wins — the actual "whichever comes first" rule, and drives
+ * which one is reported as `triggeredBy`/`pct` for display. `status`, however, is evaluated
+ * independently against both triggers every time (distanceUrgent || timeUrgent) — a part can be
+ * physically almost-due (e.g. long-interval + <400 km left) even while time is the lower-pct/
+ * displayed trigger, and that must still surface as urgent rather than being masked by whichever
+ * trigger happened to "win" the pct comparison.
  */
 export function wear(part: Part, bike: Bike, profile: RidingProfile, now: Date = new Date()): WearResult {
   const factor = PROFILE_FACTOR[profile];
@@ -56,16 +59,14 @@ export function wear(part: Part, bike: Bike, profile: RidingProfile, now: Date =
     }
   }
 
+  // Absolute urgency conditions, checked regardless of which trigger "wins" the pct comparison
+  // above (that comparison only decides what's reported as `triggeredBy`/`pct` for display).
+  const distanceUrgent = rem <= 0 || (iv > 2000 && rem < 400);
+  const timeUrgent = remDays !== undefined && remDays <= 0;
+
   let status: WearStatus = 'good';
-  if (triggeredBy === 'distance') {
-    if (rem <= 0) status = 'urgent';
-    else if (pct < 14 || (part.interval > 2000 && rem < 400)) status = 'urgent';
-    else if (pct < 36) status = 'soon';
-  } else {
-    if (remDays !== undefined && remDays <= 0) status = 'urgent';
-    else if (pct < 14) status = 'urgent';
-    else if (pct < 36) status = 'soon';
-  }
+  if (distanceUrgent || timeUrgent || pct < 14) status = 'urgent';
+  else if (pct < 36) status = 'soon';
 
   return { iv, due, rem, pct, status, triggeredBy, remDays };
 }

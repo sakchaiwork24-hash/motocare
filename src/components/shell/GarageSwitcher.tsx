@@ -4,6 +4,7 @@ import { StripeTile } from '../StripeTile';
 import { useBikes } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { AddBikeSheet } from './AddBikeSheet';
+import { BilingualLabel } from '../BilingualLabel';
 
 export function GarageSwitcher() {
   const { bikes, activeId, switchBike, switcherOpen, closeSwitcher } = useBikes();
@@ -14,7 +15,7 @@ export function GarageSwitcher() {
     const bike = bikes.find((b) => b.id === id);
     switchBike(id);
     closeSwitcher();
-    if (bike) showToast(`Switched to ${bike.nick} · data reloaded`);
+    if (bike) showToast(`เปลี่ยนไปใช้ ${bike.nick} แล้ว · Switched, data reloaded`);
   };
 
   return (
@@ -29,8 +30,13 @@ export function GarageSwitcher() {
             style={{ top: 120 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="font-display font-semibold text-[9px] tracking-[.14em] text-ink-500 px-2 py-2">
-              MY GARAGE · {bikes.length} BIKES
+            <div className="px-2 py-2">
+              <BilingualLabel
+                en={`MY GARAGE · ${bikes.length} BIKES`}
+                thai={`โรงรถของฉัน · ${bikes.length} คัน`}
+                primaryClassName="text-ink-500 !text-[9px] tracking-[.14em]"
+                secondaryClassName="text-ink-500 !text-[8px]"
+              />
             </div>
 
             {bikes.map((bike) => {
@@ -66,7 +72,7 @@ export function GarageSwitcher() {
               className="w-full min-h-[48px] mt-1 flex items-center justify-center gap-2 rounded-16 border border-dashed border-accent text-accent font-display font-semibold text-[12px] tracking-[.04em]"
             >
               <Plus size={16} />
-              ADD NEW BIKE
+              เพิ่มรถใหม่ · ADD NEW BIKE
             </button>
           </div>
         </div>
