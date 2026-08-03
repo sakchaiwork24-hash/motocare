@@ -6,15 +6,13 @@ import { IceFullScreen } from './IceFullScreen';
 import { DocumentList } from './DocumentList';
 import { DocPreviewSheet } from './DocPreviewSheet';
 import { ResalePassportSheet } from './ResalePassportSheet';
-import { BackupSheet } from './BackupSheet';
 import type { DocId } from '../../types';
 
 export function VaultTab() {
-  const { activeBike } = useBikes();
+  const { activeBike, openBackupSheet } = useBikes();
   const [iceOpen, setIceOpen] = useState(false);
   const [previewDocId, setPreviewDocId] = useState<DocId | null>(null);
   const [passportOpen, setPassportOpen] = useState(false);
-  const [backupOpen, setBackupOpen] = useState(false);
 
   if (!activeBike) return null;
 
@@ -42,7 +40,7 @@ export function VaultTab() {
       </button>
 
       <button
-        onClick={() => setBackupOpen(true)}
+        onClick={openBackupSheet}
         className="min-h-[66px] flex items-center gap-3 bg-sunken border border-border rounded-18 p-3.5 text-left"
       >
         <div className="w-10 h-10 rounded-12 bg-surface flex items-center justify-center shrink-0">
@@ -62,7 +60,6 @@ export function VaultTab() {
       <IceFullScreen open={iceOpen} onClose={() => setIceOpen(false)} />
       <DocPreviewSheet docId={previewDocId} onClose={() => setPreviewDocId(null)} />
       <ResalePassportSheet open={passportOpen} onClose={() => setPassportOpen(false)} />
-      <BackupSheet open={backupOpen} onClose={() => setBackupOpen(false)} />
     </div>
   );
 }

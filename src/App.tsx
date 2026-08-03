@@ -13,8 +13,10 @@ import { CostsTab } from './components/costs/CostsTab';
 import { LogFuelSheet } from './components/costs/LogFuelSheet';
 import { ModsTab } from './components/mods/ModsTab';
 import { VaultTab } from './components/vault/VaultTab';
+import { BackupSheet } from './components/vault/BackupSheet';
 import { InstallBanner } from './components/InstallBanner';
 import { UpdateBanner } from './components/UpdateBanner';
+import { BackupReminderBanner } from './components/BackupReminderBanner';
 import { useSWUpdate } from './state/swUpdate';
 
 export type TabType = 'dash' | 'maint' | 'mods' | 'cost' | 'vault';
@@ -22,7 +24,10 @@ export type TabType = 'dash' | 'maint' | 'mods' | 'cost' | 'vault';
 function AppBody() {
   const [activeTab, setActiveTab] = useState<TabType>('dash');
   const { needRefresh, applyUpdate } = useSWUpdate();
-  const { activeBike, serviceSheet, closeServiceSheet, logFuelSheet, closeLogFuelSheet } = useBikes();
+  const {
+    activeBike, serviceSheet, closeServiceSheet, logFuelSheet, closeLogFuelSheet,
+    backupSheetOpen, openBackupSheet, closeBackupSheet,
+  } = useBikes();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -50,8 +55,10 @@ function AppBody() {
         initialPartKey={serviceSheet.partKey}
       />
       <LogFuelSheet open={logFuelSheet.open} onClose={closeLogFuelSheet} bike={activeBike} />
+      <BackupSheet open={backupSheetOpen} onClose={closeBackupSheet} />
       <InstallBanner suppressed={needRefresh} />
       <UpdateBanner needRefresh={needRefresh} applyUpdate={applyUpdate} />
+      <BackupReminderBanner suppressed={needRefresh} onOpenBackup={openBackupSheet} />
       <Toast />
     </AppShell>
   );

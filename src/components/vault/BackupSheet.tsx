@@ -3,6 +3,7 @@ import { Download, Upload, TriangleAlert } from 'lucide-react';
 import { Sheet } from '../Sheet';
 import { useToast } from '../../state/ToastContext';
 import { exportAllData, importData } from '../../lib/backup';
+import { updateConfig } from '../../db';
 import { BilingualLabel } from '../BilingualLabel';
 import { PrimaryButton } from '../PrimaryButton';
 
@@ -23,6 +24,9 @@ export function BackupSheet({ open, onClose }: BackupSheetProps) {
     try {
       await exportAllData();
       showToast('ส่งออกข้อมูลสำรองแล้ว');
+      updateConfig({ lastBackupAt: new Date().toISOString() }).catch((err) => {
+        console.error('recording lastBackupAt failed', err);
+      });
     } catch (err) {
       console.error('exportAllData failed', err);
       showToast('ส่งออกไม่สำเร็จ ลองใหม่อีกครั้ง');

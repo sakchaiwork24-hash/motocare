@@ -121,4 +121,6 @@ export type Config = {
   bilingualThai: boolean;
   activeBikeId: string;
   installPromptDismissedAt?: string; // ISO date; re-shown after RESHOW_COOLDOWN_DAYS
+  lastBackupAt?: string; // ISO date; set whenever an export actually succeeds
+  backupReminderDismissedAt?: string; // ISO date; snoozes the reminder banner
 };

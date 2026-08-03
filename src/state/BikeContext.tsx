@@ -20,6 +20,9 @@ type BikeContextValue = {
   logFuelSheet: { open: boolean };
   openLogFuelSheet: () => void;
   closeLogFuelSheet: () => void;
+  backupSheetOpen: boolean;
+  openBackupSheet: () => void;
+  closeBackupSheet: () => void;
   flashTrip: boolean;
   triggerTripFlash: () => void;
 };
@@ -39,6 +42,7 @@ export function BikeProvider({ children }: { children: ReactNode }) {
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [serviceSheet, setServiceSheet] = useState<{ open: boolean; partKey?: string }>({ open: false });
   const [logFuelSheet, setLogFuelSheet] = useState<{ open: boolean }>({ open: false });
+  const [backupSheetOpen, setBackupSheetOpen] = useState(false);
   const [flashTrip, setFlashTrip] = useState(false);
   const flashTripTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -61,6 +65,9 @@ export function BikeProvider({ children }: { children: ReactNode }) {
   const openLogFuelSheet = useCallback(() => setLogFuelSheet({ open: true }), []);
   const closeLogFuelSheet = useCallback(() => setLogFuelSheet({ open: false }), []);
 
+  const openBackupSheet = useCallback(() => setBackupSheetOpen(true), []);
+  const closeBackupSheet = useCallback(() => setBackupSheetOpen(false), []);
+
   const triggerTripFlash = useCallback(() => {
     if (flashTripTimeout.current) clearTimeout(flashTripTimeout.current);
     setFlashTrip(true);
@@ -74,6 +81,7 @@ export function BikeProvider({ children }: { children: ReactNode }) {
         switcherOpen, openSwitcher, closeSwitcher,
         serviceSheet, openServiceSheet, closeServiceSheet,
         logFuelSheet, openLogFuelSheet, closeLogFuelSheet,
+        backupSheetOpen, openBackupSheet, closeBackupSheet,
         flashTrip, triggerTripFlash
       }}
     >
