@@ -108,25 +108,6 @@ export async function recordService(
   });
 }
 
-const MONTHLY_WINDOW = 6;
-
-/** Rolls a fuel spend into the trailing 6-month window shown by StatGrid/MonthlyBars — bumps
- * the current month's total if it's already the last entry, otherwise appends a new month and
- * drops the oldest so the window never grows past MONTHLY_WINDOW. */
-function rollMonthlySpend(monthly: Bike['monthly'], thb: number, now: Date): Bike['monthly'] {
-  const label = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-  const year = now.getFullYear();
-  const last = monthly[monthly.length - 1];
-  // `last.y` is only set by this function (legacy/seed entries carry no year) — only bump the
-  // existing bucket when the year is known and actually matches, so a same-named month from a
-  // prior year (e.g. a 12-month gap between fuel logs) can't silently merge into a stale bucket.
-  if (last && last.m === label && last.y === year) {
-    return [...monthly.slice(0, -1), { m: label, thb: last.thb + thb, y: year }];
-  }
-  const next = [...monthly, { m: label, thb, y: year }];
-  return next.length > MONTHLY_WINDOW ? next.slice(next.length - MONTHLY_WINDOW) : next;
-}
-
 export async function recordFuelLog(
   bikeId: string,
   entry: { liters: number; thb: number; odo: number; station: string }
@@ -147,8 +128,7 @@ export async function recordFuelLog(
       { id: crypto.randomUUID(), date: today, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
       ...bike.fuelLogs,
     ];
-    const monthly = rollMonthlySpend(bike.monthly, entry.thb, now);
-    await db.bikes.update(bikeId, { odo: newOdo, kmpl, fuelLogs, monthly });
+    await db.bikes.update(bikeId, { odo: newOdo, kmpl, fuelLogs });
   });
 }
 
@@ -256,7 +236,7 @@ export async function addBike(input: {
     id, nick: input.nick, brand: input.brand, model: input.model, year: input.year,
     plate: input.plate, odo: input.odo, kmpl: input.kmpl, tank: input.tank, drive: input.drive,
     photoSize: '', profile: input.profile,
-    parts, mods: [], fuelLogs: [], monthly: [], services: [], docs: [], specs: [], trips: [],
+    parts, mods: [], fuelLogs: [], services: [], docs: [], specs: [], trips: [],
   };
 
   await db.transaction('rw', db.bikes, db.config, async () => {

@@ -37,10 +37,12 @@ export type FuelLog = {
   odo: number;
 };
 
+/** One trailing-month spend bucket — derived on the fly from FuelLog[] by
+ * `computeMonthlySpend` (lib/wear.ts), never stored on Bike. */
 export type MonthlySpend = {
   m: string; // 3-letter month label, e.g. "JUL"
   thb: number;
-  y?: number; // full year; absent on legacy/seed entries, always set by rollMonthlySpend
+  y: number;
 };
 
 export type Service = {
@@ -91,7 +93,6 @@ export type Bike = {
   parts: Part[];
   mods: Mod[];
   fuelLogs: FuelLog[];
-  monthly: MonthlySpend[];
   services: Service[];
   docs: Doc[];
   specs: [string, string][];

@@ -1,4 +1,4 @@
-import type { Bike, Part, RidingProfile } from '../types';
+import type { Bike, FuelLog, MonthlySpend, Part, RidingProfile } from '../types';
 
 const PROFILE_FACTOR: Record<RidingProfile, number> = {
   urban: 0.8,
@@ -112,6 +112,29 @@ export function costPerKm(fuelPrice: number, kmpl: number): number {
 /** Per-fill / live consumption, ported from MotoCare.dc.html lines 1345-1346 and 1411. */
 export function consumption(odo: number, prevOdo: number, liters: number): number {
   return (odo - prevOdo) / liters;
+}
+
+/**
+ * Derives the trailing N contiguous calendar months' fuel spend directly from `fuelLogs` —
+ * replaces the old incrementally-rolled `Bike.monthly` cache, which silently went stale whenever
+ * a fuel log was edited or deleted after the fact (the rolled total was never recomputed).
+ * Months with no fuel logged still appear with `thb: 0` so the trend chart stays continuous.
+ */
+export function computeMonthlySpend(fuelLogs: FuelLog[], now: Date = new Date(), windowMonths = 6): MonthlySpend[] {
+  const buckets: MonthlySpend[] = [];
+  for (let i = windowMonths - 1; i >= 0; i--) {
+    const bucketDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const year = bucketDate.getFullYear();
+    const monthIndex = bucketDate.getMonth();
+    const thb = fuelLogs
+      .filter((f) => {
+        const logDate = new Date(f.date);
+        return logDate.getFullYear() === year && logDate.getMonth() === monthIndex;
+      })
+      .reduce((sum, f) => sum + f.thb, 0);
+    buckets.push({ m: bucketDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(), thb, y: year });
+  }
+  return buckets;
 }
 
 export function isValidKmpl(n: number): boolean {

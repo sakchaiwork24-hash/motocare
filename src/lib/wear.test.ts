@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedBikes } from '../db/seed';
-import { consumption, docCountdown, healthScore, healthStatus, isValidKmpl, tripEstimate, wear, wearStatusLabel } from './wear';
+import { computeMonthlySpend, consumption, docCountdown, healthScore, healthStatus, isValidKmpl, tripEstimate, wear, wearStatusLabel } from './wear';
+import type { FuelLog } from '../types';
 
 describe('isValidKmpl', () => {
   it('returns true for valid consumption within range', () => {
@@ -144,5 +145,28 @@ describe('docCountdown', () => {
 
   it('is negative once the expiry date has passed', () => {
     expect(docCountdown('2026-01-01', new Date('2026-07-31'))).toBeLessThan(0);
+  });
+});
+
+describe('computeMonthlySpend', () => {
+  const log = (date: string, thb: number): FuelLog => ({ id: date, date, thb, liters: 5, station: 'test', odo: 0 });
+
+  it('returns windowMonths contiguous buckets ending at "now", oldest first', () => {
+    const buckets = computeMonthlySpend([], new Date('2026-07-15'), 6);
+    expect(buckets.map((b) => b.m)).toEqual(['FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL']);
+    expect(buckets.every((b) => b.thb === 0)).toBe(true);
+  });
+
+  it('sums multiple logs that fall in the same month', () => {
+    const logs = [log('2026-07-05', 300), log('2026-07-20', 150)];
+    const buckets = computeMonthlySpend(logs, new Date('2026-07-31'), 6);
+    expect(buckets[buckets.length - 1]).toEqual({ m: 'JUL', thb: 450, y: 2026 });
+  });
+
+  it('excludes logs outside the trailing window and keeps same-name months from different years separate', () => {
+    const logs = [log('2025-07-01', 999), log('2026-07-01', 100)];
+    const buckets = computeMonthlySpend(logs, new Date('2026-07-31'), 6);
+    // 2025-07 is 12 months back, outside a 6-month window, so only the 2026 entry counts.
+    expect(buckets[buckets.length - 1]).toEqual({ m: 'JUL', thb: 100, y: 2026 });
   });
 });

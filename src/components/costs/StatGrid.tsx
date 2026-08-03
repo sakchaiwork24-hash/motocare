@@ -1,5 +1,5 @@
 import { useBikes } from '../../state/BikeContext';
-import { costPerKm } from '../../lib/wear';
+import { costPerKm, computeMonthlySpend } from '../../lib/wear';
 import { useState } from 'react';
 import { FuelPriceSheet } from './FuelPriceSheet';
 import { StatTile } from '../StatTile';
@@ -10,7 +10,7 @@ export function StatGrid() {
 
   if (!activeBike || !config) return null;
 
-  const fuelTotal = activeBike.monthly.reduce((a, m) => a + m.thb, 0);
+  const fuelTotal = computeMonthlySpend(activeBike.fuelLogs).reduce((a, m) => a + m.thb, 0);
   const maintTotal = activeBike.services.reduce((a, s) => a + s.cost, 0);
 
   const stats: { key: string; label: string; value: string; sub: string; onClick?: () => void }[] = [

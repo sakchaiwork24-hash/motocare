@@ -1,5 +1,5 @@
 import { useBikes } from '../../state/BikeContext';
-import { costPerKm } from '../../lib/wear';
+import { costPerKm, computeMonthlySpend } from '../../lib/wear';
 import { BilingualLabel } from '../BilingualLabel';
 
 export function BikeComparison() {
@@ -8,7 +8,7 @@ export function BikeComparison() {
   if (!config || bikes.length < 2) return null;
 
   const rows = bikes.map((bike) => {
-    const fuelTotal = bike.monthly.reduce((a, m) => a + m.thb, 0);
+    const fuelTotal = computeMonthlySpend(bike.fuelLogs).reduce((a, m) => a + m.thb, 0);
     const maintTotal = bike.services.reduce((a, s) => a + s.cost, 0);
     return {
       id: bike.id,

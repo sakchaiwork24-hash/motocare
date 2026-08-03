@@ -1,5 +1,6 @@
 import { useBikes } from '../../state/BikeContext';
 import { useZeroToTarget } from '../../hooks/useZeroToTarget';
+import { computeMonthlySpend } from '../../lib/wear';
 import type { MonthlySpend } from '../../types';
 
 type MonthlyBarProps = {
@@ -31,9 +32,10 @@ function MonthlyBar({ month, targetHeight, isLatest }: MonthlyBarProps) {
 export function MonthlyBars() {
   const { activeBike } = useBikes();
 
-  if (!activeBike || !activeBike.monthly.length) return null;
+  if (!activeBike || activeBike.fuelLogs.length === 0) return null;
 
-  const maxSpend = Math.max(...activeBike.monthly.map((m) => m.thb));
+  const monthly = computeMonthlySpend(activeBike.fuelLogs);
+  const maxSpend = Math.max(...monthly.map((m) => m.thb));
 
   return (
     <div className="bg-surface border border-border rounded-16 p-4">
@@ -41,12 +43,12 @@ export function MonthlyBars() {
         แนวโน้มค่าใช้จ่าย
       </div>
       <div className="flex justify-between items-end h-[100px] mt-2">
-        {activeBike.monthly.map((m, i) => (
+        {monthly.map((m, i) => (
           <MonthlyBar
             key={`${m.y ?? ''}-${m.m}-${i}`}
             month={m}
             targetHeight={maxSpend > 0 ? Math.round((m.thb / maxSpend) * 76) + 8 : 4}
-            isLatest={i === activeBike.monthly.length - 1}
+            isLatest={i === monthly.length - 1}
           />
         ))}
       </div>

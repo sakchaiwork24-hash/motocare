@@ -65,10 +65,6 @@ export const seedBikes: Bike[] = [
       { id: 'zf2', date: '2026-07-21', station: 'Bangchak · Ladprao 71', liters: 7.9, thb: 296, odo: 6562 },
       { id: 'zf3', date: '2026-07-14', station: 'PT · Rangsit Klong 3', liters: 8.1, thb: 304, odo: 6330 },
     ],
-    monthly: [
-      { m: 'FEB', thb: 980 }, { m: 'MAR', thb: 1150 }, { m: 'APR', thb: 1040 },
-      { m: 'MAY', thb: 1290 }, { m: 'JUN', thb: 1120 }, { m: 'JUL', thb: 1240 },
-    ],
     services: [
       { id: 'zs1', date: '2026-07-19', odo: 6450, what: 'Chain lube & tension adjust', shop: 'Zontes Bangkok · Rama IX', cost: 150 },
       { id: 'zs2', date: '2026-04-14', odo: 4000, what: 'Engine oil + filter (Motul 7100)', shop: 'Zontes Bangkok · Rama IX', cost: 890 },
@@ -117,10 +113,6 @@ export const seedBikes: Bike[] = [
       { id: 'wf2', date: '2026-07-23', station: 'PTT · Bang Wa', liters: 3.6, thb: 128, odo: 41968 },
       { id: 'wf3', date: '2026-07-16', station: 'Esso · Thonburi', liters: 3.9, thb: 139, odo: 41782 },
     ],
-    monthly: [
-      { m: 'FEB', thb: 540 }, { m: 'MAR', thb: 610 }, { m: 'APR', thb: 580 },
-      { m: 'MAY', thb: 640 }, { m: 'JUN', thb: 600 }, { m: 'JUL', thb: 655 },
-    ],
     services: [
       { id: 'ws1', date: '2026-07-12', odo: 41900, what: 'Engine oil (Honda 10W-30)', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 320 },
       { id: 'ws2', date: '2026-02-02', odo: 36000, what: 'Air filter + spark plug', shop: 'ร้านช่างหนุ่ม · บางแค', cost: 410 },
@@ -167,10 +159,6 @@ export const seedBikes: Bike[] = [
       { id: 'vf1', date: '2026-07-27', station: 'Shell · Sathorn', liters: 6.2, thb: 238, odo: 12430 },
       { id: 'vf2', date: '2026-07-18', station: 'PTT · Silom', liters: 5.9, thb: 226, odo: 12175 },
       { id: 'vf3', date: '2026-07-08', station: 'Caltex · Rama IV', liters: 6.4, thb: 245, odo: 11930 },
-    ],
-    monthly: [
-      { m: 'FEB', thb: 720 }, { m: 'MAR', thb: 690 }, { m: 'APR', thb: 810 },
-      { m: 'MAY', thb: 760 }, { m: 'JUN', thb: 700 }, { m: 'JUL', thb: 709 },
     ],
     services: [
       { id: 'vs1', date: '2026-05-19', odo: 10500, what: 'Engine oil + gear oil', shop: 'Vespa Sathorn', cost: 1450 },
