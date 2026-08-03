@@ -124,4 +124,5 @@ export type Config = {
   installPromptDismissedAt?: string; // ISO date; re-shown after RESHOW_COOLDOWN_DAYS
   lastBackupAt?: string; // ISO date; set whenever an export actually succeeds
   backupReminderDismissedAt?: string; // ISO date; snoozes the reminder banner
+  wearNotifiedDate?: string; // ISO date (day-granularity); dedupes the on-open wear notification to once/day
 };
