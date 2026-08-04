@@ -5,11 +5,14 @@ import { useBikes } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { AddBikeSheet } from './AddBikeSheet';
 import { BilingualLabel } from '../BilingualLabel';
+import { useBackButtonClose } from '../../hooks/useBackButtonClose';
 
 export function GarageSwitcher() {
   const { bikes, activeId, switchBike, switcherOpen, closeSwitcher } = useBikes();
   const { showToast } = useToast();
   const [addBikeOpen, setAddBikeOpen] = useState(false);
+
+  useBackButtonClose(switcherOpen, closeSwitcher);
 
   const select = (id: string) => {
     const bike = bikes.find((b) => b.id === id);

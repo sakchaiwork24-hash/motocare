@@ -8,6 +8,7 @@ import type { PartKey } from '../../types';
 import { Chip } from '../Chip';
 import { FormField } from '../FormField';
 import { PrimaryButton } from '../PrimaryButton';
+import { useBackButtonClose } from '../../hooks/useBackButtonClose';
 
 // Intentionally a centered dialog (like a phone's voice-assist prompt), not a bottom
 // <Sheet> like every other overlay in this app — voice entry needs to grab full attention
@@ -80,6 +81,8 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
       recognitionRef.current?.stop();
     };
   }, []);
+
+  useBackButtonClose(open, onClose);
 
   if (!open || !activeBike) return null;
 

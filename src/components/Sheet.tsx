@@ -1,4 +1,5 @@
 import React from 'react';
+import { useBackButtonClose } from '../hooks/useBackButtonClose';
 
 type SheetProps = {
   open: boolean;
@@ -7,6 +8,7 @@ type SheetProps = {
 };
 
 export function Sheet({ open, onClose, children }: SheetProps) {
+  useBackButtonClose(open, onClose);
   if (!open) return null;
 
   return (

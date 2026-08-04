@@ -1,5 +1,6 @@
 import { Phone, X } from 'lucide-react';
 import { useBikes } from '../../state/BikeContext';
+import { useBackButtonClose } from '../../hooks/useBackButtonClose';
 
 type IceFullScreenProps = {
   open: boolean;
@@ -9,6 +10,7 @@ type IceFullScreenProps = {
 /** Verified from README "ICE full-screen" + MotoCare.dc.html lines 824-867. Max contrast, safety-critical. */
 export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
   const { rider, activeBike } = useBikes();
+  useBackButtonClose(open, onClose);
   if (!open || !rider || !activeBike) return null;
 
   return (
