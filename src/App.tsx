@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
 import { AppShell } from './components/shell/AppShell';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Header } from './components/shell/Header';
 import { BottomNav } from './components/shell/BottomNav';
 import { GarageSwitcher } from './components/shell/GarageSwitcher';
@@ -53,9 +54,11 @@ function AppBody() {
     <AppShell>
       <Header />
       <main className="flex-1 overflow-y-auto p-[14px] pb-[22px] flex flex-col gap-[14px]">
-        <Suspense fallback={<TabFallback />}>
-          {renderContent()}
-        </Suspense>
+        <ErrorBoundary key={activeTab}>
+          <Suspense fallback={<TabFallback />}>
+            {renderContent()}
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <BottomNav activeTab={activeTab} onChange={setActiveTab} />
       <GarageSwitcher />
