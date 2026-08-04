@@ -180,6 +180,9 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
                   className={`relative w-16 h-16 rounded-full flex items-center justify-center ${
                     phase === 'listening' ? 'bg-accent2 animate-mcPulse' : 'bg-[rgba(6,182,212,.15)] border border-accent2/40'
                   }`}
+                  aria-label={phase === 'listening' ? 'Stop listening' : 'Start voice entry'}
+                  aria-pressed={phase === 'listening'}
+                  aria-describedby="voice-entry-status"
                 >
                   <Mic size={26} className={phase === 'listening' ? 'text-ice-surface' : 'text-accent2-light'} />
                 </button>
@@ -187,7 +190,7 @@ export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
               <div className="font-display font-bold text-[13px] tracking-[.04em] text-ink-100 uppercase">
                 {phase === 'listening' ? 'กำลังฟัง… พูดได้เลย' : 'บันทึกด้วยเสียง'}
               </div>
-              <div className="font-sans text-[11px] text-ink-400 text-center min-h-[16px]">
+              <div id="voice-entry-status" className="font-sans text-[11px] text-ink-400 text-center min-h-[16px]">
                 {phase === 'listening' ? (transcript || 'ฟังอยู่...') : 'แตะไมค์แล้วพูดว่าทำอะไรไป'}
               </div>
               {phase === 'idle' && (

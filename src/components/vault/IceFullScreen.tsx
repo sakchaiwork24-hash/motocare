@@ -20,6 +20,7 @@ export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
         <button
           onClick={onClose}
           className="w-11 h-11 flex items-center justify-center bg-[rgba(255,241,242,.12)] border border-ice-muted/40 rounded-13 text-ice-card"
+          aria-label="Close"
         >
           <X size={18} />
         </button>

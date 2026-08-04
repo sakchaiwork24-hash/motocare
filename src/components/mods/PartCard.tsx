@@ -19,6 +19,7 @@ export function PartCard({ mod, onAdvance, onEdit }: Props) {
       <button
         onClick={onEdit}
         className="absolute top-3 right-3 text-ink-500 hover:text-ink-300 min-h-[32px] min-w-[32px] flex items-center justify-center"
+        aria-label="Edit"
       >
         <Pencil className="w-4 h-4" />
       </button>
