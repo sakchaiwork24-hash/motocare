@@ -1,7 +1,5 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { AppShell } from './components/shell/AppShell';
-import { DashboardTab } from './components/dashboard/DashboardTab';
-import { MaintenanceTab } from './components/maintenance/MaintenanceTab';
 import { Header } from './components/shell/Header';
 import { BottomNav } from './components/shell/BottomNav';
 import { GarageSwitcher } from './components/shell/GarageSwitcher';
@@ -9,17 +7,28 @@ import { Toast } from './components/Toast';
 import { ServiceSheet } from './components/maintenance/ServiceSheet';
 import { BikeProvider, useBikes } from './state/BikeContext';
 import { ToastProvider } from './state/ToastContext';
-import { CostsTab } from './components/costs/CostsTab';
 import { LogFuelSheet } from './components/costs/LogFuelSheet';
-import { ModsTab } from './components/mods/ModsTab';
-import { VaultTab } from './components/vault/VaultTab';
 import { BackupSheet } from './components/vault/BackupSheet';
 import { InstallBanner } from './components/InstallBanner';
 import { UpdateBanner } from './components/UpdateBanner';
 import { BackupReminderBanner } from './components/BackupReminderBanner';
 import { useSWUpdate } from './state/swUpdate';
 
+const DashboardTab = lazy(() => import('./components/dashboard/DashboardTab').then((m) => ({ default: m.DashboardTab })));
+const MaintenanceTab = lazy(() => import('./components/maintenance/MaintenanceTab').then((m) => ({ default: m.MaintenanceTab })));
+const ModsTab = lazy(() => import('./components/mods/ModsTab').then((m) => ({ default: m.ModsTab })));
+const CostsTab = lazy(() => import('./components/costs/CostsTab').then((m) => ({ default: m.CostsTab })));
+const VaultTab = lazy(() => import('./components/vault/VaultTab').then((m) => ({ default: m.VaultTab })));
+
 export type TabType = 'dash' | 'maint' | 'mods' | 'cost' | 'vault';
+
+function TabFallback() {
+  return (
+    <div className="flex-1 flex items-center justify-center py-20" role="status" aria-label="Loading">
+      <div className="w-8 h-8 rounded-full border-2 border-border border-t-accent animate-spin motion-reduce:animate-none" />
+    </div>
+  );
+}
 
 function AppBody() {
   const [activeTab, setActiveTab] = useState<TabType>('dash');
@@ -44,7 +53,9 @@ function AppBody() {
     <AppShell>
       <Header />
       <main className="flex-1 overflow-y-auto p-[14px] pb-[22px] flex flex-col gap-[14px]">
-        {renderContent()}
+        <Suspense fallback={<TabFallback />}>
+          {renderContent()}
+        </Suspense>
       </main>
       <BottomNav activeTab={activeTab} onChange={setActiveTab} />
       <GarageSwitcher />
