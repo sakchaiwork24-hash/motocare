@@ -39,6 +39,37 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
   const [catalogBrand, setCatalogBrand] = useState('');
   const [catalogModelId, setCatalogModelId] = useState('');
 
+  const [odoError, setOdoError] = useState<string | undefined>();
+  const [kmplError, setKmplError] = useState<string | undefined>();
+  const [tankError, setTankError] = useState<string | undefined>();
+
+  const validateOdo = (v: string) => {
+    const n = parseInt(v, 10);
+    const err = isNaN(n) || n < 0 ? 'กรอกเลขไมล์ให้ถูกต้อง' : undefined;
+    setOdoError(err);
+    return !err;
+  };
+  const validateKmpl = (v: string) => {
+    if (!v) {
+      setKmplError(undefined);
+      return true;
+    }
+    const n = parseFloat(v);
+    const err = isNaN(n) || n <= 0 ? 'กรอกอัตราสิ้นเปลืองให้ถูกต้อง' : undefined;
+    setKmplError(err);
+    return !err;
+  };
+  const validateTank = (v: string) => {
+    if (!v) {
+      setTankError(undefined);
+      return true;
+    }
+    const n = parseFloat(v);
+    const err = isNaN(n) || n <= 0 ? 'กรอกความจุถังให้ถูกต้อง' : undefined;
+    setTankError(err);
+    return !err;
+  };
+
   useEffect(() => {
     if (!open) return;
     setStep(1);
@@ -54,6 +85,9 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
     setProfile(config?.defaultProfile ?? 'urban');
     setCatalogBrand('');
     setCatalogModelId('');
+    setOdoError(undefined);
+    setKmplError(undefined);
+    setTankError(undefined);
   }, [open, config?.defaultProfile]);
 
   const catalogModels = useMemo(
@@ -79,30 +113,26 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
   const goToStep2 = () => setStep(2);
 
   const goToStep3 = () => {
-    if (!nick.trim() || !brand.trim() || !model.trim() || !odo) {
-      showToast('กรอกชื่อเล่น ยี่ห้อ รุ่น และเลขไมล์ก่อน');
+    const odoOk = validateOdo(odo);
+    if (!nick.trim() || !brand.trim() || !model.trim() || !odoOk) {
+      showToast('กรอกชื่อเล่น ยี่ห้อ รุ่น และเลขไมล์ให้ถูกต้อง');
       return;
     }
     setStep(3);
   };
 
   const handleSave = async () => {
+    const odoOk = validateOdo(odo);
+    const kmplOk = validateKmpl(kmpl);
+    const tankOk = validateTank(tank);
+    if (!odoOk || !kmplOk || !tankOk) {
+      showToast('ตรวจสอบข้อมูลที่กรอกอีกครั้ง');
+      return;
+    }
+
     const parsedOdo = parseInt(odo, 10);
     const parsedKmpl = parseFloat(kmpl);
     const parsedTank = parseFloat(tank);
-
-    if (isNaN(parsedOdo) || parsedOdo < 0) {
-      showToast('กรุณากรอกเลขไมล์ให้ถูกต้อง');
-      return;
-    }
-    if (kmpl && (isNaN(parsedKmpl) || parsedKmpl <= 0)) {
-      showToast('กรุณากรอกอัตราสิ้นเปลืองให้ถูกต้อง');
-      return;
-    }
-    if (tank && (isNaN(parsedTank) || parsedTank <= 0)) {
-      showToast('กรุณากรอกความจุถังให้ถูกต้อง');
-      return;
-    }
 
     try {
       await addBike({
@@ -173,6 +203,8 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
             setPlate={setPlate}
             odo={odo}
             setOdo={setOdo}
+            odoError={odoError}
+            onOdoBlur={() => validateOdo(odo)}
             onBack={() => setStep(1)}
             onNext={goToStep3}
           />
@@ -182,8 +214,12 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
           <AddBikeStep3Specs
             kmpl={kmpl}
             setKmpl={setKmpl}
+            kmplError={kmplError}
+            onKmplBlur={() => validateKmpl(kmpl)}
             tank={tank}
             setTank={setTank}
+            tankError={tankError}
+            onTankBlur={() => validateTank(tank)}
             drive={drive}
             setDrive={setDrive}
             profile={profile}

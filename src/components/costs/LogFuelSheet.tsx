@@ -28,6 +28,29 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
   const [odoInput, setOdoInput] = useState('');
   const [stationInput, setStationInput] = useState('');
 
+  const [litersError, setLitersError] = useState<string | undefined>();
+  const [thbError, setThbError] = useState<string | undefined>();
+  const [odoError, setOdoError] = useState<string | undefined>();
+
+  const validateLiters = (v: string) => {
+    const n = parseFloat(v);
+    const err = isNaN(n) || n <= 0 ? 'กรอกจำนวนลิตรมากกว่า 0' : undefined;
+    setLitersError(err);
+    return !err;
+  };
+  const validateThb = (v: string) => {
+    const n = parseFloat(v);
+    const err = isNaN(n) || n < 0 ? 'กรอกยอดเงินให้ถูกต้อง' : undefined;
+    setThbError(err);
+    return !err;
+  };
+  const validateOdo = (v: string) => {
+    const n = parseInt(v, 10);
+    const err = isNaN(n) || n < 0 ? 'กรอกเลขไมล์ให้ถูกต้อง' : undefined;
+    setOdoError(err);
+    return !err;
+  };
+
   useEffect(() => {
     if (!open) return;
     if (editing) {
@@ -41,6 +64,9 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
       setThbInput('');
       setStationInput('');
     }
+    setLitersError(undefined);
+    setThbError(undefined);
+    setOdoError(undefined);
     setScanState('idle');
   }, [open, editing, bike]);
 
@@ -67,19 +93,18 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
   };
 
   const handleSave = async () => {
+    const litersOk = validateLiters(litersInput);
+    const thbOk = validateThb(thbInput);
+    const odoOk = validateOdo(odoInput);
+    if (!litersOk || !thbOk || !odoOk) {
+      showToast('ตรวจสอบข้อมูลที่กรอกอีกครั้ง');
+      return;
+    }
+
     const liters = parseFloat(litersInput);
     const thb = parseFloat(thbInput);
     const odo = parseInt(odoInput, 10);
     const station = stationInput || 'ไม่ระบุปั๊ม';
-
-    if (isNaN(liters) || isNaN(thb) || isNaN(odo)) {
-      showToast('กรอกจำนวนลิตร ยอดเงิน และเลขไมล์ก่อน');
-      return;
-    }
-    if (liters <= 0 || thb < 0 || odo < 0) {
-      showToast('จำนวนลิตรต้องมากกว่า 0 และยอดเงิน/เลขไมล์ต้องไม่ติดลบ');
-      return;
-    }
 
     if (editing) {
       try {
@@ -180,12 +205,21 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
 
         <div className="flex flex-col gap-3.5 mt-2">
           <div className="flex gap-3">
-            <FormField className="flex-1" label="จำนวนลิตร" labelEn="LITERS" type="number" step="0.01" value={litersInput} onChange={setLitersInput} />
-            <FormField className="flex-1" label="ยอดเงิน (บาท)" labelEn="AMOUNT (THB)" type="number" step="0.01" value={thbInput} onChange={setThbInput} />
+            <FormField
+              className="flex-1" label="จำนวนลิตร" labelEn="LITERS" type="number" inputMode="decimal" step="0.01"
+              value={litersInput} onChange={setLitersInput} onBlur={() => validateLiters(litersInput)} error={litersError}
+            />
+            <FormField
+              className="flex-1" label="ยอดเงิน (บาท)" labelEn="AMOUNT (THB)" type="number" inputMode="decimal" step="0.01"
+              value={thbInput} onChange={setThbInput} onBlur={() => validateThb(thbInput)} error={thbError}
+            />
           </div>
 
           <div className="flex gap-3">
-            <FormField className="flex-1" label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" value={odoInput} onChange={setOdoInput} />
+            <FormField
+              className="flex-1" label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" inputMode="numeric"
+              value={odoInput} onChange={setOdoInput} onBlur={() => validateOdo(odoInput)} error={odoError}
+            />
             <div className="flex-1 flex flex-col gap-1.5 justify-center">
               <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
                 อัตราสิ้นเปลือง <span className="opacity-70">· CONSUMPTION</span>

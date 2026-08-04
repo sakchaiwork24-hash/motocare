@@ -31,6 +31,31 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
   const [receiptUrl, setReceiptUrl] = useState<string | undefined>(undefined);
   const [compressing, setCompressing] = useState(false);
 
+  const [odoError, setOdoError] = useState<string | undefined>();
+  const [costError, setCostError] = useState<string | undefined>();
+
+  const validateOdo = (v: string) => {
+    const n = parseInt(v, 10);
+    let err: string | undefined;
+    if (isNaN(n) || n < 0) {
+      err = 'กรอกเลขไมล์ให้ถูกต้อง';
+    } else if (bike && !editing && n < bike.odo) {
+      err = `เลขไมล์ต้องไม่น้อยกว่า ${bike.odo.toLocaleString()} กม.`;
+    }
+    setOdoError(err);
+    return !err;
+  };
+  const validateCost = (v: string) => {
+    if (!v) {
+      setCostError(undefined);
+      return true;
+    }
+    const n = parseInt(v, 10);
+    const err = isNaN(n) || n < 0 ? 'ค่าใช้จ่ายต้องไม่ติดลบ' : undefined;
+    setCostError(err);
+    return !err;
+  };
+
   useEffect(() => {
     if (!open) return;
     if (editing) {
@@ -46,6 +71,8 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
       setShopInput('');
       setReceiptBlob(undefined);
     }
+    setOdoError(undefined);
+    setCostError(undefined);
   }, [open, editing, initialPartKey, bike]);
 
   useEffect(() => {
@@ -82,21 +109,15 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
       return;
     }
 
+    const odoOk = validateOdo(odoInput);
+    const costOk = validateCost(costInput);
+    if (!odoOk || !costOk) {
+      showToast('ตรวจสอบข้อมูลที่กรอกอีกครั้ง');
+      return;
+    }
+
     const odo = parseInt(odoInput, 10);
     const cost = costInput ? parseInt(costInput, 10) : 0;
-
-    if (isNaN(odo) || odo < 0) {
-      showToast('กรุณากรอกเลขไมล์ให้ถูกต้อง');
-      return;
-    }
-    if (!editing && odo < bike.odo) {
-      showToast(`เลขไมล์ต้องไม่น้อยกว่า ${bike.odo.toLocaleString()} กม.`);
-      return;
-    }
-    if (isNaN(cost) || cost < 0) {
-      showToast('ค่าใช้จ่ายต้องไม่ติดลบ');
-      return;
-    }
 
     try {
       if (editing) {
@@ -157,14 +178,20 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
 
         <div className="flex flex-col gap-3.5 mt-1">
           <div className="flex gap-3">
-            <FormField className="flex-1" label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" value={odoInput} onChange={setOdoInput} />
+            <FormField
+              className="flex-1" label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" inputMode="numeric"
+              value={odoInput} onChange={setOdoInput} onBlur={() => validateOdo(odoInput)} error={odoError}
+            />
             <FormField
               className="flex-1"
               label="ค่าใช้จ่าย (บาท)"
               labelEn="COST (THB)"
               type="number"
+              inputMode="numeric"
               value={costInput}
               onChange={setCostInput}
+              onBlur={() => validateCost(costInput)}
+              error={costError}
               placeholder="ไม่บังคับ"
             />
           </div>

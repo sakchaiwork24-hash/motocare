@@ -14,12 +14,15 @@ type AddBikeStep2BasicsProps = {
   setPlate: (v: string) => void;
   odo: string;
   setOdo: (v: string) => void;
+  odoError?: string;
+  onOdoBlur: () => void;
   onBack: () => void;
   onNext: () => void;
 };
 
 export function AddBikeStep2Basics({
-  nick, setNick, brand, setBrand, model, setModel, year, setYear, plate, setPlate, odo, setOdo, onBack, onNext,
+  nick, setNick, brand, setBrand, model, setModel, year, setYear, plate, setPlate,
+  odo, setOdo, odoError, onOdoBlur, onBack, onNext,
 }: AddBikeStep2BasicsProps) {
   return (
     <div className="flex flex-col gap-3.5">
@@ -31,11 +34,14 @@ export function AddBikeStep2Basics({
       </div>
 
       <div className="flex gap-3">
-        <FormField className="flex-1" label="ปี" labelEn="YEAR" type="number" value={year} onChange={setYear} />
+        <FormField className="flex-1" label="ปี" labelEn="YEAR" type="number" inputMode="numeric" value={year} onChange={setYear} />
         <FormField className="flex-1" label="ทะเบียน" labelEn="PLATE" value={plate} onChange={setPlate} placeholder="ไม่บังคับ" />
       </div>
 
-      <FormField label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" value={odo} onChange={setOdo} />
+      <FormField
+        label="เลขไมล์ (กม.)" labelEn="ODOMETER" type="number" inputMode="numeric"
+        value={odo} onChange={setOdo} onBlur={onOdoBlur} error={odoError}
+      />
 
       <div className="flex gap-2 mt-1">
         <PrimaryButton onClick={onBack} tone="outline" className="flex-1">

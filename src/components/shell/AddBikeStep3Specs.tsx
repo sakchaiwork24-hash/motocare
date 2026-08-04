@@ -15,6 +15,10 @@ type AddBikeStep3SpecsProps = {
   setKmpl: (v: string) => void;
   tank: string;
   setTank: (v: string) => void;
+  kmplError?: string;
+  onKmplBlur: () => void;
+  tankError?: string;
+  onTankBlur: () => void;
   drive: typeof DRIVE_OPTIONS[number];
   setDrive: (v: typeof DRIVE_OPTIONS[number]) => void;
   profile: RidingProfile;
@@ -24,13 +28,20 @@ type AddBikeStep3SpecsProps = {
 };
 
 export function AddBikeStep3Specs({
-  kmpl, setKmpl, tank, setTank, drive, setDrive, profile, setProfile, onBack, onSave,
+  kmpl, setKmpl, tank, setTank, kmplError, onKmplBlur, tankError, onTankBlur,
+  drive, setDrive, profile, setProfile, onBack, onSave,
 }: AddBikeStep3SpecsProps) {
   return (
     <div className="flex flex-col gap-3.5">
       <div className="flex gap-3">
-        <FormField className="flex-1" label="อัตราสิ้นเปลือง (กม./ล.)" labelEn="CONSUMPTION (KM/L)" type="number" value={kmpl} onChange={setKmpl} />
-        <FormField className="flex-1" label="ถังน้ำมัน (ล.)" labelEn="TANK (L)" type="number" value={tank} onChange={setTank} />
+        <FormField
+          className="flex-1" label="อัตราสิ้นเปลือง (กม./ล.)" labelEn="CONSUMPTION (KM/L)" type="number" inputMode="decimal"
+          value={kmpl} onChange={setKmpl} onBlur={onKmplBlur} error={kmplError}
+        />
+        <FormField
+          className="flex-1" label="ถังน้ำมัน (ล.)" labelEn="TANK (L)" type="number" inputMode="decimal"
+          value={tank} onChange={setTank} onBlur={onTankBlur} error={tankError}
+        />
       </div>
 
       <div className="flex flex-col gap-1.5">

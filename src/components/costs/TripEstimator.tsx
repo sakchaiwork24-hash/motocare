@@ -59,6 +59,7 @@ export function TripEstimator() {
       <div className="flex gap-3 mb-4">
         <input
           type="text"
+          inputMode="decimal"
           value={kmInput}
           onChange={handleInput}
           placeholder="0"
