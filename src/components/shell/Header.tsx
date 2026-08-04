@@ -90,7 +90,7 @@ export function Header() {
         <div className="mx-2 mb-2 rounded-14 border border-border bg-sunken p-3 grid grid-cols-2 gap-x-4 gap-y-2 animate-mcIn">
           {activeBike.specs.map(([key, value]) => (
             <div key={key}>
-              <div className="font-sans text-[9.5px] text-ink-500">{key}</div>
+              <div className="font-sans text-[9.5px] text-ink-400">{key}</div>
               <div className="font-display font-semibold text-[12px] text-ink-200">{value}</div>
             </div>
           ))}

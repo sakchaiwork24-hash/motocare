@@ -100,7 +100,7 @@ export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
           {scanUrl ? (
             <img src={scanUrl} alt="Document scan" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-ink-500">
+            <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-ink-400">
               <FileText size={26} />
               <span className="font-mono text-[9.5px]">
                 {compressing ? 'กำลังบีบอัด…' : 'แตะเพื่อเพิ่มสแกนเอกสาร'}

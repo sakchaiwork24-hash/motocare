@@ -22,7 +22,7 @@ function MonthlyBar({ month, targetHeight, isLatest }: MonthlyBarProps) {
         className={`w-8 rounded-t-sm ${isLatest ? 'bg-accent' : 'bg-[rgba(6,182,212,.42)]'}`}
         style={{ height: `${Math.max(4, height)}px`, transition: 'height 0.3s ease-out' }}
       />
-      <div className="font-display font-semibold text-[10px] text-ink-500 uppercase mt-2">
+      <div className="font-display font-semibold text-[10px] text-ink-400 uppercase mt-2">
         {month.m}
       </div>
     </div>
@@ -39,7 +39,7 @@ export function MonthlyBars() {
 
   return (
     <div className="bg-surface border border-border rounded-16 p-4">
-      <div className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase mb-4">
+      <div className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-400 uppercase mb-4">
         แนวโน้มค่าใช้จ่าย
       </div>
       <div className="flex justify-between items-end h-[100px] mt-2">

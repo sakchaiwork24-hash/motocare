@@ -9,9 +9,9 @@ const SIZE_CLASSES: Record<Size, { wrapper: string; label: string; value: string
   },
   sm: {
     wrapper: 'bg-surface border border-border rounded-14 p-3',
-    label: 'font-display font-semibold text-[8.5px] tracking-[.1em] text-ink-500 uppercase',
+    label: 'font-display font-semibold text-[8.5px] tracking-[.1em] text-ink-400 uppercase',
     value: 'font-display font-bold text-[15px] text-ink-50 mt-1 tabular-nums',
-    sub: 'font-sans text-[9px] text-ink-500 mt-0.5',
+    sub: 'font-sans text-[9px] text-ink-400 mt-0.5',
   },
 };
 

@@ -17,7 +17,7 @@ export function DocumentList({ docs, onOpen }: DocumentListProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="px-1">
-        <BilingualLabel en="DOCUMENTS" thai="เอกสาร" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="DOCUMENTS" thai="เอกสาร" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
       <div className="flex flex-col gap-2">
         {docs.map((doc) => {

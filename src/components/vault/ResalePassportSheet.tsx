@@ -89,7 +89,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
           </div>
 
           <div>
-            <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-500 uppercase mb-2">
+            <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-400 uppercase mb-2">
               ประวัติการซ่อม
             </div>
             <div className="flex flex-col gap-1.5">
@@ -115,7 +115,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
 
           {installedMods.length > 0 && (
             <div>
-              <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-500 uppercase mb-2">
+              <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-400 uppercase mb-2">
                 อะไหล่แต่งที่ติดตั้ง
               </div>
               <div className="flex flex-col gap-1.5">

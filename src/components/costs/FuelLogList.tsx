@@ -40,7 +40,7 @@ export function FuelLogList() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1 mb-1">
-        <BilingualLabel en="FUEL LOG" thai="บันทึกการเติมน้ำมัน" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="FUEL LOG" thai="บันทึกการเติมน้ำมัน" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
         <button
           onClick={openLogFuelSheet}
           className="font-display font-bold text-[11px] tracking-[.06em] text-accent uppercase active:opacity-70 transition-opacity"

@@ -49,7 +49,7 @@ export function TripEstimator() {
 
   return (
     <div className={`bg-surface border rounded-16 p-4 transition-colors duration-300 ${flashTrip ? 'border-[#22D3EE]' : 'border-border'}`}>
-      <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-500 uppercase">
+      <h2 className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-400 uppercase">
         คำนวณค่าใช้จ่ายทริป
       </h2>
       <div className="font-sans text-[11px] text-ink-400 mt-1 mb-4">
@@ -83,7 +83,7 @@ export function TripEstimator() {
 
       <div className="grid grid-cols-3 gap-2 bg-sunken border border-border rounded-12 p-3 mb-3">
         <div className="flex flex-col">
-          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-500 uppercase mb-1">
+          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-400 uppercase mb-1">
             น้ำมันที่ต้องใช้
           </div>
           <div className="font-display font-bold text-[16px] text-ink-100">
@@ -91,7 +91,7 @@ export function TripEstimator() {
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-500 uppercase mb-1">
+          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-400 uppercase mb-1">
             ค่าใช้จ่ายโดยประมาณ
           </div>
           <div className="font-display font-bold text-[16px] text-accent">
@@ -99,7 +99,7 @@ export function TripEstimator() {
           </div>
         </div>
         <div className="flex flex-col text-right">
-          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-500 uppercase mb-1">
+          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-400 uppercase mb-1">
             จุดเติมน้ำมัน
           </div>
           <div className="font-display font-bold text-[16px] text-accent2">
@@ -112,7 +112,7 @@ export function TripEstimator() {
       </div>
 
       {km > 0 && (
-        <div className="font-sans text-[10px] text-ink-500 text-center mb-3">
+        <div className="font-sans text-[10px] text-ink-400 text-center mb-3">
           ไป-กลับ {Math.round(km * 2).toLocaleString()} กม. ≈ ฿{Math.round(cost * 2).toLocaleString()} · เพิ่มเลขไมล์อีก {Math.round(km * 2).toLocaleString()} กม. ทำให้รอบเปลี่ยนน้ำมันเครื่องครั้งถัดไปใกล้เข้ามาอีก {Math.round(km * 2).toLocaleString()} กม.
         </div>
       )}

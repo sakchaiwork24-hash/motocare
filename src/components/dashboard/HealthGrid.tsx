@@ -30,7 +30,7 @@ export function HealthGrid({ onGoToService }: HealthGridProps) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-end px-1">
-        <BilingualLabel en="BIKE HEALTH" thai="สุขภาพรถ" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="BIKE HEALTH" thai="สุขภาพรถ" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
         <button
           onClick={onGoToService}
           className="font-display font-semibold text-[13px] tracking-[.06em] text-accent2-light uppercase flex items-center gap-1"

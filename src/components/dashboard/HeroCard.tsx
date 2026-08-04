@@ -122,7 +122,7 @@ export function HeroCard() {
 
       <div className="flex justify-between items-end p-3 pt-0">
         <div>
-          <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-500 uppercase mb-1">
+          <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1">
             เลขไมล์ · ODOMETER
           </div>
           <div className="flex items-baseline gap-1">
@@ -133,7 +133,7 @@ export function HeroCard() {
           </div>
         </div>
         <div className="text-right pb-1">
-          <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-500 uppercase mb-1 flex items-center justify-end gap-1">
+          <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1 flex items-center justify-end gap-1">
             สุขภาพ · HEALTH <div className={`w-2 h-2 rounded-full ${STATUS_DOT_CLASS[status]}`} />
           </div>
           <div className={`font-display font-bold text-[24px] ${STATUS_TEXT_CLASS[status]} leading-none tabular-nums`}>

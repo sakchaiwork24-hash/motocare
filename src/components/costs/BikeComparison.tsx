@@ -22,15 +22,15 @@ export function BikeComparison() {
   return (
     <div className="flex flex-col gap-2">
       <div className="px-1 mb-1">
-        <BilingualLabel en="COMPARE GARAGE" thai="เทียบรถในโรงรถ" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="COMPARE GARAGE" thai="เทียบรถในโรงรถ" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
       <div className="bg-surface border border-border rounded-18 overflow-hidden">
         <div className="grid grid-cols-[1fr,auto,auto,auto] gap-2 px-3 py-2 border-b border-[rgba(51,65,85,.5)]">
-          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-500 uppercase">รถ</div>
-          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-500 uppercase text-right">฿/km</div>
-          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-500 uppercase text-right">น้ำมัน 6ด.</div>
-          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-500 uppercase text-right">ซ่อมบำรุง</div>
+          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-400 uppercase">รถ</div>
+          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-400 uppercase text-right">฿/km</div>
+          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-400 uppercase text-right">น้ำมัน 6ด.</div>
+          <div className="font-display font-semibold text-[9px] tracking-[.08em] text-ink-400 uppercase text-right">ซ่อมบำรุง</div>
         </div>
 
         {rows.map((row, i) => (

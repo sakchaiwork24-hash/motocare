@@ -34,8 +34,8 @@ export function GarageSwitcher() {
               <BilingualLabel
                 en={`MY GARAGE · ${bikes.length} BIKES`}
                 thai={`โรงรถของฉัน · ${bikes.length} คัน`}
-                primaryClassName="text-ink-500 !text-[9px] tracking-[.14em]"
-                secondaryClassName="text-ink-500 !text-[8px]"
+                primaryClassName="text-ink-400 !text-[9px] tracking-[.14em]"
+                secondaryClassName="text-ink-400 !text-[8px]"
               />
             </div>
 

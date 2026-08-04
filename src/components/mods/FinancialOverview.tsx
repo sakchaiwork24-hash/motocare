@@ -25,17 +25,17 @@ export function FinancialOverview() {
     <div className="bg-surface rounded-16 p-4 border border-border animate-mcFade">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="font-display text-ink-500 text-[11px] tracking-wider uppercase mb-1">ใช้ไปแล้ว</h3>
+          <h3 className="font-display text-ink-400 text-[11px] tracking-wider uppercase mb-1">ใช้ไปแล้ว</h3>
           <div className="flex items-baseline gap-1.5">
             <span className="font-display text-2xl text-ink-100 tabular-nums">{spent.toLocaleString()}</span>
             <span className="font-display font-semibold text-xs text-accent">THB</span>
           </div>
-          <p className="font-sans text-xs text-ink-500 mt-0.5">ติดตั้งแล้ว {installedCount} ชิ้นบน {activeBike.nick}</p>
+          <p className="font-sans text-xs text-ink-400 mt-0.5">ติดตั้งแล้ว {installedCount} ชิ้นบน {activeBike.nick}</p>
         </div>
         <div className="text-right">
-          <h3 className="font-display text-ink-500 text-[11px] tracking-wider uppercase mb-1">อยากได้</h3>
+          <h3 className="font-display text-ink-400 text-[11px] tracking-wider uppercase mb-1">อยากได้</h3>
           <span className="font-display text-2xl text-ink-100 tabular-nums">฿{wish.toLocaleString()}</span>
-          <p className="font-sans text-xs text-ink-500 mt-0.5">ค้างอยู่ {wishlistCount} รายการ</p>
+          <p className="font-sans text-xs text-ink-400 mt-0.5">ค้างอยู่ {wishlistCount} รายการ</p>
         </div>
       </div>
 

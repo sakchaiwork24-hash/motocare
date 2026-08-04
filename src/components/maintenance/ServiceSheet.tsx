@@ -180,7 +180,7 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
             {receiptUrl ? (
               <img src={receiptUrl} alt="Receipt" className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center gap-2 text-ink-500">
+              <div className="w-full h-full flex items-center justify-center gap-2 text-ink-400">
                 <Camera size={18} />
                 <span className="font-sans text-[12px]">
                   {compressing ? 'กำลังบีบอัด…' : 'แนบรูปใบเสร็จ (ไม่บังคับ) · ATTACH RECEIPT'}

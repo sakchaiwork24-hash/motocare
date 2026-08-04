@@ -41,7 +41,7 @@ export function ServiceHistoryList() {
   return (
     <div className="flex flex-col gap-2">
       <div className="px-1 mb-1">
-        <BilingualLabel en="SERVICE HISTORY" thai="ประวัติการซ่อม" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="SERVICE HISTORY" thai="ประวัติการซ่อม" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
       {activeBike.services.length > 0 && (

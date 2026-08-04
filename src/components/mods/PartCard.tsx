@@ -54,7 +54,7 @@ export function PartCard({ mod, onAdvance, onEdit }: Props) {
       </div>
 
       <div className="flex flex-col gap-2 mt-1">
-        <span className="font-sans text-xs text-ink-500">{mod.meta}</span>
+        <span className="font-sans text-xs text-ink-400">{mod.meta}</span>
         <button
           onClick={onAdvance}
           className={isInstalled

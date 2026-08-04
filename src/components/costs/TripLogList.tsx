@@ -30,7 +30,7 @@ export function TripLogList() {
   return (
     <div className="flex flex-col gap-2">
       <div className="px-1 mb-1">
-        <BilingualLabel en="SAVED TRIPS" thai="ทริปที่บันทึกไว้" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="SAVED TRIPS" thai="ทริปที่บันทึกไว้" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
       <div className="bg-surface border border-border rounded-18 overflow-hidden">

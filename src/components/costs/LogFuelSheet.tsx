@@ -203,7 +203,7 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
           {editing ? 'บันทึกการแก้ไข · SAVE' : 'บันทึกรายการ · SAVE'}
         </PrimaryButton>
 
-        <div className="text-center font-sans text-[10px] text-ink-500 mt-1 mb-2">
+        <div className="text-center font-sans text-[10px] text-ink-400 mt-1 mb-2">
           บันทึกในเครื่องนี้เท่านั้น ไม่มีคลาวด์แบ็คอัพ · keep this browser/phone as your record
         </div>
       </div>

@@ -45,7 +45,7 @@ export function RecentActivity() {
   return (
     <div className="flex flex-col gap-2 mt-2">
       <div className="px-1 mb-1">
-        <BilingualLabel en="RECENT ACTIVITY" thai="กิจกรรมล่าสุด" primaryClassName="text-ink-500" secondaryClassName="text-ink-500" />
+        <BilingualLabel en="RECENT ACTIVITY" thai="กิจกรรมล่าสุด" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
       <div className="bg-surface border border-border rounded-18 overflow-hidden">

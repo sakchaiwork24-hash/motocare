@@ -32,7 +32,7 @@ export function AddBikeStep1Catalog({
         <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
           เลือกจากแคตตาล็อก (ไม่บังคับ) <span className="opacity-70">· PICK FROM CATALOG (OPTIONAL)</span>
         </label>
-        <p className="font-sans text-[11px] text-ink-500">
+        <p className="font-sans text-[11px] text-ink-400">
           กรอกยี่ห้อ/รุ่น/ปี/อัตราสิ้นเปลือง/ถัง/ระบบขับ ให้อัตโนมัติ — เป็นข้อมูลอ้างอิงตลาดไทย
           ไม่รับประกันความถูกต้อง แก้ไขได้ทีหลัง
         </p>

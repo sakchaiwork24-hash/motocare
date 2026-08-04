@@ -16,7 +16,7 @@ export function SyncBadge() {
     <div className="w-[52px] h-[52px] flex flex-col items-center justify-center gap-1 shrink-0 cursor-default select-none">
       <div className={`w-2 h-2 rounded-full ${dotColor} animate-mcBlink`} />
       <span className={`font-display font-semibold text-[8px] tracking-[.08em] ${color}`}>{label}</span>
-      <span className="font-sans text-[8.5px] text-ink-500 leading-none">{sub}</span>
+      <span className="font-sans text-[8.5px] text-ink-400 leading-none">{sub}</span>
     </div>
   );
 }

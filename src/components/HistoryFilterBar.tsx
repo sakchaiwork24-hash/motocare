@@ -20,7 +20,7 @@ export function HistoryFilterBar({ query, onQueryChange, range, onRangeChange, p
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full bg-sunken border border-border rounded-12 pl-9 pr-3 min-h-[40px] font-sans text-[13px] text-ink-100 outline-none focus:border-accent placeholder:text-ink-500"
+          className="w-full bg-sunken border border-border rounded-12 pl-9 pr-3 min-h-[40px] font-sans text-[13px] text-ink-100 outline-none focus:border-accent placeholder:text-ink-400"
         />
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">

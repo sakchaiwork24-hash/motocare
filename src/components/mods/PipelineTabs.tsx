@@ -19,7 +19,7 @@ export function PipelineTabs({ active, onChange, counts }: Props) {
         <button
           key={s.id}
           onClick={() => onChange(s.id)}
-          className={`flex-1 py-2 px-2 rounded-8 font-display text-[11px] tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 min-h-[40px] ${active === s.id ? 'bg-surface text-accent-light' : 'bg-transparent text-ink-500'}`}
+          className={`flex-1 py-2 px-2 rounded-8 font-display text-[11px] tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 min-h-[40px] ${active === s.id ? 'bg-surface text-accent-light' : 'bg-transparent text-ink-400'}`}
         >
           {s.thai}
           <span className="text-[10px] tabular-nums opacity-70">{counts[s.id]}</span>
