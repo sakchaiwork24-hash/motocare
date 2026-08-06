@@ -25,9 +25,33 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,png,svg}'],
+        runtimeCaching: [
+          {
+            // tesseract.js (lazy-loaded for receipt-scan OCR) fetches its WASM core, worker,
+            // and language data from this CDN by default — cache it so OCR keeps working
+            // offline after the first successful scan, instead of requiring network every time.
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'tesseract-assets',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          dexie: ['dexie', 'dexie-react-hooks'],
+        },
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
