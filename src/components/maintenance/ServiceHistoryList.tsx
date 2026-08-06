@@ -91,7 +91,7 @@ export function ServiceHistoryList() {
             {s.receiptBlob && (
               <button
                 onClick={() => setViewingService(s)}
-                className="w-8 h-8 flex items-center justify-center text-ink-400 shrink-0"
+                className="w-11 h-11 flex items-center justify-center text-ink-400 shrink-0"
                 aria-label="View receipt"
               >
                 <Camera size={14} />

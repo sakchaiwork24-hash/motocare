@@ -26,6 +26,9 @@ export function FuelLogList() {
     dateField: 'date',
     textFields: ['station'],
   });
+  // Built once per render instead of calling fuelLogs.indexOf(log) inside the row map below —
+  // that was an O(n) scan per row (O(n²) total), re-run on every keystroke while searching.
+  const indexById = new Map(activeBike.fuelLogs.map((log, i) => [log.id, i]));
 
   const handleDelete = async (log: FuelLog) => {
     if (!window.confirm(`ลบรายการเติมน้ำมันที่ ${log.station} ใช่ไหม?`)) return;
@@ -72,7 +75,7 @@ export function FuelLogList() {
           </div>
         )}
         {filteredLogs.map((log, i) => {
-          const originalIndex = activeBike.fuelLogs.indexOf(log);
+          const originalIndex = indexById.get(log.id)!;
           const isOldest = originalIndex === activeBike.fuelLogs.length - 1;
           const prevOdo = !isOldest ? activeBike.fuelLogs[originalIndex + 1].odo : 0;
           let consStr = '—';

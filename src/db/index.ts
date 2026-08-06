@@ -267,13 +267,16 @@ export async function updateDocScan(bikeId: string, docId: string, blob: Blob): 
 /**
  * Shared "find bike, replace/remove one item in one of its list fields" shape used by the
  * update/delete mutators below for services, fuelLogs, and trips — `updater` returning `null`
- * deletes the item, otherwise the returned value replaces it in place.
+ * deletes the item, otherwise the returned value replaces it in place. `extraPatch`, when given,
+ * lets a caller fold extra bike-level fields into the same atomic update (e.g. keeping `bike.odo`
+ * in sync when an edited record's odo goes higher) — it only runs on update, never on delete.
  */
 async function patchBikeList<T extends { id: string }>(
   bikeId: string,
   key: 'services' | 'fuelLogs' | 'trips',
   itemId: string,
-  updater: (item: T) => T | null
+  updater: (item: T) => T | null,
+  extraPatch?: (updated: T, bike: Bike) => Partial<Bike>
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
@@ -285,12 +288,26 @@ async function patchBikeList<T extends { id: string }>(
     const newList = updated === null
       ? list.filter((_, i) => i !== index)
       : list.map((item, i) => (i === index ? updated : item));
-    await db.bikes.update(bikeId, { [key]: newList } as Partial<Bike>);
+    const patch: Partial<Bike> = { [key]: newList } as Partial<Bike>;
+    if (updated !== null && extraPatch) {
+      Object.assign(patch, extraPatch(updated, bike));
+    }
+    await db.bikes.update(bikeId, patch);
   });
 }
 
+/**
+ * Keeps `bike.odo` — the value every wear/health calculation reads — in sync when an edit
+ * raises a record's odo above the bike's currently-known reading. `recordService`/`recordFuelLog`
+ * already do this on create via the same `Math.max`; edits went through `patchBikeList` alone and
+ * silently left `bike.odo` stale until the next new entry happened to be logged.
+ */
+const syncOdo = <T extends { odo: number }>(updated: T, bike: Bike): Partial<Bike> => ({
+  odo: Math.max(bike.odo, updated.odo),
+});
+
 export async function updateService(bikeId: string, serviceId: string, patch: Omit<Service, 'id'>): Promise<void> {
-  await patchBikeList<Service>(bikeId, 'services', serviceId, (item) => ({ ...patch, id: item.id }));
+  await patchBikeList<Service>(bikeId, 'services', serviceId, (item) => ({ ...patch, id: item.id }), syncOdo);
 }
 
 export async function deleteService(bikeId: string, serviceId: string): Promise<void> {
@@ -298,7 +315,7 @@ export async function deleteService(bikeId: string, serviceId: string): Promise<
 }
 
 export async function updateFuelLog(bikeId: string, fuelLogId: string, patch: Omit<FuelLog, 'id'>): Promise<void> {
-  await patchBikeList<FuelLog>(bikeId, 'fuelLogs', fuelLogId, (item) => ({ ...patch, id: item.id }));
+  await patchBikeList<FuelLog>(bikeId, 'fuelLogs', fuelLogId, (item) => ({ ...patch, id: item.id }), syncOdo);
 }
 
 export async function deleteFuelLog(bikeId: string, fuelLogId: string): Promise<void> {
