@@ -3,6 +3,12 @@ dist/
 *.tsbuildinfo
 .claude/settings.local.json
 
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.auth/
+
 # OS/editor
 .DS_Store
 Thumbs.db

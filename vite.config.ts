@@ -56,5 +56,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.ts',
+    // Vitest's default include glob also matches e2e/*.spec.ts (Playwright tests, run via
+    // `npm run test:e2e` instead) — exclude that directory so they don't get picked up here.
+    exclude: ['e2e/**', 'node_modules/**'],
   },
 })
