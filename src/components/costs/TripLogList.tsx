@@ -1,4 +1,4 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { Route } from 'lucide-react';
 import { shortDate } from '../../lib/format';
 import { BilingualLabel } from '../BilingualLabel';
@@ -8,7 +8,7 @@ import { useToast } from '../../state/ToastContext';
 import type { TripLog } from '../../types';
 
 export function TripLogList() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
 
   if (!activeBike) return null;

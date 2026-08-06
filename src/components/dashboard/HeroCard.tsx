@@ -1,5 +1,5 @@
 import { Camera, Check } from 'lucide-react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { healthScore, healthStatus } from '../../lib/wear';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
@@ -10,7 +10,7 @@ const STATUS_TEXT_CLASS = { good: 'text-good', soon: 'text-soon', urgent: 'text-
 const STATUS_DOT_CLASS = { good: 'bg-good', soon: 'bg-soon', urgent: 'bg-urgent' } as const;
 
 export function HeroCard() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [compressing, setCompressing] = useState(false);

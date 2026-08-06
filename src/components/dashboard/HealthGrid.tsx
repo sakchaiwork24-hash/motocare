@@ -1,4 +1,4 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { wear } from '../../lib/wear';
 import { Ring } from '../Ring';
 import { Package } from 'lucide-react';
@@ -11,7 +11,7 @@ type HealthGridProps = {
 };
 
 export function HealthGrid({ onGoToService }: HealthGridProps) {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
 
   // Verified from MotoCare.dc.html line 1281 (`rings: wear.slice(0, 4)`): the dashboard grid
   // always shows the first 4 parts in array order (oil, brake, chain, tyre) and always excludes

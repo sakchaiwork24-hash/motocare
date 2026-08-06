@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Sheet } from '../Sheet';
 import { upsertMod } from '../../db';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { MOD_CATEGORY_META } from '../../lib/modCategories';
 import type { Mod, ModCategory } from '../../types';
@@ -19,7 +19,7 @@ type Props = {
 const CATEGORIES = Object.keys(MOD_CATEGORY_META) as ModCategory[];
 
 export function PartForm({ open, onClose, editingMod }: Props) {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
 
   const [name, setName] = useState('');

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { ChevronDown, CircleDot, Droplet } from 'lucide-react';
 import { StripeTile } from '../StripeTile';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData, useOverlays } from '../../state/BikeContext';
 import { SyncBadge } from './SyncBadge';
 import { BilingualLabel } from '../BilingualLabel';
 
 export function Header() {
-  const { activeBike, openSwitcher } = useBikes();
+  const { activeBike } = useBikeData();
+  const { openSwitcher } = useOverlays();
   const [specsOpen, setSpecsOpen] = useState(false);
 
   if (!activeBike) {

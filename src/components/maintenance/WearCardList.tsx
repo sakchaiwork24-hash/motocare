@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { WearCard } from './WearCard';
 import { EditPartProfileSheet } from './EditPartProfileSheet';
 import type { Part } from '../../types';
 
 export function WearCardList() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const [editingPart, setEditingPart] = useState<Part | null>(null);
 
   if (!activeBike) return null;

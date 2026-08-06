@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Download, Upload, TriangleAlert, FileSpreadsheet } from 'lucide-react';
 import { Sheet } from '../Sheet';
 import { useToast } from '../../state/ToastContext';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { exportAllData, importData } from '../../lib/backup';
 import { exportBikeHistoryCsv } from '../../lib/csvExport';
 import { updateConfig } from '../../db';
@@ -16,7 +16,7 @@ type BackupSheetProps = {
 
 export function BackupSheet({ open, onClose }: BackupSheetProps) {
   const { showToast } = useToast();
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
 

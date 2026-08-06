@@ -1,5 +1,5 @@
 import { DatabaseBackup, X } from 'lucide-react';
-import { useBikes } from '../state/BikeContext';
+import { useBikeData } from '../state/BikeContext';
 import { useInstallPrompt } from '../state/installPrompt';
 import { updateConfig } from '../db';
 
@@ -17,7 +17,7 @@ type BackupReminderBannerProps = {
  * survives app relaunch, and self-suppresses when the install prompt would show instead
  * (that banner takes priority in the same bottom slot). */
 export function BackupReminderBanner({ suppressed, onOpenBackup }: BackupReminderBannerProps) {
-  const { config } = useBikes();
+  const { config } = useBikeData();
   const { installable } = useInstallPrompt();
 
   if (!config) return null;

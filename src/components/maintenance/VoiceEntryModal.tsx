@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mic, Keyboard } from 'lucide-react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { recordService } from '../../db';
 import { parseVoiceEntry } from '../../lib/voiceParse';
@@ -54,7 +54,7 @@ function getSpeechRecognitionCtor(): SpeechRecognitionCtor | undefined {
 }
 
 export function VoiceEntryModal({ open, onClose }: VoiceEntryModalProps) {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
   const recognitionRef = useRef<MinimalSpeechRecognition | null>(null);
 

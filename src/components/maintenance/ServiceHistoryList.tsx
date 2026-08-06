@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData, useOverlays } from '../../state/BikeContext';
 import { Settings, Camera } from 'lucide-react';
 import { shortDate } from '../../lib/format';
 import { BilingualLabel } from '../BilingualLabel';
@@ -12,7 +12,8 @@ import { useToast } from '../../state/ToastContext';
 import type { Service } from '../../types';
 
 export function ServiceHistoryList() {
-  const { activeBike, openServiceSheetForEdit } = useBikes();
+  const { activeBike } = useBikeData();
+  const { openServiceSheetForEdit } = useOverlays();
   const { showToast } = useToast();
   const [query, setQuery] = useState('');
   const [range, setRange] = useState<DateRangeOption>('all');

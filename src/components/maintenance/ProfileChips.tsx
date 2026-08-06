@@ -1,11 +1,11 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { updateBike } from '../../db';
 import { PROFILE_META } from '../../lib/profiles';
 import { useToast } from '../../state/ToastContext';
 import type { RidingProfile } from '../../types';
 
 export function ProfileChips() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
   if (!activeBike) return null;
 

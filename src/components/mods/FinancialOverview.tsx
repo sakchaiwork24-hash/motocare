@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useZeroToTarget } from '../../hooks/useZeroToTarget';
 
 export function FinancialOverview() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
 
   const { spent, ordered, wish, installedCount, wishlistCount } = useMemo(() => {
     let s = 0, o = 0, w = 0, ic = 0, wc = 0;

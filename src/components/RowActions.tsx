@@ -14,7 +14,7 @@ export function RowActions({ onEdit, onDelete }: RowActionsProps) {
       {onEdit && (
         <button
           onClick={onEdit}
-          className="w-8 h-8 flex items-center justify-center text-ink-500 hover:text-ink-300"
+          className="w-11 h-11 flex items-center justify-center text-ink-500 hover:text-ink-300"
           aria-label="Edit"
         >
           <Pencil size={14} />
@@ -22,7 +22,7 @@ export function RowActions({ onEdit, onDelete }: RowActionsProps) {
       )}
       <button
         onClick={onDelete}
-        className="w-8 h-8 flex items-center justify-center text-ink-500 hover:text-urgent"
+        className="w-11 h-11 flex items-center justify-center text-ink-500 hover:text-urgent"
         aria-label="Delete"
       >
         <Trash2 size={14} />

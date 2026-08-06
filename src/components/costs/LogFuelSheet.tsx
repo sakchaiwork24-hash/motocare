@@ -4,6 +4,7 @@ import { recordFuelLog, updateFuelLog } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import { scanFuelReceipt } from '../../lib/ocr';
 import { consumption } from '../../lib/wear';
+import { useFieldValidation } from '../../lib/validation';
 import { ScanLine } from 'lucide-react';
 import { BilingualLabel } from '../BilingualLabel';
 import { FormField } from '../FormField';
@@ -28,28 +29,12 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
   const [odoInput, setOdoInput] = useState('');
   const [stationInput, setStationInput] = useState('');
 
-  const [litersError, setLitersError] = useState<string | undefined>();
-  const [thbError, setThbError] = useState<string | undefined>();
-  const [odoError, setOdoError] = useState<string | undefined>();
-
-  const validateLiters = (v: string) => {
-    const n = parseFloat(v);
-    const err = isNaN(n) || n <= 0 ? 'กรอกจำนวนลิตรมากกว่า 0' : undefined;
-    setLitersError(err);
-    return !err;
-  };
-  const validateThb = (v: string) => {
-    const n = parseFloat(v);
-    const err = isNaN(n) || n < 0 ? 'กรอกยอดเงินให้ถูกต้อง' : undefined;
-    setThbError(err);
-    return !err;
-  };
-  const validateOdo = (v: string) => {
-    const n = parseInt(v, 10);
-    const err = isNaN(n) || n < 0 ? 'กรอกเลขไมล์ให้ถูกต้อง' : undefined;
-    setOdoError(err);
-    return !err;
-  };
+  const { error: litersError, validate: validateLiters, reset: resetLitersError } =
+    useFieldValidation({ parser: 'float', exclusiveMin: 0, message: 'กรอกจำนวนลิตรมากกว่า 0' });
+  const { error: thbError, validate: validateThb, reset: resetThbError } =
+    useFieldValidation({ parser: 'float', min: 0, message: 'กรอกยอดเงินให้ถูกต้อง' });
+  const { error: odoError, validate: validateOdo, reset: resetOdoError } =
+    useFieldValidation({ parser: 'int', min: 0, message: 'กรอกเลขไมล์ให้ถูกต้อง' });
 
   useEffect(() => {
     if (!open) return;
@@ -64,9 +49,9 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
       setThbInput('');
       setStationInput('');
     }
-    setLitersError(undefined);
-    setThbError(undefined);
-    setOdoError(undefined);
+    resetLitersError();
+    resetThbError();
+    resetOdoError();
     setScanState('idle');
   }, [open, editing, bike]);
 

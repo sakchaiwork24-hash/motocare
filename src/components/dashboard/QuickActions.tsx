@@ -1,12 +1,13 @@
 import { ScanLine, Settings, BarChart3 } from 'lucide-react';
-import { useBikes } from '../../state/BikeContext';
+import { useOverlays, useTripFlash } from '../../state/BikeContext';
 
 type QuickActionsProps = {
   onGoToCosts: () => void;
 };
 
 export function QuickActions({ onGoToCosts }: QuickActionsProps) {
-  const { openServiceSheet, openLogFuelSheet, triggerTripFlash } = useBikes();
+  const { openServiceSheet, openLogFuelSheet } = useOverlays();
+  const { triggerTripFlash } = useTripFlash();
 
   const handleFuel = () => {
     openLogFuelSheet();

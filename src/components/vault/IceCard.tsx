@@ -1,5 +1,5 @@
 import { AlertTriangle, Maximize2, Phone } from 'lucide-react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 
 type IceCardProps = {
   onFullScreen: () => void;
@@ -7,7 +7,7 @@ type IceCardProps = {
 
 /** Verified from README "ICE card" + MotoCare.dc.html's ice.* fields (lines 578-618). */
 export function IceCard({ onFullScreen }: IceCardProps) {
-  const { rider } = useBikes();
+  const { rider } = useBikeData();
   if (!rider) return null;
 
   return (

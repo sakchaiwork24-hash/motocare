@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { advanceModStage } from '../../db';
 import { FinancialOverview } from './FinancialOverview';
@@ -10,7 +10,7 @@ import type { Mod, ModStage } from '../../types';
 import { Plus } from 'lucide-react';
 
 export function ModsTab() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
   const [pipeline, setPipeline] = useState<ModStage>('wishlist');
   const [formState, setFormState] = useState<{ open: boolean; editingMod: Mod | null }>({ open: false, editingMod: null });

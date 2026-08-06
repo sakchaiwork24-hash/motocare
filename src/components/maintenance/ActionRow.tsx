@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useOverlays } from '../../state/BikeContext';
 import { Mic, ScanLine } from 'lucide-react';
 import { VoiceEntryModal } from './VoiceEntryModal';
 
 export function ActionRow() {
-  const { openLogFuelSheet } = useBikes();
+  const { openLogFuelSheet } = useOverlays();
   const [voiceOpen, setVoiceOpen] = useState(false);
 
   return (

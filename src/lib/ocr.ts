@@ -1,8 +1,7 @@
-import Tesseract from 'tesseract.js';
-
 export type ScannedReceipt = { liters?: number; thb?: number; odo?: number; station?: string };
 
 export async function scanFuelReceipt(file: File): Promise<ScannedReceipt> {
+  const { default: Tesseract } = await import('tesseract.js');
   const { data } = await Tesseract.recognize(file, 'eng');
   const text = data.text;
   

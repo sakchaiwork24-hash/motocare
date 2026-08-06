@@ -1,11 +1,11 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { Scoreboard } from './Scoreboard';
 import { WearCardList } from './WearCardList';
 import { ActionRow } from './ActionRow';
 import { ServiceHistoryList } from './ServiceHistoryList';
 
 export function MaintenanceTab() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
 
   if (!activeBike) return null;
 

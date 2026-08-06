@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Sheet } from '../Sheet';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { updatePartProfile } from '../../db';
 import { PART_CATALOG } from '../../data/partCatalog';
@@ -16,7 +16,7 @@ type EditPartProfileSheetProps = {
 };
 
 export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProps) {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
 
   const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);

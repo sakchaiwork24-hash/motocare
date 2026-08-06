@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData, useTripFlash } from '../../state/BikeContext';
 import { tripEstimate } from '../../lib/wear';
 import { recordTrip } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import { PrimaryButton } from '../PrimaryButton';
 
 export function TripEstimator() {
-  const { activeBike, config, flashTrip } = useBikes();
+  const { activeBike, config } = useBikeData();
+  const { flashTrip } = useTripFlash();
   const { showToast } = useToast();
   const [kmInput, setKmInput] = useState('147');
   const [saving, setSaving] = useState(false);

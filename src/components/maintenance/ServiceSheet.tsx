@@ -4,6 +4,7 @@ import imageCompression from 'browser-image-compression';
 import { Sheet } from '../Sheet';
 import { recordService, updateService } from '../../db';
 import { useToast } from '../../state/ToastContext';
+import { useFieldValidation } from '../../lib/validation';
 import { BilingualLabel } from '../BilingualLabel';
 import { Chip } from '../Chip';
 import { FormField } from '../FormField';
@@ -31,30 +32,18 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
   const [receiptUrl, setReceiptUrl] = useState<string | undefined>(undefined);
   const [compressing, setCompressing] = useState(false);
 
-  const [odoError, setOdoError] = useState<string | undefined>();
-  const [costError, setCostError] = useState<string | undefined>();
-
-  const validateOdo = (v: string) => {
-    const n = parseInt(v, 10);
-    let err: string | undefined;
-    if (isNaN(n) || n < 0) {
-      err = 'กรอกเลขไมล์ให้ถูกต้อง';
-    } else if (bike && !editing && n < bike.odo) {
-      err = `เลขไมล์ต้องไม่น้อยกว่า ${bike.odo.toLocaleString()} กม.`;
-    }
-    setOdoError(err);
-    return !err;
-  };
-  const validateCost = (v: string) => {
-    if (!v) {
-      setCostError(undefined);
-      return true;
-    }
-    const n = parseInt(v, 10);
-    const err = isNaN(n) || n < 0 ? 'ค่าใช้จ่ายต้องไม่ติดลบ' : undefined;
-    setCostError(err);
-    return !err;
-  };
+  const { error: odoError, validate: validateOdo, reset: resetOdoError } = useFieldValidation({
+    parser: 'int',
+    min: 0,
+    message: 'กรอกเลขไมล์ให้ถูกต้อง',
+    extra: (n) => (bike && !editing && n < bike.odo ? `เลขไมล์ต้องไม่น้อยกว่า ${bike.odo.toLocaleString()} กม.` : undefined),
+  });
+  const { error: costError, validate: validateCost, reset: resetCostError } = useFieldValidation({
+    parser: 'int',
+    required: false,
+    min: 0,
+    message: 'ค่าใช้จ่ายต้องไม่ติดลบ',
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -71,8 +60,8 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
       setShopInput('');
       setReceiptBlob(undefined);
     }
-    setOdoError(undefined);
-    setCostError(undefined);
+    resetOdoError();
+    resetCostError();
   }, [open, editing, initialPartKey, bike]);
 
   useEffect(() => {

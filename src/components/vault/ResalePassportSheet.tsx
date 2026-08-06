@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { FileCheck, Download, Camera } from 'lucide-react';
 import { Sheet } from '../Sheet';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { shortDate } from '../../lib/format';
 import { MOD_CATEGORY_META } from '../../lib/modCategories';
@@ -21,7 +21,7 @@ type ResalePassportSheetProps = {
  * No share link/QR (no backend exists anywhere in this app) — the real deliverable is the PDF.
  */
 export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps) {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
   const contentRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);

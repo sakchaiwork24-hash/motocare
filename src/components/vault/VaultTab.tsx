@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronRight, FileText, DatabaseBackup } from 'lucide-react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData, useOverlays } from '../../state/BikeContext';
 import { IceCard } from './IceCard';
 import { IceFullScreen } from './IceFullScreen';
 import { DocumentList } from './DocumentList';
@@ -9,7 +9,8 @@ import { ResalePassportSheet } from './ResalePassportSheet';
 import type { DocId } from '../../types';
 
 export function VaultTab() {
-  const { activeBike, openBackupSheet } = useBikes();
+  const { activeBike } = useBikeData();
+  const { openBackupSheet } = useOverlays();
   const [iceOpen, setIceOpen] = useState(false);
   const [previewDocId, setPreviewDocId] = useState<DocId | null>(null);
   const [passportOpen, setPassportOpen] = useState(false);

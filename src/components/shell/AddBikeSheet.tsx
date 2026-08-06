@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Sheet } from '../Sheet';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { addBike } from '../../db';
+import { useFieldValidation } from '../../lib/validation';
 import type { RidingProfile } from '../../types';
 import { BIKE_MODEL_CATALOG } from '../../data/bikeModelCatalog';
 import { BilingualLabel } from '../BilingualLabel';
@@ -20,7 +21,7 @@ const CATALOG_BRANDS = Array.from(new Set(BIKE_MODEL_CATALOG.map((e) => e.brand)
 const TOTAL_STEPS = 3;
 
 export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
-  const { config } = useBikes();
+  const { config } = useBikeData();
   const { showToast } = useToast();
 
   const [step, setStep] = useState(1);
@@ -39,36 +40,12 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
   const [catalogBrand, setCatalogBrand] = useState('');
   const [catalogModelId, setCatalogModelId] = useState('');
 
-  const [odoError, setOdoError] = useState<string | undefined>();
-  const [kmplError, setKmplError] = useState<string | undefined>();
-  const [tankError, setTankError] = useState<string | undefined>();
-
-  const validateOdo = (v: string) => {
-    const n = parseInt(v, 10);
-    const err = isNaN(n) || n < 0 ? 'กรอกเลขไมล์ให้ถูกต้อง' : undefined;
-    setOdoError(err);
-    return !err;
-  };
-  const validateKmpl = (v: string) => {
-    if (!v) {
-      setKmplError(undefined);
-      return true;
-    }
-    const n = parseFloat(v);
-    const err = isNaN(n) || n <= 0 ? 'กรอกอัตราสิ้นเปลืองให้ถูกต้อง' : undefined;
-    setKmplError(err);
-    return !err;
-  };
-  const validateTank = (v: string) => {
-    if (!v) {
-      setTankError(undefined);
-      return true;
-    }
-    const n = parseFloat(v);
-    const err = isNaN(n) || n <= 0 ? 'กรอกความจุถังให้ถูกต้อง' : undefined;
-    setTankError(err);
-    return !err;
-  };
+  const { error: odoError, validate: validateOdo, reset: resetOdoError } =
+    useFieldValidation({ parser: 'int', min: 0, message: 'กรอกเลขไมล์ให้ถูกต้อง' });
+  const { error: kmplError, validate: validateKmpl, reset: resetKmplError } =
+    useFieldValidation({ parser: 'float', required: false, exclusiveMin: 0, message: 'กรอกอัตราสิ้นเปลืองให้ถูกต้อง' });
+  const { error: tankError, validate: validateTank, reset: resetTankError } =
+    useFieldValidation({ parser: 'float', required: false, exclusiveMin: 0, message: 'กรอกความจุถังให้ถูกต้อง' });
 
   useEffect(() => {
     if (!open) return;
@@ -85,9 +62,9 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
     setProfile(config?.defaultProfile ?? 'urban');
     setCatalogBrand('');
     setCatalogModelId('');
-    setOdoError(undefined);
-    setKmplError(undefined);
-    setTankError(undefined);
+    resetOdoError();
+    resetKmplError();
+    resetTankError();
   }, [open, config?.defaultProfile]);
 
   const catalogModels = useMemo(

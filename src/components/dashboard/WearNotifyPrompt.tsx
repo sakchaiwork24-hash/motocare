@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { BellRing } from 'lucide-react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { updateConfig } from '../../db';
 import { buildWearAlert } from '../../lib/wearNotify';
 
 const notificationSupported = typeof window !== 'undefined' && 'Notification' in window;
 
 export function WearNotifyPrompt() {
-  const { activeBike, config } = useBikes();
+  const { activeBike, config } = useBikeData();
   const [permission, setPermission] = useState<NotificationPermission | null>(
     notificationSupported ? Notification.permission : null
   );

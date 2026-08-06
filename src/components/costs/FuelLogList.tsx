@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData, useOverlays } from '../../state/BikeContext';
 import { Fuel } from 'lucide-react';
 import { shortDate } from '../../lib/format';
 import { consumption, isValidKmpl } from '../../lib/wear';
@@ -12,7 +12,8 @@ import { useToast } from '../../state/ToastContext';
 import type { FuelLog } from '../../types';
 
 export function FuelLogList() {
-  const { activeBike, openLogFuelSheet, openLogFuelSheetForEdit } = useBikes();
+  const { activeBike } = useBikeData();
+  const { openLogFuelSheet, openLogFuelSheetForEdit } = useOverlays();
   const { showToast } = useToast();
   const [query, setQuery] = useState('');
   const [range, setRange] = useState<DateRangeOption>('all');

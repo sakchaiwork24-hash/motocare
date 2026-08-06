@@ -1,4 +1,4 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useZeroToTarget } from '../../hooks/useZeroToTarget';
 import { computeMonthlySpend } from '../../lib/wear';
 import type { MonthlySpend } from '../../types';
@@ -30,7 +30,7 @@ function MonthlyBar({ month, targetHeight, isLatest }: MonthlyBarProps) {
 }
 
 export function MonthlyBars() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
 
   if (!activeBike || activeBike.fuelLogs.length === 0) return null;
 

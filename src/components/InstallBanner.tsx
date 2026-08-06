@@ -1,6 +1,6 @@
 import { Download, X } from 'lucide-react';
 import { useInstallPrompt } from '../state/installPrompt';
-import { useBikes } from '../state/BikeContext';
+import { useBikeData } from '../state/BikeContext';
 import { updateConfig } from '../db';
 
 const RESHOW_COOLDOWN_DAYS = 14;
@@ -15,7 +15,7 @@ type InstallBannerProps = {
  * dismiss survives app relaunch instead of nagging again on every cold start). */
 export function InstallBanner({ suppressed }: InstallBannerProps) {
   const { installable, promptInstall } = useInstallPrompt();
-  const { config } = useBikes();
+  const { config } = useBikeData();
 
   const dismissedAt = config?.installPromptDismissedAt;
   const withinCooldown = dismissedAt

@@ -1,11 +1,11 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { costPerKm, computeMonthlySpend } from '../../lib/wear';
 import { useState } from 'react';
 import { FuelPriceSheet } from './FuelPriceSheet';
 import { StatTile } from '../StatTile';
 
 export function StatGrid() {
-  const { activeBike, config } = useBikes();
+  const { activeBike, config } = useBikeData();
   const [fuelPriceSheetOpen, setFuelPriceSheetOpen] = useState(false);
 
   if (!activeBike || !config) return null;

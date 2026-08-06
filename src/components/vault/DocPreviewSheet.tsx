@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FileText, CalendarClock } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import { Sheet } from '../Sheet';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { updateDocScan } from '../../db';
 import { docCountdown, thaiDate } from '../../lib/wear';
@@ -23,7 +23,7 @@ type DocPreviewSheetProps = {
 };
 
 export function DocPreviewSheet({ docId, onClose }: DocPreviewSheetProps) {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [compressing, setCompressing] = useState(false);

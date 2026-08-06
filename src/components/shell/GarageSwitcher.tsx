@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Check, Plus } from 'lucide-react';
 import { StripeTile } from '../StripeTile';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData, useOverlays } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { AddBikeSheet } from './AddBikeSheet';
 import { BilingualLabel } from '../BilingualLabel';
 import { useBackButtonClose } from '../../hooks/useBackButtonClose';
 
 export function GarageSwitcher() {
-  const { bikes, activeId, switchBike, switcherOpen, closeSwitcher } = useBikes();
+  const { bikes, activeId, switchBike } = useBikeData();
+  const { switcherOpen, closeSwitcher } = useOverlays();
   const { showToast } = useToast();
   const [addBikeOpen, setAddBikeOpen] = useState(false);
 

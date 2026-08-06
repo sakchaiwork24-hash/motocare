@@ -1,4 +1,4 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { Fuel, Settings } from 'lucide-react';
 import { useMemo } from 'react';
 import { shortDate } from '../../lib/format';
@@ -13,7 +13,7 @@ type ActivityRow = {
 };
 
 export function RecentActivity() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
 
   // Verified from MotoCare.dc.html lines 1231-1232 and 1290: NOT a global date sort. Only the
   // 2 most recent of each list are considered, then interleaved in a fixed

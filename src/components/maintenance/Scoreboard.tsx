@@ -1,4 +1,4 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { healthScore, healthStatus } from '../../lib/wear';
 import { PROFILE_META } from '../../lib/profiles';
 import { Ring } from '../Ring';
@@ -12,7 +12,7 @@ const HEADLINES: Record<string, string> = {
 };
 
 export function Scoreboard() {
-  const { activeBike } = useBikes();
+  const { activeBike } = useBikeData();
 
   const scoreInfo = useMemo(() => {
     if (!activeBike) return null;

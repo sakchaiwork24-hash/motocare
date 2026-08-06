@@ -6,7 +6,7 @@ import { BottomNav } from './components/shell/BottomNav';
 import { GarageSwitcher } from './components/shell/GarageSwitcher';
 import { Toast } from './components/Toast';
 import { ServiceSheet } from './components/maintenance/ServiceSheet';
-import { BikeProvider, useBikes } from './state/BikeContext';
+import { BikeProvider, useBikeData, useOverlays } from './state/BikeContext';
 import { ToastProvider } from './state/ToastContext';
 import { LogFuelSheet } from './components/costs/LogFuelSheet';
 import { BackupSheet } from './components/vault/BackupSheet';
@@ -34,10 +34,11 @@ function TabFallback() {
 function AppBody() {
   const [activeTab, setActiveTab] = useState<TabType>('dash');
   const { needRefresh, applyUpdate } = useSWUpdate();
+  const { activeBike } = useBikeData();
   const {
-    activeBike, serviceSheet, closeServiceSheet, logFuelSheet, closeLogFuelSheet,
+    serviceSheet, closeServiceSheet, logFuelSheet, closeLogFuelSheet,
     backupSheetOpen, openBackupSheet, closeBackupSheet,
-  } = useBikes();
+  } = useOverlays();
 
   const renderContent = () => {
     switch (activeTab) {

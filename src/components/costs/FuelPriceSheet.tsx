@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Sheet } from '../Sheet';
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { fetchLatestFuelPrice } from '../../lib/fuelPriceSync';
 import { updateConfig } from '../../db';
@@ -15,7 +15,7 @@ type FuelPriceSheetProps = {
 };
 
 export function FuelPriceSheet({ open, onClose }: FuelPriceSheetProps) {
-  const { config } = useBikes();
+  const { config } = useBikeData();
   const { showToast } = useToast();
 
   const [priceInput, setPriceInput] = useState('');

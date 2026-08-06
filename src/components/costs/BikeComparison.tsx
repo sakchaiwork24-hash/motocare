@@ -1,9 +1,9 @@
-import { useBikes } from '../../state/BikeContext';
+import { useBikeData } from '../../state/BikeContext';
 import { costPerKm, computeMonthlySpend } from '../../lib/wear';
 import { BilingualLabel } from '../BilingualLabel';
 
 export function BikeComparison() {
-  const { bikes, activeId, config } = useBikes();
+  const { bikes, activeId, config } = useBikeData();
 
   if (!config || bikes.length < 2) return null;
 

@@ -1,4 +1,4 @@
-﻿import { useBikes } from '../../state/BikeContext';
+﻿import { useOverlays } from '../../state/BikeContext';
 import { wearStatusLabel } from '../../lib/wear';
 import { partLastDate } from '../../lib/format';
 import { Bar } from '../Bar';
@@ -16,7 +16,7 @@ type WearCardProps = {
 };
 
 export function WearCard({ part, bike, profile, onEditSchedule }: WearCardProps) {
-  const { openServiceSheet } = useBikes();
+  const { openServiceSheet } = useOverlays();
   const w: WearResult = wear(part, bike, profile);
   
   const Icon = PART_ICON_MAP[part.icon] || Package;
