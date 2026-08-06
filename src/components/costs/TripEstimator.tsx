@@ -4,6 +4,7 @@ import { tripEstimate } from '../../lib/wear';
 import { recordTrip } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import { PrimaryButton } from '../PrimaryButton';
+import { SectionLabel } from '../SectionLabel';
 
 export function TripEstimator() {
   const { activeBike, config } = useBikeData();
@@ -85,25 +86,19 @@ export function TripEstimator() {
 
       <div className="grid grid-cols-3 gap-2 bg-sunken border border-border rounded-12 p-3 mb-3">
         <div className="flex flex-col">
-          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-400 uppercase mb-1">
-            น้ำมันที่ต้องใช้
-          </div>
+          <SectionLabel size="9" className="mb-1">น้ำมันที่ต้องใช้</SectionLabel>
           <div className="font-display font-bold text-[16px] text-ink-100">
             {liters.toFixed(2)} L
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-400 uppercase mb-1">
-            ค่าใช้จ่ายโดยประมาณ
-          </div>
+          <SectionLabel size="9" className="mb-1">ค่าใช้จ่ายโดยประมาณ</SectionLabel>
           <div className="font-display font-bold text-[16px] text-accent">
             ฿{Math.round(cost).toLocaleString()}
           </div>
         </div>
         <div className="flex flex-col text-right">
-          <div className="font-display font-semibold text-[9px] tracking-[.06em] text-ink-400 uppercase mb-1">
-            จุดเติมน้ำมัน
-          </div>
+          <SectionLabel size="9" className="mb-1">จุดเติมน้ำมัน</SectionLabel>
           <div className="font-display font-bold text-[16px] text-accent2">
             {stops}
           </div>

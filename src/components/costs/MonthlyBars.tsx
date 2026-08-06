@@ -2,6 +2,7 @@ import { useBikeData } from '../../state/BikeContext';
 import { useZeroToTarget } from '../../hooks/useZeroToTarget';
 import { computeMonthlySpend } from '../../lib/wear';
 import type { MonthlySpend } from '../../types';
+import { SectionLabel } from '../SectionLabel';
 
 type MonthlyBarProps = {
   month: MonthlySpend;
@@ -39,9 +40,7 @@ export function MonthlyBars() {
 
   return (
     <div className="bg-surface border border-border rounded-16 p-4">
-      <div className="font-display font-semibold text-[13px] tracking-[.06em] text-ink-400 uppercase mb-4">
-        แนวโน้มค่าใช้จ่าย
-      </div>
+      <SectionLabel size="13" className="mb-4">แนวโน้มค่าใช้จ่าย</SectionLabel>
       <div className="flex justify-between items-end h-[100px] mt-2">
         {monthly.map((m, i) => (
           <MonthlyBar

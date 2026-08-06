@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { updateBike } from '../../db';
 import { useToast } from '../../state/ToastContext';
+import { SectionLabel } from '../SectionLabel';
 
 const STATUS_TEXT_CLASS = { good: 'text-good', soon: 'text-soon', urgent: 'text-urgent' } as const;
 const STATUS_DOT_CLASS = { good: 'bg-good', soon: 'bg-soon', urgent: 'bg-urgent' } as const;
@@ -105,9 +106,7 @@ export function HeroCard() {
         )}
 
         <div className="absolute top-3 right-3 bg-[rgba(2,6,15,.72)] rounded-lg px-2 py-1">
-          <span className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase">
-            {activeBike.year}
-          </span>
+          <SectionLabel>{activeBike.year}</SectionLabel>
         </div>
 
         <div className="absolute bottom-4 left-3 flex flex-col">
@@ -122,9 +121,7 @@ export function HeroCard() {
 
       <div className="flex justify-between items-end p-3 pt-0">
         <div>
-          <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1">
-            เลขไมล์ · ODOMETER
-          </div>
+          <SectionLabel className="mb-1">เลขไมล์ · ODOMETER</SectionLabel>
           <div className="flex items-baseline gap-1">
             <span className="font-display font-bold text-[32px] tabular-nums text-ink-50 leading-none">
               {activeBike.odo.toLocaleString()}
@@ -133,9 +130,9 @@ export function HeroCard() {
           </div>
         </div>
         <div className="text-right pb-1">
-          <div className="font-display font-semibold text-[10px] tracking-[.06em] text-ink-400 uppercase mb-1 flex items-center justify-end gap-1">
+          <SectionLabel className="mb-1 flex items-center justify-end gap-1">
             สุขภาพ · HEALTH <div className={`w-2 h-2 rounded-full ${STATUS_DOT_CLASS[status]}`} />
-          </div>
+          </SectionLabel>
           <div className={`font-display font-bold text-[24px] ${STATUS_TEXT_CLASS[status]} leading-none tabular-nums`}>
             {score}%
           </div>

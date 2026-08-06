@@ -8,6 +8,7 @@ import { MOD_CATEGORY_META } from '../../lib/modCategories';
 import { exportPassportPdf } from '../../lib/passportPdf';
 import { StatTile } from '../StatTile';
 import { PrimaryButton } from '../PrimaryButton';
+import { SectionLabel } from '../SectionLabel';
 
 type ResalePassportSheetProps = {
   open: boolean;
@@ -89,9 +90,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
           </div>
 
           <div>
-            <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-400 uppercase mb-2">
-              ประวัติการซ่อม
-            </div>
+            <SectionLabel tracking="wide" className="mb-2">ประวัติการซ่อม</SectionLabel>
             <div className="flex flex-col gap-1.5">
               {activeBike.services.map((s, i) => (
                 <div key={i} className="flex items-center gap-2 bg-surface border border-border rounded-12 p-2.5">
@@ -115,9 +114,7 @@ export function ResalePassportSheet({ open, onClose }: ResalePassportSheetProps)
 
           {installedMods.length > 0 && (
             <div>
-              <div className="font-display font-semibold text-[10px] tracking-[.1em] text-ink-400 uppercase mb-2">
-                อะไหล่แต่งที่ติดตั้ง
-              </div>
+              <SectionLabel tracking="wide" className="mb-2">อะไหล่แต่งที่ติดตั้ง</SectionLabel>
               <div className="flex flex-col gap-1.5">
                 {installedMods.map((m) => (
                   <div key={m.id} className="flex items-center gap-2 bg-surface border border-border rounded-12 p-2.5">
