@@ -2,6 +2,7 @@ import { useBikeData } from '../../state/BikeContext';
 import { costPerKm, computeMonthlySpend } from '../../lib/wear';
 import { BilingualLabel } from '../BilingualLabel';
 import { SectionLabel } from '../SectionLabel';
+import { Card } from '../Card';
 
 export function BikeComparison() {
   const { bikes, activeId, config } = useBikeData();
@@ -26,7 +27,7 @@ export function BikeComparison() {
         <BilingualLabel en="COMPARE GARAGE" thai="เทียบรถในโรงรถ" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
-      <div className="bg-surface border border-border rounded-18 overflow-hidden">
+      <Card>
         <div className="grid grid-cols-[1fr,auto,auto,auto] gap-2 px-3 py-2 border-b border-[rgba(51,65,85,.5)]">
           <SectionLabel size="9" tracking="normal">รถ</SectionLabel>
           <SectionLabel size="9" tracking="normal" className="text-right">฿/km</SectionLabel>
@@ -55,7 +56,7 @@ export function BikeComparison() {
             </div>
           </div>
         ))}
-      </div>
+      </Card>
     </div>
   );
 }

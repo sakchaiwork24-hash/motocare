@@ -7,6 +7,7 @@ import type { Part, RidingProfile, Bike } from '../../types';
 import { wear, WearResult } from '../../lib/wear';
 import { Package, Settings2 } from 'lucide-react';
 import { PROFILE_META } from '../../lib/profiles';
+import { Card } from '../Card';
 
 type WearCardProps = {
   part: Part;
@@ -54,7 +55,7 @@ export function WearCard({ part, bike, profile, onEditSchedule }: WearCardProps)
   const lastLine = `ล่าสุด: ${partLastDate(part.lastDate)}${part.lastOdo ? ' @ ' + part.lastOdo.toLocaleString() + ' กม.' : ''} · ${intervalSuffix}`;
 
   return (
-    <div className="bg-surface border border-border rounded-16 p-4 flex flex-col gap-3">
+    <Card variant="padded" className="flex flex-col gap-3">
       <div className="flex items-start justify-between">
         <div className="flex gap-3 items-center">
           <div className="w-10 h-10 rounded-12 bg-sunken border border-border flex items-center justify-center text-ink-200">
@@ -105,6 +106,6 @@ export function WearCard({ part, bike, profile, onEditSchedule }: WearCardProps)
           <Settings2 size={16} />
         </button>
       </div>
-    </div>
+    </Card>
   );
 }

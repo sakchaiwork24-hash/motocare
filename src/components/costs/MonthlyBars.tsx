@@ -3,6 +3,7 @@ import { useZeroToTarget } from '../../hooks/useZeroToTarget';
 import { computeMonthlySpend } from '../../lib/wear';
 import type { MonthlySpend } from '../../types';
 import { SectionLabel } from '../SectionLabel';
+import { Card } from '../Card';
 
 type MonthlyBarProps = {
   month: MonthlySpend;
@@ -39,7 +40,7 @@ export function MonthlyBars() {
   const maxSpend = Math.max(...monthly.map((m) => m.thb));
 
   return (
-    <div className="bg-surface border border-border rounded-16 p-4">
+    <Card variant="padded">
       <SectionLabel size="13" className="mb-4">แนวโน้มค่าใช้จ่าย</SectionLabel>
       <div className="flex justify-between items-end h-[100px] mt-2">
         {monthly.map((m, i) => (
@@ -51,6 +52,6 @@ export function MonthlyBars() {
           />
         ))}
       </div>
-    </div>
+    </Card>
   );
 }

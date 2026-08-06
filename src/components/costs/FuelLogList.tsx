@@ -7,6 +7,7 @@ import { BilingualLabel } from '../BilingualLabel';
 import { HistoryFilterBar } from '../HistoryFilterBar';
 import { filterByDateAndText, type DateRangeOption } from '../../lib/historyFilter';
 import { RowActions } from '../RowActions';
+import { Card } from '../Card';
 import { deleteFuelLog } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import type { FuelLog } from '../../types';
@@ -63,7 +64,7 @@ export function FuelLogList() {
         />
       )}
 
-      <div className="bg-surface border border-border rounded-18 overflow-hidden">
+      <Card>
         {activeBike.fuelLogs.length === 0 && (
           <div className="p-4 text-center font-sans text-[13px] text-ink-400">
             ยังไม่มีบันทึกการเติมน้ำมัน
@@ -121,7 +122,7 @@ export function FuelLogList() {
             </div>
           );
         })}
-      </div>
+      </Card>
     </div>
   );
 }

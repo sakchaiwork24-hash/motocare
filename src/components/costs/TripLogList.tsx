@@ -3,6 +3,7 @@ import { Route } from 'lucide-react';
 import { shortDate } from '../../lib/format';
 import { BilingualLabel } from '../BilingualLabel';
 import { RowActions } from '../RowActions';
+import { Card } from '../Card';
 import { deleteTrip } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import type { TripLog } from '../../types';
@@ -33,7 +34,7 @@ export function TripLogList() {
         <BilingualLabel en="SAVED TRIPS" thai="ทริปที่บันทึกไว้" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
-      <div className="bg-surface border border-border rounded-18 overflow-hidden">
+      <Card>
         {trips.map((trip, i) => (
           <div
             key={trip.id}
@@ -61,7 +62,7 @@ export function TripLogList() {
             <RowActions onDelete={() => handleDelete(trip)} />
           </div>
         ))}
-      </div>
+      </Card>
     </div>
   );
 }

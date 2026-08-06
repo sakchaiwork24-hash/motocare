@@ -3,6 +3,7 @@ import { Fuel, Settings } from 'lucide-react';
 import { useMemo } from 'react';
 import { shortDate } from '../../lib/format';
 import { BilingualLabel } from '../BilingualLabel';
+import { Card } from '../Card';
 
 type ActivityRow = {
   id: string;
@@ -48,7 +49,7 @@ export function RecentActivity() {
         <BilingualLabel en="RECENT ACTIVITY" thai="กิจกรรมล่าสุด" primaryClassName="text-ink-400" secondaryClassName="text-ink-400" />
       </div>
 
-      <div className="bg-surface border border-border rounded-18 overflow-hidden">
+      <Card>
         {activities.map((act, i) => (
           <div
             key={act.id}
@@ -76,7 +77,7 @@ export function RecentActivity() {
             </div>
           </div>
         ))}
-      </div>
+      </Card>
     </div>
   );
 }

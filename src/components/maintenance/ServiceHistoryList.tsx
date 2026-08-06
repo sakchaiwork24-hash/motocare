@@ -7,6 +7,7 @@ import { HistoryFilterBar } from '../HistoryFilterBar';
 import { filterByDateAndText, type DateRangeOption } from '../../lib/historyFilter';
 import { ReceiptViewerSheet } from './ReceiptViewerSheet';
 import { RowActions } from '../RowActions';
+import { Card } from '../Card';
 import { deleteService } from '../../db';
 import { useToast } from '../../state/ToastContext';
 import type { Service } from '../../types';
@@ -55,7 +56,7 @@ export function ServiceHistoryList() {
         />
       )}
 
-      <div className="bg-surface border border-border rounded-18 overflow-hidden">
+      <Card>
         {activeBike.services.length === 0 && (
           <div className="p-4 text-center font-sans text-[13px] text-ink-400">
             ยังไม่มีประวัติการซ่อม
@@ -101,7 +102,7 @@ export function ServiceHistoryList() {
             <RowActions onEdit={() => openServiceSheetForEdit(s)} onDelete={() => handleDelete(s)} />
           </div>
         ))}
-      </div>
+      </Card>
 
       <ReceiptViewerSheet service={viewingService} onClose={() => setViewingService(null)} />
     </div>

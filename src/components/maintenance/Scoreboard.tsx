@@ -4,6 +4,7 @@ import { PROFILE_META } from '../../lib/profiles';
 import { Ring } from '../Ring';
 import { ProfileChips } from './ProfileChips';
 import { useMemo } from 'react';
+import { Card } from '../Card';
 
 const HEADLINES: Record<string, string> = {
   good: 'รถอยู่ในสภาพดี',
@@ -28,7 +29,7 @@ export function Scoreboard() {
   const note = PROFILE_META[activeBike.profile].noteThai;
 
   return (
-    <div className="bg-surface border border-border rounded-16 p-4 flex flex-col items-center">
+    <Card variant="padded" className="flex flex-col items-center">
       <div className="flex flex-col items-center mb-4 mt-2">
         <Ring pct={scoreInfo.score} colorClass={scoreInfo.colorClass} radius={31} strokeWidth={8} size={74}>
           <div className="flex flex-col items-center mt-1">
@@ -49,6 +50,6 @@ export function Scoreboard() {
       </p>
       
       <ProfileChips />
-    </div>
+    </Card>
   );
 }
