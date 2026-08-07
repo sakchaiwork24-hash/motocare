@@ -41,3 +41,15 @@ export function useInstallPrompt() {
 
   return { installable, promptInstall };
 }
+
+/**
+ * iOS Safari never fires `beforeinstallprompt` — there is no programmatic install API there,
+ * only the manual Share -> "Add to Home Screen" flow. `navigator.standalone` (iOS-only, not in
+ * TS's DOM lib) is true once the app is already installed/launched from the home screen.
+ */
+export function isIosInstallable(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = (navigator as unknown as { standalone?: boolean }).standalone === true;
+  return isIos && !isStandalone;
+}
