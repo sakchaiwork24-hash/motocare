@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Check, Plus } from 'lucide-react';
+import { Check, Plus, Trash2 } from 'lucide-react';
 import { StripeTile } from '../StripeTile';
 import { useBikeData, useOverlays } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { AddBikeSheet } from './AddBikeSheet';
 import { BilingualLabel } from '../BilingualLabel';
 import { useBackButtonClose } from '../../hooks/useBackButtonClose';
+import { deleteBike } from '../../db';
 
 export function GarageSwitcher() {
   const { bikes, activeId, switchBike } = useBikeData();
@@ -20,6 +21,17 @@ export function GarageSwitcher() {
     switchBike(id);
     closeSwitcher();
     if (bike) showToast(`เปลี่ยนไปใช้ ${bike.nick} แล้ว · Switched, data reloaded`);
+  };
+
+  const handleDelete = async (id: string, nick: string) => {
+    if (!window.confirm(`ลบ "${nick}" พร้อมประวัติซ่อม/เติมน้ำมัน/ทริปทั้งหมดถาวรใช่ไหม? กู้คืนไม่ได้`)) return;
+    try {
+      await deleteBike(id);
+      showToast(`ลบ ${nick} แล้ว`);
+    } catch (err) {
+      console.error('deleteBike failed', err);
+      showToast('ลบไม่สำเร็จ ลองใหม่อีกครั้ง');
+    }
   };
 
   return (
@@ -46,28 +58,39 @@ export function GarageSwitcher() {
             {bikes.map((bike) => {
               const isActive = bike.id === activeId;
               return (
-                <button
+                <div
                   key={bike.id}
-                  onClick={() => select(bike.id)}
-                  className={`w-full min-h-[56px] flex items-center gap-3 rounded-16 border px-2.5 py-2 text-left ${
+                  className={`w-full min-h-[56px] flex items-center gap-1 rounded-16 border pl-2.5 pr-1 py-2 ${
                     isActive ? 'bg-[rgba(255,107,0,.1)] border-[rgba(255,107,0,.5)]' : 'border-transparent'
                   }`}
                 >
-                  <StripeTile size={36} radius={11}>
-                    <span className="font-display font-bold text-[13px] text-accent">
-                      {bike.brand[0]}
-                    </span>
-                  </StripeTile>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-display font-bold text-[15px] leading-tight text-ink-100 truncate">
-                      {bike.nick}
+                  <button
+                    onClick={() => select(bike.id)}
+                    className="flex-1 min-w-0 flex items-center gap-3 text-left"
+                  >
+                    <StripeTile size={36} radius={11}>
+                      <span className="font-display font-bold text-[13px] text-accent">
+                        {bike.brand[0]}
+                      </span>
+                    </StripeTile>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-display font-bold text-[15px] leading-tight text-ink-100 truncate">
+                        {bike.nick}
+                      </div>
+                      <div className="font-sans text-[11px] text-ink-400 truncate">
+                        {bike.brand} {bike.model} · {bike.odo.toLocaleString('en-US')} km
+                      </div>
                     </div>
-                    <div className="font-sans text-[11px] text-ink-400 truncate">
-                      {bike.brand} {bike.model} · {bike.odo.toLocaleString('en-US')} km
-                    </div>
-                  </div>
-                  {isActive && <Check size={18} className="text-accent shrink-0" />}
-                </button>
+                    {isActive && <Check size={18} className="text-accent shrink-0" />}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(bike.id, bike.nick)}
+                    aria-label="Delete bike"
+                    className="w-11 h-11 flex items-center justify-center text-ink-500 hover:text-urgent shrink-0"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               );
             })}
 

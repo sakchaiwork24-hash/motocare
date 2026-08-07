@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react';
 
-type Tone = 'accent' | 'accent2' | 'good' | 'outline';
+type Tone = 'accent' | 'accent2' | 'good' | 'outline' | 'urgent';
 
 const TONE_CLASSES: Record<Tone, string> = {
   accent: 'bg-accent text-[#000000] font-bold',
   accent2: 'bg-accent2 text-[#000000] font-bold',
   good: 'bg-good text-[#0F172A] font-bold',
   outline: 'border border-border bg-sunken text-ink-100 font-semibold',
+  urgent: 'bg-urgent text-white font-bold',
 };
 
 type PrimaryButtonProps = {

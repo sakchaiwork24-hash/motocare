@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import { Download, Upload, TriangleAlert, FileSpreadsheet } from 'lucide-react';
+import { Download, Upload, TriangleAlert, FileSpreadsheet, Trash2 } from 'lucide-react';
 import { Sheet } from '../Sheet';
 import { useToast } from '../../state/ToastContext';
 import { useBikeData } from '../../state/BikeContext';
 import { exportAllData, importData } from '../../lib/backup';
 import { exportBikeHistoryCsv } from '../../lib/csvExport';
-import { updateConfig } from '../../db';
+import { updateConfig, clearAllData } from '../../db';
 import { BilingualLabel } from '../BilingualLabel';
 import { PrimaryButton } from '../PrimaryButton';
 
@@ -51,6 +51,22 @@ export function BackupSheet({ open, onClose }: BackupSheetProps) {
     } catch (err) {
       console.error('exportBikeHistoryCsv failed', err);
       showToast('ส่งออก CSV ไม่สำเร็จ ลองใหม่อีกครั้ง');
+    }
+  };
+
+  const handleFactoryReset = async () => {
+    if (!window.confirm('ล้างข้อมูลทั้งหมด (รถทุกคัน ประวัติซ่อม เติมน้ำมัน เอกสาร โปรไฟล์ผู้ขับ) ถาวรใช่ไหม? กู้คืนไม่ได้ นอกจากคุณส่งออกไฟล์สำรองไว้ก่อน'))
+      return;
+    setBusy(true);
+    try {
+      await clearAllData();
+      showToast('ล้างข้อมูลทั้งหมดแล้ว');
+      onClose();
+    } catch (err) {
+      console.error('clearAllData failed', err);
+      showToast('ล้างข้อมูลไม่สำเร็จ ลองใหม่อีกครั้ง');
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -114,6 +130,19 @@ export function BackupSheet({ open, onClose }: BackupSheetProps) {
           <div className="font-sans text-[10.5px] text-ink-300 leading-relaxed">
             การนำเข้าจะเขียนทับข้อมูลปัจจุบันทั้งหมด (รถทุกคัน ประวัติซ่อม เติมน้ำมัน เอกสาร)
             ด้วยข้อมูลในไฟล์ที่เลือก
+          </div>
+        </div>
+
+        <div className="h-px bg-border" />
+
+        <PrimaryButton onClick={handleFactoryReset} disabled={busy} tone="urgent" icon={<Trash2 size={16} />} className="w-full">
+          ล้างข้อมูลทั้งหมด · FACTORY RESET
+        </PrimaryButton>
+
+        <div className="flex items-start gap-2 bg-[rgba(244,63,94,.1)] border border-urgent/35 rounded-12 p-3">
+          <TriangleAlert size={16} className="text-urgent shrink-0 mt-0.5" />
+          <div className="font-sans text-[10.5px] text-ink-300 leading-relaxed">
+            ลบรถทุกคัน ประวัติทั้งหมด และโปรไฟล์ผู้ขับถาวร ไม่มีการกู้คืน — ส่งออกข้อมูลสำรองไว้ก่อนถ้ายังต้องใช้
           </div>
         </div>
       </div>

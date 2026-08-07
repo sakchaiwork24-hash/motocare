@@ -82,6 +82,38 @@ export async function updateConfig(patch: Partial<Config>): Promise<void> {
   if (count === 0) throw new Error('Config not found');
 }
 
+/**
+ * Deletes a bike and all of its service/fuel/trip/doc history with it (there's no separate
+ * per-record cleanup needed since those all live nested inside the bike record itself). If the
+ * deleted bike was the active one, switches to whichever bike happens to be first in whatever's
+ * left, or clears `activeBikeId` entirely if none remain — dropping to zero bikes is already a
+ * real, supported state (every fresh production install starts there; `Header.tsx` renders an
+ * "Add your first bike" prompt for it).
+ */
+export async function deleteBike(bikeId: string): Promise<void> {
+  await db.transaction('rw', db.bikes, db.config, async () => {
+    await db.bikes.delete(bikeId);
+    const config = await db.config.get(CONFIG_KEY);
+    if (config?.activeBikeId !== bikeId) return;
+    const remaining = await db.bikes.toArray();
+    await db.config.update(CONFIG_KEY, { activeBikeId: remaining[0]?.id });
+  });
+}
+
+/**
+ * Full factory reset — wipes every bike (and their nested history), config, and rider profile.
+ * Reproduces exactly the state a genuine fresh install starts in (`seedIfEmpty()` only seeds in
+ * DEV mode, so production always starts empty like this), not a new/untested code path. Callers
+ * should strongly encourage exporting a backup first — this has no undo.
+ */
+export async function clearAllData(): Promise<void> {
+  await db.transaction('rw', db.bikes, db.config, db.rider, async () => {
+    await db.bikes.clear();
+    await db.config.clear();
+    await db.rider.clear();
+  });
+}
+
 export async function recordService(
   bikeId: string,
   entry: { partKey: string; odo: number; cost: number; shop: string; receiptBlob?: Blob }
