@@ -116,22 +116,22 @@ export async function clearAllData(): Promise<void> {
 
 export async function recordService(
   bikeId: string,
-  entry: { partKey: string; odo: number; cost: number; shop: string; receiptBlob?: Blob }
+  entry: { partKey: string; odo: number; cost: number; shop: string; receiptBlob?: Blob; date?: string }
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
     if (!bike) throw new Error('Bike not found');
-    const today = new Date().toISOString().slice(0, 10);
+    const date = entry.date ?? new Date().toISOString().slice(0, 10);
     const newOdo = Math.max(bike.odo, entry.odo);
     const part = bike.parts.find(p => p.key === entry.partKey);
     const label = part?.label ?? '';
     const parts = bike.parts.map(p =>
-      p.key === entry.partKey ? { ...p, lastOdo: Math.max(p.lastOdo, entry.odo), lastDate: today } : p
+      p.key === entry.partKey ? { ...p, lastOdo: Math.max(p.lastOdo, entry.odo), lastDate: date } : p
     );
     const services = [
       {
         id: crypto.randomUUID(),
-        date: today, odo: entry.odo, what: label, shop: entry.shop || 'Self-serviced at home', cost: entry.cost,
+        date, odo: entry.odo, what: label, shop: entry.shop || 'Self-serviced at home', cost: entry.cost,
         ...(entry.receiptBlob ? { receiptBlob: entry.receiptBlob } : {}),
       },
       ...bike.services,
@@ -142,13 +142,12 @@ export async function recordService(
 
 export async function recordFuelLog(
   bikeId: string,
-  entry: { liters: number; thb: number; odo: number; station: string }
+  entry: { liters: number; thb: number; odo: number; station: string; date?: string }
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
     if (!bike) throw new Error('Bike not found');
-    const now = new Date();
-    const today = now.toISOString().slice(0, 10);
+    const date = entry.date ?? new Date().toISOString().slice(0, 10);
     const hasPriorLog = bike.fuelLogs.length > 0;
     const prevOdo = bike.fuelLogs[0]?.odo ?? entry.odo;
     const newOdo = Math.max(bike.odo, entry.odo);
@@ -157,7 +156,7 @@ export async function recordFuelLog(
       : null;
     const kmpl = computedKmpl !== null && isValidKmpl(computedKmpl) ? computedKmpl : bike.kmpl;
     const fuelLogs = [
-      { id: crypto.randomUUID(), date: today, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
+      { id: crypto.randomUUID(), date, station: entry.station, liters: entry.liters, thb: entry.thb, odo: entry.odo },
       ...bike.fuelLogs,
     ];
     await db.bikes.update(bikeId, { odo: newOdo, kmpl, fuelLogs });
@@ -166,13 +165,14 @@ export async function recordFuelLog(
 
 export async function recordTrip(
   bikeId: string,
-  entry: Omit<TripLog, 'date' | 'id'>
+  entry: Omit<TripLog, 'date' | 'id'> & { date?: string }
 ): Promise<void> {
   await db.transaction('rw', db.bikes, async () => {
     const bike = await db.bikes.get(bikeId);
     if (!bike) throw new Error('Bike not found');
-    const today = new Date().toISOString().slice(0, 10);
-    const trips = [{ id: crypto.randomUUID(), date: today, ...entry }, ...(bike.trips ?? [])];
+    const { date: inputDate, ...rest } = entry;
+    const date = inputDate ?? new Date().toISOString().slice(0, 10);
+    const trips = [{ id: crypto.randomUUID(), date, ...rest }, ...(bike.trips ?? [])];
     await db.bikes.update(bikeId, { trips });
   });
 }
@@ -235,6 +235,33 @@ export async function updatePartProfile(
 }
 
 /**
+ * Corrects a part's "last changed" point (odo and/or date) directly — for backfilling real
+ * history (e.g. "this chain already had 3,000 km on it when I started using the app") without
+ * pretending a service happened today. Deliberately unclamped (unlike `recordService`'s
+ * `Math.max`) since this is an explicit correction, not a forward-only event, and doesn't touch
+ * `services` history since no actual service is being logged.
+ */
+export async function updatePartHistory(
+  bikeId: string,
+  partKey: string,
+  patch: { lastOdo?: number; lastDate?: string },
+): Promise<void> {
+  await db.transaction('rw', db.bikes, async () => {
+    const bike = await db.bikes.get(bikeId);
+    if (!bike) throw new Error('Bike not found');
+    const parts = bike.parts.map((p) =>
+      p.key === partKey ? { ...p, ...patch } : p
+    );
+    await db.bikes.update(bikeId, { parts });
+  });
+}
+
+/** Creates the rider profile if none exists, or overwrites it entirely otherwise. */
+export async function addOrUpdateRider(patch: Rider): Promise<void> {
+  await db.rider.put({ ...patch, key: RIDER_KEY });
+}
+
+/**
  * Creates a new bike with sensible starter defaults and makes it the active bike. The 5 wear
  * parts always exist (there's no "add a part" UI, wear cards are always exactly these 5 keys) —
  * `lastOdo`/`lastDate` are set to "just serviced today" so a freshly-added bike doesn't show as
@@ -245,6 +272,7 @@ export async function updatePartProfile(
 export async function addBike(input: {
   nick: string; brand: string; model: string; year: number; plate: string;
   odo: number; kmpl: number; tank: number; drive: 'Chain' | 'Belt' | 'Shaft'; profile: RidingProfile;
+  partHistory?: Partial<Record<Part['key'], { usedKm?: number; lastDate?: string }>>;
 }): Promise<string> {
   const id = crypto.randomUUID();
   const today = new Date().toISOString().slice(0, 10);
@@ -256,12 +284,19 @@ export async function addBike(input: {
     : 'โซ่ · หล่อลื่น/ตั้งระยะ';
   const chainInterval = input.drive === 'Shaft' ? 20000 : 900;
 
+  const history = (key: Part['key']) => {
+    const h = input.partHistory?.[key];
+    const lastOdo = h?.usedKm ? Math.max(0, input.odo - h.usedKm) : input.odo;
+    const lastDate = h?.lastDate ?? today;
+    return { lastOdo, lastDate };
+  };
+
   const parts: Part[] = [
-    { key: 'oil', label: 'Engine Oil', thai: 'น้ำมันเครื่อง', icon: '#ic-drop', interval: 3000, lastOdo: input.odo, lastDate: today, prof: true, timeIntervalDays: 120 },
-    { key: 'brake', label: 'Brake Pads', thai: 'ผ้าเบรก', icon: '#ic-disc', interval: 10000, lastOdo: input.odo, lastDate: today, prof: true },
-    { key: 'chain', label: chainLabel, thai: chainThai, icon: '#ic-chain', interval: chainInterval, lastOdo: input.odo, lastDate: today, prof: true },
-    { key: 'tyre', label: 'Tyres (Front / Rear)', thai: 'ยางหน้า/หลัง', icon: '#ic-tyre', interval: 18000, lastOdo: input.odo, lastDate: today, prof: false, timeIntervalDays: 1825 },
-    { key: 'air', label: 'Air Filter', thai: 'ไส้กรองอากาศ', icon: '#ic-box', interval: 8000, lastOdo: input.odo, lastDate: today, prof: true },
+    { key: 'oil', label: 'Engine Oil', thai: 'น้ำมันเครื่อง', icon: '#ic-drop', interval: 3000, ...history('oil'), prof: true, timeIntervalDays: 120 },
+    { key: 'brake', label: 'Brake Pads', thai: 'ผ้าเบรก', icon: '#ic-disc', interval: 10000, ...history('brake'), prof: true },
+    { key: 'chain', label: chainLabel, thai: chainThai, icon: '#ic-chain', interval: chainInterval, ...history('chain'), prof: true },
+    { key: 'tyre', label: 'Tyres (Front / Rear)', thai: 'ยางหน้า/หลัง', icon: '#ic-tyre', interval: 18000, ...history('tyre'), prof: false, timeIntervalDays: 1825 },
+    { key: 'air', label: 'Air Filter', thai: 'ไส้กรองอากาศ', icon: '#ic-box', interval: 8000, ...history('air'), prof: true },
   ];
 
   const bike: Bike = {

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Sheet } from '../Sheet';
 import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
-import { updatePartProfile } from '../../db';
+import { updatePartProfile, updatePartHistory } from '../../db';
+import { useFieldValidation } from '../../lib/validation';
 import { PART_CATALOG } from '../../data/partCatalog';
 import type { Part } from '../../types';
 import { BilingualLabel } from '../BilingualLabel';
@@ -19,11 +20,22 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
   const { activeBike } = useBikeData();
   const { showToast } = useToast();
 
+  const today = new Date().toISOString().slice(0, 10);
+
   const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);
   const [labelInput, setLabelInput] = useState('');
   const [thaiInput, setThaiInput] = useState('');
   const [intervalInput, setIntervalInput] = useState('');
   const [timeIntervalInput, setTimeIntervalInput] = useState('');
+  const [lastOdoInput, setLastOdoInput] = useState('');
+  const [lastDateInput, setLastDateInput] = useState(today);
+
+  const { error: lastOdoError, validate: validateLastOdo, reset: resetLastOdoError } = useFieldValidation({
+    parser: 'int',
+    min: 0,
+    message: 'กรอกเลขไมล์ให้ถูกต้อง',
+    extra: (n) => (activeBike && n > activeBike.odo ? `ต้องไม่เกินเลขไมล์ปัจจุบัน ${activeBike.odo.toLocaleString()} กม.` : undefined),
+  });
 
   useEffect(() => {
     if (!part) return;
@@ -32,6 +44,9 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
     setThaiInput(part.thai);
     setIntervalInput(part.interval.toString());
     setTimeIntervalInput(part.timeIntervalDays ? part.timeIntervalDays.toString() : '');
+    setLastOdoInput(part.lastOdo.toString());
+    setLastDateInput(part.lastDate);
+    resetLastOdoError();
   }, [part]);
 
   if (!part || !activeBike) return null;
@@ -53,7 +68,12 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
       showToast('กรุณากรอกระยะ (กม.) ให้ถูกต้อง · Enter a valid interval');
       return;
     }
+    if (!validateLastOdo(lastOdoInput)) {
+      showToast('ตรวจสอบข้อมูลที่กรอกอีกครั้ง');
+      return;
+    }
     const timeIntervalDays = timeIntervalInput ? parseInt(timeIntervalInput, 10) : undefined;
+    const lastOdo = parseInt(lastOdoInput, 10);
 
     try {
       await updatePartProfile(activeBike.id, part.key, {
@@ -62,8 +82,9 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
         interval,
         timeIntervalDays: timeIntervalDays && timeIntervalDays > 0 ? timeIntervalDays : undefined,
       });
+      await updatePartHistory(activeBike.id, part.key, { lastOdo, lastDate: lastDateInput });
     } catch (err) {
-      console.error('updatePartProfile failed', err);
+      console.error('updatePartProfile/updatePartHistory failed', err);
       showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
       return;
     }
@@ -112,6 +133,29 @@ export function EditPartProfileSheet({ part, onClose }: EditPartProfileSheetProp
               value={timeIntervalInput}
               onChange={(v) => { setTimeIntervalInput(v); setSelectedCatalogId(null); }}
               placeholder="นับกม.อย่างเดียว"
+            />
+          </div>
+
+          <div className="flex gap-3">
+            <FormField
+              className="flex-1"
+              label="เลขไมล์ตอนเปลี่ยนล่าสุด"
+              labelEn="LAST CHANGED AT (KM)"
+              type="number"
+              inputMode="numeric"
+              value={lastOdoInput}
+              onChange={setLastOdoInput}
+              onBlur={() => validateLastOdo(lastOdoInput)}
+              error={lastOdoError}
+            />
+            <FormField
+              className="flex-1"
+              label="วันที่เปลี่ยนล่าสุด"
+              labelEn="LAST CHANGED DATE"
+              type="date"
+              max={today}
+              value={lastDateInput}
+              onChange={setLastDateInput}
             />
           </div>
         </div>

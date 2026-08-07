@@ -1,12 +1,13 @@
-import { AlertTriangle, Maximize2, Phone } from 'lucide-react';
+import { AlertTriangle, Maximize2, Pencil, Phone } from 'lucide-react';
 import { useBikeData } from '../../state/BikeContext';
 
 type IceCardProps = {
   onFullScreen: () => void;
+  onEdit: () => void;
 };
 
 /** Verified from README "ICE card" + MotoCare.dc.html's ice.* fields (lines 578-618). */
-export function IceCard({ onFullScreen }: IceCardProps) {
+export function IceCard({ onFullScreen, onEdit }: IceCardProps) {
   const { rider } = useBikeData();
   if (!rider) return null;
 
@@ -24,15 +25,24 @@ export function IceCard({ onFullScreen }: IceCardProps) {
             <div className="font-sans text-[10px] text-ice-muted">ICE · EMERGENCY · แสดงให้กู้ภัย</div>
           </div>
         </div>
-        <button
-          onClick={onFullScreen}
-          className="min-h-[40px] flex items-center gap-1.5 bg-urgent rounded-11 px-3 shrink-0"
-        >
-          <Maximize2 size={13} className="text-ice-surface" />
-          <span className="font-display font-bold text-[10px] tracking-[.08em] text-ice-surface">
-            เต็มจอ
-          </span>
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={onEdit}
+            className="w-10 h-10 flex items-center justify-center bg-[rgba(255,241,242,.12)] border border-ice-muted/40 rounded-11 shrink-0"
+            aria-label="แก้ไขข้อมูลฉุกเฉิน"
+          >
+            <Pencil size={13} className="text-ice-muted" />
+          </button>
+          <button
+            onClick={onFullScreen}
+            className="min-h-[40px] flex items-center gap-1.5 bg-urgent rounded-11 px-3 shrink-0"
+          >
+            <Maximize2 size={13} className="text-ice-surface" />
+            <span className="font-display font-bold text-[10px] tracking-[.08em] text-ice-surface">
+              เต็มจอ
+            </span>
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-3 mb-3">

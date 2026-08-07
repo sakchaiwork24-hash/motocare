@@ -1,13 +1,21 @@
 import { FormField } from '../FormField';
 import { PrimaryButton } from '../PrimaryButton';
 import { PROFILE_META } from '../../lib/profiles';
-import type { RidingProfile } from '../../types';
+import type { PartKey, RidingProfile } from '../../types';
 
 const DRIVE_OPTIONS = ['Chain', 'Belt', 'Shaft'] as const;
 const DRIVE_THAI: Record<typeof DRIVE_OPTIONS[number], string> = {
   Chain: 'โซ่',
   Belt: 'สายพาน',
   Shaft: 'เพลา',
+};
+
+const PART_USED_KM_LABELS: Record<PartKey, string> = {
+  oil: 'น้ำมันเครื่อง',
+  brake: 'ผ้าเบรก',
+  chain: 'โซ่/สายพาน',
+  tyre: 'ยาง',
+  air: 'ไส้กรองอากาศ',
 };
 
 type AddBikeStep3SpecsProps = {
@@ -23,13 +31,15 @@ type AddBikeStep3SpecsProps = {
   setDrive: (v: typeof DRIVE_OPTIONS[number]) => void;
   profile: RidingProfile;
   setProfile: (v: RidingProfile) => void;
+  partUsedKm: Record<PartKey, string>;
+  setPartUsedKm: (key: PartKey, value: string) => void;
   onBack: () => void;
   onSave: () => void;
 };
 
 export function AddBikeStep3Specs({
   kmpl, setKmpl, tank, setTank, kmplError, onKmplBlur, tankError, onTankBlur,
-  drive, setDrive, profile, setProfile, onBack, onSave,
+  drive, setDrive, profile, setProfile, partUsedKm, setPartUsedKm, onBack, onSave,
 }: AddBikeStep3SpecsProps) {
   return (
     <div className="flex flex-col gap-3.5">
@@ -83,6 +93,28 @@ export function AddBikeStep3Specs({
               <div className="font-display font-bold text-[11px] tracking-[.06em] uppercase">{meta.thai}</div>
               <div className="font-sans text-[10px] opacity-80">{meta.label}</div>
             </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2.5">
+        <label className="font-display font-medium text-[10px] text-ink-400 uppercase tracking-widest">
+          ใช้มาแล้วกี่กม.? (ไม่บังคับ) <span className="opacity-70">· ALREADY USED (KM, OPTIONAL)</span>
+        </label>
+        <div className="font-sans text-[10.5px] text-ink-400 -mt-1.5">
+          กรณีอะไหล่ถูกเปลี่ยน/ใช้มาก่อนเริ่มใช้แอพ ปล่อยว่างไว้ = เพิ่งเปลี่ยนวันนี้
+        </div>
+        <div className="grid grid-cols-2 gap-2.5">
+          {(Object.keys(PART_USED_KM_LABELS) as PartKey[]).map((key) => (
+            <FormField
+              key={key}
+              label={PART_USED_KM_LABELS[key]}
+              type="number"
+              inputMode="numeric"
+              value={partUsedKm[key]}
+              onChange={(v) => setPartUsedKm(key, v)}
+              placeholder="0"
+            />
           ))}
         </div>
       </div>

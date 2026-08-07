@@ -24,10 +24,13 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
 
   const [scanState, setScanState] = useState<'idle' | 'scanning' | 'matched'>('idle');
 
+  const today = new Date().toISOString().slice(0, 10);
+
   const [litersInput, setLitersInput] = useState('');
   const [thbInput, setThbInput] = useState('');
   const [odoInput, setOdoInput] = useState('');
   const [stationInput, setStationInput] = useState('');
+  const [dateInput, setDateInput] = useState(today);
 
   const { error: litersError, validate: validateLiters, reset: resetLitersError } =
     useFieldValidation({ parser: 'float', exclusiveMin: 0, message: 'กรอกจำนวนลิตรมากกว่า 0' });
@@ -43,11 +46,13 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
       setThbInput(editing.thb.toString());
       setOdoInput(editing.odo.toString());
       setStationInput(editing.station);
+      setDateInput(editing.date);
     } else {
       setOdoInput(bike ? bike.odo.toString() : '');
       setLitersInput('');
       setThbInput('');
       setStationInput('');
+      setDateInput(today);
     }
     resetLitersError();
     resetThbError();
@@ -93,7 +98,7 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
 
     if (editing) {
       try {
-        await updateFuelLog(bike.id, editing.id, { date: editing.date, station, liters, thb, odo });
+        await updateFuelLog(bike.id, editing.id, { date: dateInput, station, liters, thb, odo });
       } catch (err) {
         console.error('updateFuelLog failed', err);
         showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
@@ -111,7 +116,7 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
       : bike.kmpl;
 
     try {
-      await recordFuelLog(bike.id, { liters, thb, odo, station });
+      await recordFuelLog(bike.id, { liters, thb, odo, station, date: dateInput });
     } catch (err) {
       console.error('recordFuelLog failed', err);
       showToast('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง');
@@ -215,7 +220,13 @@ export function LogFuelSheet({ open, onClose, bike, editing }: LogFuelSheetProps
             </div>
           </div>
 
-          <FormField label="ปั๊มน้ำมัน (ไม่บังคับ)" labelEn="STATION (OPTIONAL)" value={stationInput} onChange={setStationInput} placeholder="เช่น ปตท, เชลล์" />
+          <div className="flex gap-3">
+            <FormField
+              className="flex-1" label="วันที่เติม" labelEn="DATE" type="date" max={today}
+              value={dateInput} onChange={setDateInput}
+            />
+            <FormField className="flex-1" label="ปั๊มน้ำมัน (ไม่บังคับ)" labelEn="STATION (OPTIONAL)" value={stationInput} onChange={setStationInput} placeholder="เช่น ปตท, เชลล์" />
+          </div>
         </div>
 
         <PrimaryButton onClick={handleSave} className="w-full mt-2">

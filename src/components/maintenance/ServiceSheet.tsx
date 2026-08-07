@@ -23,11 +23,14 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const today = new Date().toISOString().slice(0, 10);
+
   const [selectedPart, setSelectedPart] = useState<string>('oil');
   const [whatInput, setWhatInput] = useState('');
   const [odoInput, setOdoInput] = useState('');
   const [costInput, setCostInput] = useState('');
   const [shopInput, setShopInput] = useState('');
+  const [dateInput, setDateInput] = useState(today);
   const [receiptBlob, setReceiptBlob] = useState<Blob | undefined>(undefined);
   const [receiptUrl, setReceiptUrl] = useState<string | undefined>(undefined);
   const [compressing, setCompressing] = useState(false);
@@ -36,7 +39,7 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
     parser: 'int',
     min: 0,
     message: 'กรอกเลขไมล์ให้ถูกต้อง',
-    extra: (n) => (bike && !editing && n < bike.odo ? `เลขไมล์ต้องไม่น้อยกว่า ${bike.odo.toLocaleString()} กม.` : undefined),
+    extra: (n) => (bike && !editing && dateInput === today && n < bike.odo ? `เลขไมล์ต้องไม่น้อยกว่า ${bike.odo.toLocaleString()} กม.` : undefined),
   });
   const { error: costError, validate: validateCost, reset: resetCostError } = useFieldValidation({
     parser: 'int',
@@ -52,12 +55,14 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
       setOdoInput(editing.odo.toString());
       setCostInput(editing.cost ? editing.cost.toString() : '');
       setShopInput(editing.shop);
+      setDateInput(editing.date);
       setReceiptBlob(editing.receiptBlob);
     } else if (initialPartKey) {
       setSelectedPart(initialPartKey);
       setOdoInput(bike ? bike.odo.toString() : '');
       setCostInput('');
       setShopInput('');
+      setDateInput(today);
       setReceiptBlob(undefined);
     }
     resetOdoError();
@@ -111,7 +116,7 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
     try {
       if (editing) {
         await updateService(bike.id, editing.id, {
-          date: editing.date,
+          date: dateInput,
           odo,
           what: whatInput.trim() || editing.what,
           shop: shopInput,
@@ -125,6 +130,7 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
           cost,
           shop: shopInput,
           receiptBlob,
+          date: dateInput,
         });
       }
     } catch (err) {
@@ -185,7 +191,13 @@ export function ServiceSheet({ open, onClose, bike, initialPartKey, editing }: S
             />
           </div>
 
-          <FormField label="ร้าน / อู่" labelEn="SHOP" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" />
+          <div className="flex gap-3">
+            <FormField
+              className="flex-1" label="วันที่ทำ" labelEn="DATE" type="date" max={today}
+              value={dateInput} onChange={setDateInput}
+            />
+            <FormField className="flex-1" label="ร้าน / อู่" labelEn="SHOP" value={shopInput} onChange={setShopInput} placeholder="ทำเองที่บ้าน" />
+          </div>
 
           <button
             type="button"

@@ -4,7 +4,7 @@ import { useBikeData } from '../../state/BikeContext';
 import { useToast } from '../../state/ToastContext';
 import { addBike } from '../../db';
 import { useFieldValidation } from '../../lib/validation';
-import type { RidingProfile } from '../../types';
+import type { PartKey, RidingProfile } from '../../types';
 import { BIKE_MODEL_CATALOG } from '../../data/bikeModelCatalog';
 import { BilingualLabel } from '../BilingualLabel';
 import { AddBikeStep1Catalog } from './AddBikeStep1Catalog';
@@ -19,6 +19,8 @@ type AddBikeSheetProps = {
 const CATALOG_BRANDS = Array.from(new Set(BIKE_MODEL_CATALOG.map((e) => e.brand))).sort();
 
 const TOTAL_STEPS = 3;
+
+const EMPTY_PART_USED_KM: Record<PartKey, string> = { oil: '', brake: '', chain: '', tyre: '', air: '' };
 
 export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
   const { config } = useBikeData();
@@ -36,6 +38,7 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
   const [tank, setTank] = useState('10');
   const [drive, setDrive] = useState<'Chain' | 'Belt' | 'Shaft'>('Chain');
   const [profile, setProfile] = useState<RidingProfile>('urban');
+  const [partUsedKm, setPartUsedKmState] = useState<Record<PartKey, string>>(EMPTY_PART_USED_KM);
 
   const [catalogBrand, setCatalogBrand] = useState('');
   const [catalogModelId, setCatalogModelId] = useState('');
@@ -60,6 +63,7 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
     setTank('10');
     setDrive('Chain');
     setProfile(config?.defaultProfile ?? 'urban');
+    setPartUsedKmState(EMPTY_PART_USED_KM);
     setCatalogBrand('');
     setCatalogModelId('');
     resetOdoError();
@@ -87,6 +91,9 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
     setDrive(entry.drive);
   };
 
+  const setPartUsedKm = (key: PartKey, value: string) =>
+    setPartUsedKmState((prev) => ({ ...prev, [key]: value }));
+
   const goToStep2 = () => setStep(2);
 
   const goToStep3 = () => {
@@ -111,6 +118,12 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
     const parsedKmpl = parseFloat(kmpl);
     const parsedTank = parseFloat(tank);
 
+    const partHistory: Partial<Record<PartKey, { usedKm: number }>> = {};
+    for (const key of Object.keys(partUsedKm) as PartKey[]) {
+      const usedKm = parseInt(partUsedKm[key], 10);
+      if (partUsedKm[key] && !isNaN(usedKm) && usedKm > 0) partHistory[key] = { usedKm };
+    }
+
     try {
       await addBike({
         nick: nick.trim(),
@@ -123,6 +136,7 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
         tank: tank ? parsedTank : 10,
         drive,
         profile,
+        partHistory,
       });
     } catch (err) {
       console.error('addBike failed', err);
@@ -201,6 +215,8 @@ export function AddBikeSheet({ open, onClose }: AddBikeSheetProps) {
             setDrive={setDrive}
             profile={profile}
             setProfile={setProfile}
+            partUsedKm={partUsedKm}
+            setPartUsedKm={setPartUsedKm}
             onBack={() => setStep(2)}
             onSave={handleSave}
           />

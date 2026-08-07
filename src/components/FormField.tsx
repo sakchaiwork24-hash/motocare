@@ -10,6 +10,7 @@ type FormFieldProps = {
   onBlur?: () => void;
   placeholder?: string;
   step?: string;
+  max?: string;
   className?: string;
   accent?: 'accent' | 'accent2';
   error?: string;
@@ -25,6 +26,7 @@ export function FormField({
   onBlur,
   placeholder,
   step,
+  max,
   className = '',
   accent = 'accent',
   error,
@@ -43,6 +45,7 @@ export function FormField({
         type={type}
         inputMode={inputMode}
         step={step}
+        max={max}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}

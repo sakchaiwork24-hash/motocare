@@ -1,14 +1,15 @@
-import { Phone, X } from 'lucide-react';
+import { Pencil, Phone, X } from 'lucide-react';
 import { useBikeData } from '../../state/BikeContext';
 import { useBackButtonClose } from '../../hooks/useBackButtonClose';
 
 type IceFullScreenProps = {
   open: boolean;
   onClose: () => void;
+  onEdit: () => void;
 };
 
 /** Verified from README "ICE full-screen" + MotoCare.dc.html lines 824-867. Max contrast, safety-critical. */
-export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
+export function IceFullScreen({ open, onClose, onEdit }: IceFullScreenProps) {
   const { rider, activeBike } = useBikeData();
   useBackButtonClose(open, onClose);
   if (!open || !rider || !activeBike) return null;
@@ -19,13 +20,22 @@ export function IceFullScreen({ open, onClose }: IceFullScreenProps) {
         <div className="font-display font-bold text-[12px] tracking-[.2em] text-ice-muted uppercase">
           กรณีฉุกเฉิน · IN CASE OF EMERGENCY
         </div>
-        <button
-          onClick={onClose}
-          className="w-11 h-11 flex items-center justify-center bg-[rgba(255,241,242,.12)] border border-ice-muted/40 rounded-13 text-ice-card"
-          aria-label="Close"
-        >
-          <X size={18} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onEdit}
+            className="w-11 h-11 flex items-center justify-center bg-[rgba(255,241,242,.12)] border border-ice-muted/40 rounded-13 text-ice-card"
+            aria-label="แก้ไขข้อมูลฉุกเฉิน"
+          >
+            <Pencil size={17} />
+          </button>
+          <button
+            onClick={onClose}
+            className="w-11 h-11 flex items-center justify-center bg-[rgba(255,241,242,.12)] border border-ice-muted/40 rounded-13 text-ice-card"
+            aria-label="Close"
+          >
+            <X size={18} />
+          </button>
+        </div>
       </div>
 
       <div>
